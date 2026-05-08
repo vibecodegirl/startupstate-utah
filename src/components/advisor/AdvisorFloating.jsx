@@ -171,10 +171,8 @@ export default function AdvisorFloating({ initialContext }) {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-primary text-white shadow-xl hover:bg-green-dark transition-all duration-200 flex flex-col items-center justify-center gap-2 px-2 py-5 rounded-l-2xl"
-          style={{ writingMode: 'vertical-rl' }}
+          className="fixed right-0 top-3/4 -translate-y-1/2 z-50 bg-primary text-white shadow-xl hover:bg-green-dark transition-all duration-200 flex items-center justify-center px-1.5 py-4 rounded-l-xl"
         >
-          <Sparkles size={16} className="shrink-0" style={{ writingMode: 'horizontal-tb' }} />
           <span className="text-xs font-semibold tracking-wide font-manrope" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>AI Advisor</span>
           {unread && (
             <span className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
