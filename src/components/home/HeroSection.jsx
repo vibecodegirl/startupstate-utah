@@ -55,11 +55,9 @@ export default function HeroSection({ role }) {
               {cta.text} <ArrowRight size={18} />
             </Button>
           </Link>
-          <Link to="/advisor">
-            <Button size="lg" variant="outline" className="border-primary/30 text-primary hover:bg-green-pale font-manrope font-semibold px-8 py-3 text-base gap-2 rounded-xl">
-              <Sparkles size={16} /> AI Advisor
-            </Button>
-          </Link>
+          <button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="inline-flex items-center gap-2 border border-primary/30 text-primary hover:bg-green-pale font-manrope font-semibold px-8 py-3 text-base rounded-xl transition-colors">
+            <Sparkles size={16} /> AI Advisor
+          </button>
         </div>
         <p className="text-sm text-muted-foreground animate-fade-in">{cta.sub}</p>
 

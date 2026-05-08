@@ -137,11 +137,9 @@ export default function Funding() {
           <DollarSign size={32} className="text-white/60 mx-auto mb-3" />
           <h2 className="font-manrope font-extrabold text-2xl text-white mb-2">Not sure which funding is right for you?</h2>
           <p className="text-white/80 mb-6">Our AI Advisor can match you with the best funding based on your stage, sector, and location.</p>
-          <Link to="/advisor">
-            <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
-              Get Personalized Funding Advice
-            </Button>
-          </Link>
+          <Button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
+            Get Personalized Funding Advice
+          </Button>
         </div>
       </div>
     </div>

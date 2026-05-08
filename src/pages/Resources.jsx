@@ -255,11 +255,9 @@ export default function Resources() {
         <div className="bg-primary rounded-3xl p-8 text-center mb-12">
           <h2 className="font-manrope font-extrabold text-2xl text-white mb-2">Not sure where to start?</h2>
           <p className="text-white/80 mb-6">Let our AI Advisor find the right resources for your specific situation.</p>
-          <Link to="/advisor">
-            <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
-              Talk to AI Advisor
-            </Button>
-          </Link>
+          <Button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
+            Talk to AI Advisor
+          </Button>
         </div>
       </div>
     </div>

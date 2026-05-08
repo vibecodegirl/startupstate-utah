@@ -150,11 +150,9 @@ export default function StartPage() {
         <div className="mt-16 bg-primary rounded-3xl p-8 text-center mb-12">
           <h2 className="font-manrope font-extrabold text-2xl text-white mb-2">Have questions about your specific situation?</h2>
           <p className="text-white/80 mb-6">Our AI Advisor can give you personalized guidance based on your stage, sector, and location.</p>
-          <Link to="/advisor">
-            <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
-              Talk to AI Advisor <ArrowRight size={16} className="ml-2" />
-            </Button>
-          </Link>
+          <Button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
+            Talk to AI Advisor <ArrowRight size={16} className="ml-2" />
+          </Button>
         </div>
       </div>
 

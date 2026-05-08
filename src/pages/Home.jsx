@@ -27,11 +27,9 @@ export default function Home({ role }) {
                 <MapPin size={18} /> Add Your Startup
               </Button>
             </Link>
-            <Link to="/advisor">
-              <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10 font-manrope font-semibold px-8 gap-2">
-                <Sparkles size={16} /> Talk to AI Advisor
-              </Button>
-            </Link>
+            <Button size="lg" variant="outline" onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="border-white/40 text-white hover:bg-white/10 font-manrope font-semibold px-8 gap-2">
+              <Sparkles size={16} /> Talk to AI Advisor
+            </Button>
           </div>
         </div>
       </section>
