@@ -1,0 +1,77 @@
+{
+  "name": "Resource",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Funding",
+        "Mentorship",
+        "Legal",
+        "Coworking",
+        "Accelerator",
+        "Government",
+        "Education",
+        "Networking",
+        "International"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "audience": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Pre-Seed",
+          "Seed",
+          "Series A",
+          "Series B",
+          "Growth",
+          "All Stages"
+        ]
+      }
+    },
+    "sectors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "AI",
+          "Aerospace & Defense",
+          "Life Sciences",
+          "Fintech",
+          "All Sectors"
+        ]
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_verified": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

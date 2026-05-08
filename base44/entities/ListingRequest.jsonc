@@ -1,0 +1,81 @@
+{
+  "name": "ListingRequest",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string"
+    },
+    "company_linkedin": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "funding_stage": {
+      "type": "string",
+      "enum": [
+        "Pre-Seed",
+        "Seed",
+        "Series A",
+        "Series B",
+        "Series C",
+        "Series D+",
+        "Bootstrapped"
+      ]
+    },
+    "employees": {
+      "type": "string",
+      "enum": [
+        "2-10",
+        "11-50",
+        "51-200",
+        "201-500",
+        "500+"
+      ]
+    },
+    "sector": {
+      "type": "string",
+      "enum": [
+        "AI",
+        "Aerospace & Defense",
+        "Life Sciences",
+        "Fintech",
+        "B2B Software",
+        "Marketplaces",
+        "Energy",
+        "Consumer",
+        "Security",
+        "Other"
+      ]
+    },
+    "contact_email": {
+      "type": "string"
+    },
+    "contact_name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Pending",
+        "Approved",
+        "Rejected",
+        "Needs Info"
+      ],
+      "default": "Pending"
+    },
+    "admin_notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "company_name",
+    "contact_email"
+  ]
+}

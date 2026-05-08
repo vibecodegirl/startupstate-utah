@@ -1,0 +1,123 @@
+{
+  "name": "Startup",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "description": "Company name in Sentence Case"
+    },
+    "sector": {
+      "type": "string",
+      "enum": [
+        "AI",
+        "Aerospace & Defense",
+        "Life Sciences",
+        "Fintech",
+        "B2B Software",
+        "Marketplaces",
+        "Energy",
+        "Consumer",
+        "Security",
+        "Other"
+      ]
+    },
+    "funding_stage": {
+      "type": "string",
+      "enum": [
+        "Pre-Seed",
+        "Seed",
+        "Series A",
+        "Series B",
+        "Series C",
+        "Series D+",
+        "Bootstrapped"
+      ]
+    },
+    "employees": {
+      "type": "string",
+      "enum": [
+        "2-10",
+        "11-50",
+        "51-200",
+        "201-500",
+        "500+"
+      ]
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "Verified",
+        "Pending",
+        "Community Sourced",
+        "Flagged"
+      ],
+      "default": "Pending"
+    },
+    "website": {
+      "type": "string"
+    },
+    "linkedin_url": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "county": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "year_founded": {
+      "type": "number"
+    },
+    "hiring": {
+      "type": "boolean",
+      "default": false
+    },
+    "job_postings_url": {
+      "type": "string"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "founder_name": {
+      "type": "string"
+    },
+    "founder_email": {
+      "type": "string"
+    },
+    "is_claimed": {
+      "type": "boolean",
+      "default": false
+    },
+    "clarity_score": {
+      "type": "number",
+      "description": "CLEVER: Clarity score 1-10"
+    },
+    "international_ready": {
+      "type": "boolean",
+      "default": false
+    },
+    "data_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Active flagging notes"
+    }
+  },
+  "required": [
+    "company_name",
+    "sector"
+  ]
+}
