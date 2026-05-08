@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Search, ExternalLink, BookOpen, DollarSign, Users, Briefcase, Globe, GraduationCap, Building } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const UTAH_RESOURCES = [
@@ -148,13 +147,13 @@ const categoryIcons = {
 };
 
 const categoryColors = {
-  'Funding': 'bg-purple-100 text-purple-700',
-  'Mentorship': 'bg-blue-100 text-blue-700',
-  'Government': 'bg-green-100 text-green-700',
-  'Education': 'bg-orange-100 text-orange-700',
-  'Networking': 'bg-pink-100 text-pink-700',
-  'International': 'bg-cyan-100 text-cyan-700',
-  'Accelerator': 'bg-yellow-100 text-yellow-700',
+  'Funding': { badge: 'bg-purple-50 text-purple-600', icon: 'bg-purple-50 text-purple-500', dot: 'bg-purple-400' },
+  'Mentorship': { badge: 'bg-blue-50 text-blue-600', icon: 'bg-blue-50 text-blue-500', dot: 'bg-blue-400' },
+  'Government': { badge: 'bg-emerald-50 text-emerald-600', icon: 'bg-emerald-50 text-emerald-500', dot: 'bg-emerald-400' },
+  'Education': { badge: 'bg-orange-50 text-orange-600', icon: 'bg-orange-50 text-orange-500', dot: 'bg-orange-400' },
+  'Networking': { badge: 'bg-pink-50 text-pink-600', icon: 'bg-pink-50 text-pink-500', dot: 'bg-pink-400' },
+  'International': { badge: 'bg-cyan-50 text-cyan-600', icon: 'bg-cyan-50 text-cyan-500', dot: 'bg-cyan-400' },
+  'Accelerator': { badge: 'bg-yellow-50 text-yellow-600', icon: 'bg-yellow-50 text-yellow-500', dot: 'bg-yellow-400' },
 };
 
 const categories = ['All', 'Funding', 'Mentorship', 'Government', 'Education', 'Networking', 'International'];
@@ -180,81 +179,103 @@ export default function Resources() {
   });
 
   return (
-    <div className="min-h-screen bg-muted/20 pt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white pt-24">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-3">
+          <h1 className="font-manrope font-extrabold text-5xl text-foreground mb-0">
             Resource Navigator
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Every Utah startup resource, program, and opportunity — curated, verified, and searchable.
-          </p>
         </div>
 
-        {/* Search & Filters */}
-        <div className="bg-white rounded-2xl border border-border p-4 mb-8 shadow-sm flex flex-col sm:flex-row gap-3">
+        {/* Search + Audience row */}
+        <div className="flex gap-3 mb-6">
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search resources..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 text-sm border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-gray-300 bg-white placeholder-gray-400"
             />
           </div>
-          <select value={audience} onChange={e => setAudience(e.target.value)}
-            className="text-sm border border-border rounded-xl px-3 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary/30">
+          <select
+            value={audience}
+            onChange={e => setAudience(e.target.value)}
+            className="text-sm border border-gray-200 rounded-lg px-3 py-2.5 bg-white text-gray-600 focus:outline-none focus:ring-1 focus:ring-gray-300 min-w-32"
+          >
             {audienceFilters.map(a => <option key={a}>{a}</option>)}
           </select>
         </div>
 
         {/* Category tabs */}
-        <div className="flex gap-2 flex-wrap mb-6">
+        <div className="flex gap-2 flex-wrap mb-5">
           {categories.map(c => (
-            <button key={c} onClick={() => setCategory(c)}
-              className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
-                category === c ? 'bg-primary text-white shadow-sm' : 'bg-white border border-border text-muted-foreground hover:border-primary/40 hover:text-primary'
-              }`}>
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border ${
+                category === c
+                  ? 'bg-primary text-white border-primary'
+                  : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700'
+              }`}
+            >
               {c}
             </button>
           ))}
         </div>
 
         {/* Count */}
-        <p className="text-sm text-muted-foreground mb-5">{filtered.length} resource{filtered.length !== 1 ? 's' : ''} found</p>
+        <p className="text-sm text-gray-400 mb-6">{filtered.length} resource{filtered.length !== 1 ? 's' : ''} found</p>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
           {filtered.map((r, i) => {
             const Icon = categoryIcons[r.category] || BookOpen;
+            const colors = categoryColors[r.category] || { badge: 'bg-gray-50 text-gray-500', icon: 'bg-gray-50 text-gray-400', dot: 'bg-gray-300' };
             return (
-              <div key={r.id || i} className="bg-white rounded-2xl border border-border p-5 hover:border-primary/30 hover:shadow-lg transition-all duration-300 flex flex-col">
-                <div className="flex items-start justify-between mb-3">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${categoryColors[r.category] || 'bg-muted text-muted-foreground'}`}>
-                    <Icon size={16} />
+              <div
+                key={r.id || i}
+                className="bg-white rounded-xl border border-gray-100 p-5 hover:border-gray-200 hover:shadow-sm transition-all duration-200 flex flex-col"
+              >
+                {/* Top row: icon + badge */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${colors.icon}`}>
+                    <Icon size={15} />
                   </div>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${categoryColors[r.category] || 'bg-muted text-muted-foreground'}`}>
+                  <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${colors.badge}`}>
                     {r.category}
                   </span>
                 </div>
-                <h3 className="font-manrope font-bold text-base text-foreground mb-1">{r.title}</h3>
-                <p className="text-xs text-primary font-medium mb-2">{r.provider}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-4">{r.description}</p>
 
-                {r.tags && (
+                {/* Title */}
+                <h3 className="font-manrope font-bold text-sm text-gray-900 mb-1 leading-snug">{r.title}</h3>
+
+                {/* Provider */}
+                <p className="text-xs text-primary font-medium mb-2">{r.provider}</p>
+
+                {/* Description */}
+                <p className="text-xs text-gray-500 leading-relaxed flex-1 mb-3 line-clamp-3">{r.description}</p>
+
+                {/* Tags */}
+                {r.tags && r.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1 mb-4">
                     {r.tags.map(t => (
-                      <span key={t} className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">{t}</span>
+                      <span key={t} className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
+                        {t}
+                      </span>
                     ))}
                   </div>
                 )}
 
+                {/* CTA */}
                 <a href={r.url} target="_blank" rel="noopener noreferrer" className="mt-auto">
-                  <Button variant="outline" size="sm" className="w-full gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold">
-                    Visit Resource <ExternalLink size={13} />
-                  </Button>
+                  <button className="flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-primary transition-colors group">
+                    Visit Resource
+                    <ExternalLink size={11} className="group-hover:text-primary" />
+                  </button>
                 </a>
               </div>
             );
@@ -262,12 +283,15 @@ export default function Resources() {
         </div>
 
         {/* AI Advisor CTA */}
-        <div className="bg-primary rounded-3xl p-8 text-center mb-12">
-          <h2 className="font-manrope font-extrabold text-2xl text-white mb-2">Not sure where to start?</h2>
-          <p className="text-white/80 mb-6">Let our AI Advisor find the right resources for your specific situation.</p>
-          <Button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
+        <div className="bg-primary rounded-2xl p-10 text-center mb-16">
+          <h2 className="font-manrope font-bold text-xl text-white mb-2">Not sure where to start?</h2>
+          <p className="text-white/75 text-sm mb-6">Let our AI Advisor find the right resources for your specific situation.</p>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))}
+            className="bg-white text-primary font-semibold text-sm px-6 py-2.5 rounded-full hover:bg-green-pale transition-colors"
+          >
             Talk to AI Advisor
-          </Button>
+          </button>
         </div>
       </div>
     </div>
