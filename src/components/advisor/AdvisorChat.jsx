@@ -183,7 +183,7 @@ export default function AdvisorChat({ initialContext }) {
           </Button>
         </div>
         <p className="text-xs text-muted-foreground mt-2 text-center">
-          Powered by the CLEVER Framework · startup.utah.gov
+          Powered by startup.utah.gov
         </p>
       </form>
     </div>

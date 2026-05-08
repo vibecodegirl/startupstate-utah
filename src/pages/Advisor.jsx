@@ -28,7 +28,7 @@ export default function Advisor() {
             Business Resource Advisor
           </h1>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Your personal mentor for Utah's startup ecosystem. Powered by the CLEVER Framework.
+            Your personal mentor for Utah's startup ecosystem.
           </p>
         </div>
 
@@ -49,30 +49,8 @@ export default function Advisor() {
                 <h3 className="font-manrope font-bold text-sm">About This Advisor</h3>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Trained on Utah's full ecosystem of resources: GOEO programs, SBDCs, VCs, accelerators, grants, and more. Guided by the CLEVER Framework for accurate, personalized recommendations.
+                Trained on Utah's full ecosystem of resources: GOEO programs, SBDCs, VCs, accelerators, grants, and more — delivering accurate, personalized recommendations.
               </p>
-            </div>
-
-            {/* CLEVER */}
-            <div className="bg-green-pale rounded-2xl border border-primary/20 p-5">
-              <h3 className="font-manrope font-bold text-sm text-green-dark mb-3">CLEVER Framework</h3>
-              <div className="space-y-2">
-                {[
-                  ['C', 'Clarity'],
-                  ['L', 'Leadership'],
-                  ['E', 'Evaluation'],
-                  ['V', 'Value'],
-                  ['E', 'Expansion'],
-                  ['R', 'Resilience'],
-                ].map(([l, w]) => (
-                  <div key={w} className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-primary text-white font-bold text-xs flex items-center justify-center">
-                      {l}
-                    </div>
-                    <span className="text-sm text-foreground font-medium">{w}</span>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Try personas */}

@@ -1,7 +1,6 @@
 import HeroSection from '@/components/home/HeroSection';
 import JourneyCards from '@/components/home/JourneyCards';
 import PersonaSelector from '@/components/home/PersonaSelector';
-import CLEVERBanner from '@/components/home/CLEVERBanner';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,7 +11,6 @@ export default function Home({ role }) {
       <HeroSection role={role} />
       <JourneyCards />
       <PersonaSelector />
-      <CLEVERBanner />
 
       {/* CTA Strip */}
       <section className="bg-primary py-16">
