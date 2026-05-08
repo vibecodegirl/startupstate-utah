@@ -149,8 +149,12 @@ export default function AdvisorFloating({ initialContext }) {
   ];
 
   const formatContent = (text) => {
-    // Bold **text**
-    return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Strip markdown bold, italic, headers
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/\*(.*?)\*/g, '$1')
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/`{1,3}(.*?)`{1,3}/gs, '$1');
   };
 
   return (
