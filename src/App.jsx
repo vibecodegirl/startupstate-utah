@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
@@ -9,6 +9,7 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import AdvisorFloating from '@/components/advisor/AdvisorFloating';
 import Home from '@/pages/Home';
 import Advisor from '@/pages/Advisor';
 import StartupMap from '@/pages/StartupMap';
@@ -23,6 +24,15 @@ import AdminDashboard from '@/pages/AdminDashboard';
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const [role, setRole] = useState('visitor');
+  const [advisorContext, setAdvisorContext] = useState(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      setAdvisorContext(e.detail?.context || '__open__');
+    };
+    window.addEventListener('openAdvisor', handler);
+    return () => window.removeEventListener('openAdvisor', handler);
+  }, []);
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
@@ -65,6 +75,7 @@ const AuthenticatedApp = () => {
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />
+      <AdvisorFloating initialContext={advisorContext === '__open__' ? null : advisorContext} />
     </>
   );
 };
