@@ -171,7 +171,7 @@ export default function AdvisorFloating({ initialContext }) {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed right-0 top-3/4 -translate-y-1/2 z-50 bg-primary text-white shadow-xl hover:bg-green-dark transition-all duration-200 flex items-center justify-center px-1.5 py-4 rounded-l-xl"
+          className="fixed right-0 bottom-24 z-50 bg-primary text-white shadow-xl hover:bg-green-dark transition-all duration-200 flex items-center justify-center px-1.5 py-4 rounded-l-xl"
         >
           <span className="text-xs font-semibold tracking-wide font-manrope" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>AI Advisor</span>
           {unread && (
