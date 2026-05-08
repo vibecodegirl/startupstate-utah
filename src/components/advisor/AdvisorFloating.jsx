@@ -167,24 +167,20 @@ export default function AdvisorFloating({ initialContext }) {
 
   return (
     <>
-      {/* Floating button */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-        {/* Nudge tooltip */}
-        {!open && (
-          <div className="bg-foreground text-white text-xs font-medium px-3 py-2 rounded-xl shadow-lg animate-fade-in max-w-48 text-center leading-snug">
-            Ask your Utah Startup Advisor ✨
-          </div>
-        )}
+      {/* Floating button — vertical pill stuck to right edge */}
+      {!open && (
         <button
-          onClick={() => setOpen(o => !o)}
-          className="relative w-14 h-14 rounded-full bg-primary text-white shadow-xl hover:bg-green-dark transition-all duration-200 hover:scale-105 flex items-center justify-center"
+          onClick={() => setOpen(true)}
+          className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-primary text-white shadow-xl hover:bg-green-dark transition-all duration-200 flex flex-col items-center justify-center gap-2 px-2 py-5 rounded-l-2xl"
+          style={{ writingMode: 'vertical-rl' }}
         >
-          {open ? <X size={22} /> : <Sparkles size={22} />}
-          {unread && !open && (
-            <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-white" />
+          <Sparkles size={16} className="shrink-0" style={{ writingMode: 'horizontal-tb' }} />
+          <span className="text-xs font-semibold tracking-wide font-manrope" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>AI Advisor</span>
+          {unread && (
+            <span className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
           )}
         </button>
-      </div>
+      )}
 
       {/* Slideout panel */}
       {open && (
