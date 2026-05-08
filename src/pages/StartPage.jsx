@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, Lightbulb } from 'lucide-react';
+import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, Lightbulb, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const steps = [
@@ -10,6 +11,7 @@ const steps = [
     icon: Lightbulb,
     resources: ['Utah SBDC Free Consulting', 'NSF I-Corps', 'Business Plan Builder — startup.utah.gov'],
     link: 'https://startup.utah.gov/business-plan/',
+    isExternal: true,
   },
   {
     number: '02',
@@ -18,6 +20,7 @@ const steps = [
     icon: FileText,
     resources: ['Utah Division of Corporations', 'IRS EIN Registration', 'Utah Business One Stop'],
     link: 'https://corporations.utah.gov',
+    isExternal: true,
   },
   {
     number: '03',
@@ -26,6 +29,8 @@ const steps = [
     icon: DollarSign,
     resources: ['SBIR Phase 0 Grants', 'Utah Microloan Programs', 'Angel Investor Networks'],
     link: '/funding',
+    isExternal: false,
+    panelTitle: 'Funding Opportunities',
   },
   {
     number: '04',
@@ -34,6 +39,7 @@ const steps = [
     icon: Users,
     resources: ['Silicon Slopes Job Board', 'Utah Department of Workforce Services', 'University Recruiting'],
     link: 'https://siliconslopes.com/jobs',
+    isExternal: true,
   },
   {
     number: '05',
@@ -42,6 +48,8 @@ const steps = [
     icon: Building,
     resources: ['Silicon Slopes Coworking', 'BioInnovations Gateway (Life Sciences)', 'University Research Park'],
     link: '/resources',
+    isExternal: false,
+    panelTitle: 'Resource Navigator',
   },
   {
     number: '06',
@@ -50,10 +58,22 @@ const steps = [
     icon: Globe,
     resources: ['Startup State Resource Navigator', 'Utah Angels Network', 'GOED Export Programs'],
     link: '/resources',
+    isExternal: false,
+    panelTitle: 'Resource Navigator',
   },
 ];
 
 export default function StartPage() {
+  const [panel, setPanel] = useState(null); // { title, link }
+
+  const handleLearnMore = (step) => {
+    if (step.isExternal) {
+      window.open(step.link, '_blank', 'noopener noreferrer');
+    } else {
+      setPanel({ title: step.panelTitle, link: step.link });
+    }
+  };
+
   return (
     <div className="min-h-screen pt-24 bg-muted/20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,20 +93,17 @@ export default function StartPage() {
 
         {/* Steps */}
         <div className="relative">
-          {/* Connector line */}
           <div className="absolute left-8 top-8 bottom-8 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent hidden md:block" />
 
           <div className="space-y-6">
-            {steps.map((step, i) => {
+            {steps.map((step) => {
               const Icon = step.icon;
               return (
                 <div key={step.number} className="relative flex gap-6">
-                  {/* Number */}
                   <div className="hidden md:flex shrink-0 w-16 h-16 rounded-2xl bg-primary text-white font-manrope font-black text-xl items-center justify-center z-10 shadow-lg shadow-primary/20">
                     {step.number}
                   </div>
 
-                  {/* Card */}
                   <div className="flex-1 bg-white rounded-2xl border border-border p-6 shadow-sm hover:border-primary/30 hover:shadow-lg transition-all duration-300">
                     <div className="flex items-start gap-3 mb-4">
                       <div className="md:hidden w-8 h-8 rounded-lg bg-primary text-white font-manrope font-black text-sm flex items-center justify-center shrink-0">
@@ -113,11 +130,15 @@ export default function StartPage() {
                       </div>
                     </div>
 
-                    <a href={step.link.startsWith('http') ? step.link : step.link} target={step.link.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer">
-                      <Button variant="outline" size="sm" className="gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold">
-                        Learn More <ArrowRight size={14} />
-                      </Button>
-                    </a>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleLearnMore(step)}
+                      className="gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold"
+                    >
+                      Learn More
+                      {step.isExternal ? <ExternalLink size={13} /> : <ArrowRight size={14} />}
+                    </Button>
                   </div>
                 </div>
               );
@@ -136,6 +157,48 @@ export default function StartPage() {
           </Link>
         </div>
       </div>
+
+      {/* Right Side Panel */}
+      {panel && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/30 z-40 transition-opacity"
+            onClick={() => setPanel(null)}
+          />
+
+          {/* Panel */}
+          <div className="fixed top-0 right-0 h-full w-full max-w-2xl bg-white z-50 shadow-2xl flex flex-col animate-slide-in">
+            {/* Panel header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-white shrink-0">
+              <h2 className="font-manrope font-bold text-lg text-foreground">{panel.title}</h2>
+              <div className="flex items-center gap-2">
+                <Link
+                  to={panel.link}
+                  className="text-xs text-primary font-semibold flex items-center gap-1 hover:underline"
+                  onClick={() => setPanel(null)}
+                >
+                  Open full page <ExternalLink size={12} />
+                </Link>
+                <button
+                  onClick={() => setPanel(null)}
+                  className="ml-3 p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Embedded content via iframe */}
+            <iframe
+              key={panel.link}
+              src={panel.link}
+              className="flex-1 w-full border-none"
+              title={panel.title}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
