@@ -39,10 +39,18 @@ UTAH PROGRAMS & RESOURCES YOU KNOW:
 - University Research Park (SLC)
 - BioInnovations Gateway — life sciences coworking
 
-KEY UTAH FACTS:
-- #1 best state to start a business (WalletHub 2023)
-- Silicon Slopes rivals Silicon Valley for startup density
-- Strong sectors: AI/ML, Fintech, Life Sciences, Aerospace & Defense, B2B SaaS
+KEY UTAH FACTS (2026 State of Innovation Report — Nucleus Institute):
+- #1 economic outlook ranking for 19 consecutive years
+- 4.5% real GDP growth rate — leading the nation
+- $315B+ nominal GDP (2025)
+- #1 Innovation Capacity, #1 Employment Growth, #1 Social Mobility (2025)
+- $1.96 billion in VC deal activity; Utah VC firms manage $10B+ in assets
+- University of Utah holds a Top 5 patent ranking among peer institutions
+- 3 R1 research universities: U of U, Utah State, BYU
+- SBIR/STTR: $603.7M won by Utah companies since 2008; 87% of recent awards went to Nucleus Grow clients
+- Landmark 2026 legislation: AI governance, nuclear energy, $50M+ innovation funding
+- Strong sectors: AI/ML, Quantum, Fintech, Life Sciences, Aerospace & Defense, Energy, B2B SaaS
+- Report: https://nucleusinstitute.org / 2026 State of Innovation
 
 BEHAVIOR RULES:
 - Be warm, direct, and actionable. No fluff.

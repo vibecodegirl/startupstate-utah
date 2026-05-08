@@ -6,6 +6,16 @@ import { Button } from '@/components/ui/button';
 
 const UTAH_RESOURCES = [
   {
+    title: '2026 State of Innovation Report — Utah',
+    category: 'Government',
+    description: 'Utah\'s annual innovation report by the Nucleus Institute. Highlights Utah\'s #1 economic outlook (19 consecutive years), $315B+ GDP, $1.96B in VC deal activity, patent rankings, SBIR/STTR data, and sector-by-sector innovation initiatives.',
+    url: 'https://static1.squarespace.com/static/681936f274ae5b3fa16b8c1d/t/69f24e12f852ba0db0f17e4a/1777487378569/2026StateofInnovationRrpot_WebsiteVers.pdf',
+    provider: 'Nucleus Institute',
+    audience: ['All Stages'],
+    sectors: ['All Sectors'],
+    tags: ['2026', 'report', 'data', 'innovation', 'official'],
+  },
+  {
     title: 'Utah SBDC — Small Business Development Centers',
     category: 'Mentorship',
     description: 'Free one-on-one business consulting, training, and resources for Utah entrepreneurs at every stage.',
