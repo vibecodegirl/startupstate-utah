@@ -56,11 +56,13 @@ function ColumnFilterDropdown({ label, value, options, onChange }) {
 }
 
 // Inner component that can access the map instance
-function FlyToMarker({ target }) {
+function MapController({ target }) {
   const map = useMap();
   useEffect(() => {
     if (target?.latitude && target?.longitude) {
       map.flyTo([target.latitude, target.longitude], 15, { duration: 0.8 });
+    } else if (target === null) {
+      map.flyTo([40.7608, -111.891], 8, { duration: 0.8 });
     }
   }, [target, map]);
   return null;
@@ -218,7 +220,7 @@ export default function StartupMap() {
                   style={{ height: '100%', width: '100%' }}
                   className="z-0"
                 >
-                  <FlyToMarker target={flyTarget} />
+                  <MapController target={flyTarget} />
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -366,7 +368,7 @@ export default function StartupMap() {
       </div>
 
       {/* Preview slideout — available in all views */}
-      {selected && <StartupPreviewPanel startup={selected} onClose={() => setSelected(null)} />}
+      {selected && <StartupPreviewPanel startup={selected} onClose={() => { setSelected(null); setFlyTarget(null); }} />}
     </div>
   );
 }
