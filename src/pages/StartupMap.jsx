@@ -60,6 +60,8 @@ export default function StartupMap() {
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [companySearch, setCompanySearch] = useState('');
+  const [locationSearch, setLocationSearch] = useState('');
   const [sector, setSector] = useState('All Sectors');
   const [stage, setStage] = useState('All Stages');
   const [size, setSize] = useState('All Sizes');
@@ -79,12 +81,18 @@ export default function StartupMap() {
   useEffect(() => {
     let result = startups;
     if (search) result = result.filter(s => s.company_name?.toLowerCase().includes(search.toLowerCase()) || s.description?.toLowerCase().includes(search.toLowerCase()));
+    if (companySearch) result = result.filter(s => s.company_name?.toLowerCase().includes(companySearch.toLowerCase()));
+    if (locationSearch) result = result.filter(s =>
+      s.city?.toLowerCase().includes(locationSearch.toLowerCase()) ||
+      s.county?.toLowerCase().includes(locationSearch.toLowerCase()) ||
+      s.address?.toLowerCase().includes(locationSearch.toLowerCase())
+    );
     if (sector !== 'All Sectors') result = result.filter(s => s.sector === sector);
     if (stage !== 'All Stages') result = result.filter(s => s.funding_stage === stage);
     if (size !== 'All Sizes') result = result.filter(s => s.employees === size);
     if (hiringOnly) result = result.filter(s => s.hiring);
     setFiltered(result);
-  }, [search, sector, stage, size, hiringOnly, startups]);
+  }, [search, companySearch, locationSearch, sector, stage, size, hiringOnly, startups]);
 
   const mappable = filtered.filter(s => s.latitude && s.longitude);
 
@@ -109,7 +117,7 @@ export default function StartupMap() {
           <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)} className="gap-2 border-border">
             <SlidersHorizontal size={14} />
             Filters
-            {(sector !== 'All Sectors' || stage !== 'All Stages' || size !== 'All Sizes' || hiringOnly) && (
+            {(sector !== 'All Sectors' || stage !== 'All Stages' || size !== 'All Sizes' || hiringOnly || companySearch || locationSearch) && (
               <span className="w-2 h-2 rounded-full bg-primary" />
             )}
           </Button>
@@ -131,7 +139,27 @@ export default function StartupMap() {
 
         {/* Filter panel */}
         {showFilters && (
-          <div className="border-t border-border px-4 py-3 flex flex-wrap gap-3 bg-muted/20">
+          <div className="border-t border-border px-4 py-3 flex flex-wrap gap-3 bg-muted/20 items-center">
+            <div className="relative">
+              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Company name..."
+                value={companySearch}
+                onChange={e => setCompanySearch(e.target.value)}
+                className="pl-7 pr-3 py-2 text-xs border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 w-40"
+              />
+            </div>
+            <div className="relative">
+              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="City or county..."
+                value={locationSearch}
+                onChange={e => setLocationSearch(e.target.value)}
+                className="pl-7 pr-3 py-2 text-xs border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 w-40"
+              />
+            </div>
             {[
               { label: 'Sector', value: sector, options: sectors, setter: setSector },
               { label: 'Stage', value: stage, options: stages, setter: setStage },
@@ -146,7 +174,7 @@ export default function StartupMap() {
               <input type="checkbox" checked={hiringOnly} onChange={e => setHiringOnly(e.target.checked)} className="accent-primary" />
               Hiring only
             </label>
-            <button onClick={() => { setSector('All Sectors'); setStage('All Stages'); setSize('All Sizes'); setHiringOnly(false); }}
+            <button onClick={() => { setCompanySearch(''); setLocationSearch(''); setSector('All Sectors'); setStage('All Stages'); setSize('All Sizes'); setHiringOnly(false); }}
               className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1">
               <X size={12} /> Clear all
             </button>
@@ -234,7 +262,22 @@ export default function StartupMap() {
                 </colgroup>
                 <thead className="sticky top-0 bg-white border-b border-border z-10 shadow-sm">
                   <tr>
-                    <th className="text-left px-5 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Company</th>
+                    <th className="text-left px-5 py-3">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Company</span>
+                        <div className="relative">
+                          <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                          <input
+                            type="text"
+                            placeholder="Filter..."
+                            value={companySearch}
+                            onChange={e => setCompanySearch(e.target.value)}
+                            onClick={e => e.stopPropagation()}
+                            className={`pl-6 pr-2 py-1 text-xs border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-primary/40 ${companySearch ? 'border-primary bg-green-pale' : 'border-border bg-muted/30'}`}
+                          />
+                        </div>
+                      </div>
+                    </th>
                     <th className="text-left px-4 py-3">
                       <ColumnFilterDropdown label="Sector" value={sector} options={sectors} onChange={setSector} />
                     </th>
@@ -244,7 +287,22 @@ export default function StartupMap() {
                     <th className="text-left px-4 py-3">
                       <ColumnFilterDropdown label="Size" value={size} options={sizes} onChange={setSize} />
                     </th>
-                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Location</th>
+                    <th className="text-left px-4 py-3">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Location</span>
+                        <div className="relative">
+                          <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                          <input
+                            type="text"
+                            placeholder="Filter..."
+                            value={locationSearch}
+                            onChange={e => setLocationSearch(e.target.value)}
+                            onClick={e => e.stopPropagation()}
+                            className={`pl-6 pr-2 py-1 text-xs border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-primary/40 ${locationSearch ? 'border-primary bg-green-pale' : 'border-border bg-muted/30'}`}
+                          />
+                        </div>
+                      </div>
+                    </th>
                     <th className="px-4 py-3"></th>
                   </tr>
                 </thead>
