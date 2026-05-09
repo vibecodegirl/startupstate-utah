@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Search, ExternalLink, BookOpen, DollarSign, Users, Briefcase, Globe, GraduationCap, Building, Grid3X3, List, Table2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 
 const UTAH_RESOURCES = [
   {
@@ -161,36 +160,57 @@ const categoryColors = {
 const categories = ['All', 'Funding', 'Mentorship', 'Government', 'Education', 'Networking', 'International'];
 const audienceFilters = ['All Stages', 'Pre-Seed', 'Seed', 'Series A', 'Series B', 'Growth'];
 
+const challengeToCategoryMap = {
+  'Finding capital': 'Funding',
+  'Building a team': 'Workforce Development',
+  'Mentorship & guidance': 'Mentorship',
+  'Networking & partnerships': 'Networking',
+  'Legal & compliance': 'Government',
+};
+
 export default function Resources() {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [audience, setAudience] = useState('All Stages');
   const [view, setView] = useState('grid');
-  const [showQuiz, setShowQuiz] = useState(searchParams.get('quiz') === '1');
   const [quizAnswers, setQuizAnswers] = useState(null);
   const [dbResources, setDbResources] = useState([]);
 
   useEffect(() => {
+    const stage = searchParams.get('stage');
+    const sector = searchParams.get('sector');
+    const challenge = searchParams.get('challenge');
+    
+    if (stage || sector || challenge) {
+      setQuizAnswers({ stage, sector, challenge });
+      if (audience === 'All Stages' && stage && stage !== 'All Stages') {
+        setAudience(stage);
+      }
+      if (challenge) {
+        const matchedCategory = challengeToCategoryMap[challenge];
+        if (matchedCategory) {
+          setCategory(matchedCategory);
+        }
+      }
+    }
+    
     base44.entities.Resource.list('-created_date', 100).then(setDbResources).catch(() => {});
-  }, []);
+  }, [searchParams]);
 
   const allResources = [...UTAH_RESOURCES, ...dbResources];
 
   const applyQuizFilters = (resources) => {
     if (!quizAnswers) return resources;
-    return resources.filter(r => {
-      const categoryMap = {
-        'Finding capital': ['Funding'],
-        'Building a team': ['Workforce Development', 'Networking'],
-        'Mentorship & guidance': ['Mentorship', 'Education'],
-        'Networking & partnerships': ['Networking', 'Entrepreneurship Communities'],
-        'Legal & compliance': ['Legal', 'Government'],
-      };
-      const relevantCategories = categoryMap[quizAnswers.challenge] || [];
-      const matchChallenge = relevantCategories.length === 0 || relevantCategories.includes(r.category);
-      return matchChallenge;
-    });
+    const categoryMap = {
+      'Finding capital': ['Funding'],
+      'Building a team': ['Workforce Development', 'Networking'],
+      'Mentorship & guidance': ['Mentorship', 'Education'],
+      'Networking & partnerships': ['Networking', 'Entrepreneurship Communities'],
+      'Legal & compliance': ['Legal', 'Government'],
+    };
+    const relevantCategories = categoryMap[quizAnswers.challenge] || [];
+    return resources.filter(r => relevantCategories.length === 0 || relevantCategories.includes(r.category));
   };
 
   const filtered = applyQuizFilters(allResources).filter(r => {
@@ -211,15 +231,8 @@ export default function Resources() {
           </h1>
         </div>
 
-        {/* Quiz */}
-        {showQuiz ? (
-          <div className="mb-10">
-            <ResourcesQuiz
-              onComplete={(answers) => { setQuizAnswers(answers); setShowQuiz(false); }}
-              onSkip={() => setShowQuiz(false)}
-            />
-          </div>
-        ) : quizAnswers ? (
+        {/* Quiz Results Banner */}
+        {quizAnswers && (
           <div className="bg-green-pale border border-primary/30 rounded-2xl p-4 mb-6 flex items-center justify-between">
             <div className="text-sm">
               <p className="font-semibold text-green-dark">Resources filtered by your answers</p>
@@ -227,12 +240,6 @@ export default function Resources() {
             </div>
             <button onClick={() => setQuizAnswers(null)} className="p-1.5 hover:bg-white/50 rounded-lg transition-colors">
               <X size={16} className="text-primary" />
-            </button>
-          </div>
-        ) : (
-          <div className="text-center mb-6">
-            <button onClick={() => setShowQuiz(true)} className="text-sm text-primary font-semibold hover:underline">
-              Take a quick 3-question quiz to personalize your results →
             </button>
           </div>
         )}
