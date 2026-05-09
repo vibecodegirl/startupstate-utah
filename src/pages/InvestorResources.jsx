@@ -124,8 +124,8 @@ export default function InvestorResources() {
               </Button>
             </a>
             <Link to="/investor-profile">
-              <Button variant="outline" className="border-white/60 text-white hover:bg-white/10 font-semibold px-7 py-2.5 text-sm backdrop-blur-sm">
-                Build Investor Profile
+              <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-7 py-2.5 text-sm shadow-lg hover:shadow-xl transition-all">
+                Get Matched to a Startup <ArrowRight size={16} />
               </Button>
             </Link>
           </div>
@@ -227,19 +227,6 @@ export default function InvestorResources() {
             ))}
           </div>
         </section>
-
-        {/* Startup Match CTA */}
-        <section className="bg-purple-600 rounded-3xl p-10 text-center">
-          <h2 className="font-manrope font-extrabold text-3xl text-white mb-3 flex items-center justify-center gap-2"><Zap size={28} /> AI-Powered Startup Matching</h2>
-          <p className="text-white/80 mb-8 max-w-xl mx-auto">Create your investor profile and let our AI match you with startups aligned with your investment thesis.</p>
-          <Link to="/investor-profile">
-            <Button className="bg-white text-purple-600 hover:bg-purple-50 font-manrope font-bold px-8 gap-2">
-              Build Your Investor Profile <ArrowRight size={16} />
-            </Button>
-          </Link>
-        </section>
-
-
 
       </div>
     </div>
