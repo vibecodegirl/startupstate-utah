@@ -62,11 +62,7 @@ export default function StartupPreviewPanel({ startup, onClose }) {
                   <MapPin size={11} /> {startup.city}{startup.county ? `, ${startup.county}` : ''}
                 </div>
               )}
-              {verification && (
-                <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                  {verification.icon} {verification.label}
-                </div>
-              )}
+
             </div>
           </div>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground ml-2 shrink-0">
