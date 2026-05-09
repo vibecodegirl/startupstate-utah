@@ -167,6 +167,39 @@ export default function StartPage() {
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
 
+        {/* Stage Selection Cards - Show if no quiz answers */}
+        {!quizAnswers && !showQuiz && (
+          <section className="py-12 mb-8">
+            <div className="text-center mb-8">
+              <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Choose Your Starting Point</h2>
+              <p className="text-muted-foreground">Select your funding stage to see tailored pathways</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {['Idea / Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series B+', 'Bootstrapped'].map(stage => (
+                <button
+                  key={stage}
+                  onClick={() => handleQuizComplete({ stage, sector: 'All', challenge: 'All', location: '', community: '' })}
+                  className="bg-white border-2 border-border rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all duration-300 text-left group"
+                >
+                  <div className="font-manrope font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">{stage}</div>
+                  <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                    {stage === 'Idea / Pre-Seed' && 'Building your foundation'}
+                    {stage === 'Seed' && 'Securing initial funding'}
+                    {stage === 'Series A' && 'Scaling operations'}
+                    {stage === 'Series B' && 'Expanding market reach'}
+                    {stage === 'Series B+' && 'Growth acceleration'}
+                    {stage === 'Bootstrapped' && 'Self-funded growth'}
+                  </p>
+                  <div className="mt-4 flex items-center gap-2 text-primary font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    View pathway <ArrowRight size={14} />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Quiz Section - Conditional */}
         {showQuiz && (
           <div className="mb-16">
