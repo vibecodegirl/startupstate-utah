@@ -18,40 +18,57 @@ Deno.serve(async (req) => {
     const html = await response.text();
     const articles = [];
 
-    // Parse article blocks with title, excerpt, image, and date
-    // Looking for pattern: link > img + h2 + excerpt + date
-    const articleLinkRegex = /<a[^>]*href=["']([^"']+)["'][^>]*[^>]*>\s*<figure[^>]*>.*?<img[^>]*src=["']([^"']+)["'][^>]*>.*?<\/figure>.*?<h2[^>]*>([^<]+)<\/h2>.*?<div[^>]*class="[^"]*x-text-content-text[^"]*">([^<]*)<\/div>.*?<div[^>]*>([^<]*\d{4})<\/div>/gs;
+    // Extract title, link, date, image, and excerpt from HTML
+    // Pattern: <h2><span>Title</span></h2>, <a href=...>, date in div
+    const titleRegex = /<h2[^>]*class="[^"]*x-text-content-text-primary[^"]*"[^>]*>([^<]*)<\/h2>/g;
+    const linkRegex = /<a[^>]*href=["']([^"']+)["'][^>]*>/g;
+    const dateRegex = /([A-Za-z]+\s+\d{1,2},\s+\d{4})/g;
+    const imageRegex = /<img[^>]*src=["']([^"']+)["'][^>]*>/g;
+    const excerptRegex = /<div[^>]*class="[^"]*x-text-content-text[^"]*"[^>]*>([^<]+)<\/div>/g;
 
-    let match;
-    while ((match = articleLinkRegex.exec(html)) !== null) {
-      const url = match[1];
-      const imageUrl = match[2];
-      const title = match[3].trim();
-      const excerpt = match[4].substring(0, 200).trim();
-      const dateStr = match[5].trim();
+    // Split content into article sections
+    const sections = html.split(/<a\s+class="x-col[^"]*no-underline"/);
+    
+    for (let i = 1; i < sections.length && i < 20; i++) {
+      const section = sections[i];
+      
+      // Extract elements from this section
+      const titleMatch = section.match(/<h2[^>]*>([^<]+)<\/h2>/);
+      const linkMatch = section.match(/href=["']([^"']+)["']/);
+      const dateMatch = section.match(/([A-Za-z]+\s+\d{1,2},\s+\d{4})/);
+      const imageMatch = section.match(/<img[^>]*src=["']([^"']+)["']/);
+      const excerptMatch = section.match(/<div[^>]*class="[^"]*x-text-content[^"]*"[^>]*>([^<]+)<\/div>/);
 
-      // Parse date string like "February 27, 2026"
-      const dateObj = new Date(dateStr);
-      const publishDate = isNaN(dateObj.getTime()) ? new Date().toISOString() : dateObj.toISOString();
+      if (titleMatch && linkMatch && dateMatch) {
+        const title = titleMatch[1].trim();
+        const url = linkMatch[1];
+        const dateStr = dateMatch[1];
+        const imageUrl = imageMatch ? imageMatch[1] : '';
+        const excerpt = excerptMatch ? excerptMatch[1].substring(0, 200).trim() : title.substring(0, 150);
 
-      // Check if article already exists by URL
-      const existing = await base44.asServiceRole.entities.NewsArticle.filter(
-        { url },
-        '',
-        1
-      );
+        // Parse date
+        const dateObj = new Date(dateStr);
+        const publishDate = isNaN(dateObj.getTime()) ? new Date().toISOString() : dateObj.toISOString();
 
-      if (existing.length === 0 && title && url) {
-        articles.push({
-          title,
-          excerpt: excerpt || title.substring(0, 150),
-          category: 'News',
-          publish_date: publishDate,
-          image_url: imageUrl,
-          source: 'Startup Utah',
-          url,
-          is_active: true,
-        });
+        // Check if article already exists by URL
+        const existing = await base44.asServiceRole.entities.NewsArticle.filter(
+          { url },
+          '',
+          1
+        );
+
+        if (existing.length === 0 && title && url) {
+          articles.push({
+            title,
+            excerpt: excerpt || title.substring(0, 150),
+            category: 'News',
+            publish_date: publishDate,
+            image_url: imageUrl,
+            source: 'Startup Utah',
+            url: url.startsWith('http') ? url : `https://startup.utah.gov${url}`,
+            is_active: true,
+          });
+        }
       }
     }
 

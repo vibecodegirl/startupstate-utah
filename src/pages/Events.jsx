@@ -4,6 +4,7 @@ import { Calendar, MapPin, ExternalLink, Video, Filter, Newspaper, ArrowRight, P
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import FounderStorySubmissionForm from '@/components/founders/FounderStorySubmissionForm';
+import EventRegistrationForm from '@/components/events/EventRegistrationForm';
 
 const SAMPLE_NEWS = [
   {
@@ -42,7 +43,7 @@ const SAMPLE_EVENTS = [
   {
     id: 's1', title: 'Silicon Slopes Summit 2026', description: 'Utah\'s premier tech conference bringing together thousands of entrepreneurs, investors, and innovators. Network with leading founders and investors shaping the future.',
     event_date: '2026-06-15T09:00:00', location: 'Salt Lake City Convention Center', url: 'https://siliconslopes.com/events',
-    organizer: 'Silicon Slopes', event_type: 'Conference', sectors: ['AI', 'Fintech', 'B2B Software'], is_virtual: false,
+    organizer: 'Silicon Slopes', event_type: 'Conference', sectors: ['AI', 'Fintech', 'B2B Software'], is_virtual: false, is_internal: true,
   },
   {
     id: 's2', title: 'Utah Venture Entrepreneur Forum', description: 'Connect with Utah\'s top VCs and angel investors. Pitch competitions and networking for growth-stage startups looking to raise capital.',
@@ -57,7 +58,7 @@ const SAMPLE_EVENTS = [
   {
     id: 's4', title: 'Monthly Startup Pitch Night', description: 'Monthly pitch competition hosted by the Utah SBDC. Open to all stages. Compete for cash prizes and mentor feedback from industry experts.',
     event_date: '2026-06-28T18:00:00', location: 'Salt Lake City / Virtual', url: 'https://utahsbdc.org',
-    organizer: 'Utah SBDC', event_type: 'Pitch Competition', sectors: ['All Sectors'], is_virtual: true,
+    organizer: 'Utah SBDC', event_type: 'Pitch Competition', sectors: ['All Sectors'], is_virtual: true, is_internal: true,
   },
   {
     id: 's5', title: '47G Aerospace & Defense Forum', description: 'Utah\'s aerospace and defense industry gathering featuring defense primes, suppliers, and innovative startups. Procurement opportunities showcase.',
@@ -72,7 +73,7 @@ const SAMPLE_EVENTS = [
   {
     id: 's7', title: 'Utah Women Founders Roundtable', description: 'Exclusive networking and mentorship event for female founders and women-led startups. Connect with successful women entrepreneurs in Utah.',
     event_date: '2026-06-25T17:00:00', location: 'The Hub, Downtown Salt Lake City', url: 'https://www.uwbc.org',
-    organizer: 'Utah Women\'s Business Center', event_type: 'Networking', sectors: ['All Sectors'], is_virtual: false,
+    organizer: 'Utah Women\'s Business Center', event_type: 'Networking', sectors: ['All Sectors'], is_virtual: false, is_internal: true,
   },
   {
     id: 's8', title: 'AI & Machine Learning Workshop', description: 'Deep dive workshop on building AI-powered products. Learn deployment strategies, ethical considerations, and Utah\'s AI ecosystem.',
@@ -100,6 +101,7 @@ export default function Events() {
   const [activeTab, setActiveTab] = useState('events'); // 'news' or 'events'
   const [eventTab, setEventTab] = useState('upcoming'); // 'upcoming' or 'past'
   const [showStoryForm, setShowStoryForm] = useState(false);
+  const [selectedEventForRegistration, setSelectedEventForRegistration] = useState(null);
 
   useEffect(() => {
     Promise.all([
@@ -303,11 +305,21 @@ export default function Events() {
                         </div>
                       </div>
 
-                      <a href={event.url} target="_blank" rel="noopener noreferrer" className="mt-auto">
-                        <Button variant="outline" size="sm" className="w-full gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold">
-                          Register <ExternalLink size={12} />
+                      {event.is_internal ? (
+                        <Button 
+                          onClick={() => setSelectedEventForRegistration(event)}
+                          size="sm" 
+                          className="w-full gap-2 bg-primary text-white hover:bg-green-dark font-semibold mt-auto"
+                        >
+                          Register Now
                         </Button>
-                      </a>
+                      ) : (
+                        <a href={event.url} target="_blank" rel="noopener noreferrer" className="mt-auto">
+                          <Button variant="outline" size="sm" className="w-full gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold">
+                            Register <ExternalLink size={12} />
+                          </Button>
+                        </a>
+                      )}
                     </div>
                   </div>
                 );
@@ -331,6 +343,14 @@ export default function Events() {
         {/* Founder Story Submission Form */}
         {showStoryForm && (
           <FounderStorySubmissionForm onClose={() => setShowStoryForm(false)} />
+        )}
+
+        {/* Event Registration Form */}
+        {selectedEventForRegistration && (
+          <EventRegistrationForm 
+            event={selectedEventForRegistration} 
+            onClose={() => setSelectedEventForRegistration(null)} 
+          />
         )}
       </div>
     </div>
