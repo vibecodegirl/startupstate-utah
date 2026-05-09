@@ -51,72 +51,55 @@ export default function HeroCarousel() {
   const slide = slides[currentIndex];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Media */}
-      {slide.media_type === 'particles' ? (
-        <>
-          <div className="absolute inset-0 bg-gradient-to-br from-white via-green-pale to-white" />
-          <ParticleBackground />
-        </>
-      ) : slide.media_type === 'video' ? (
-        <video
-          src={slide.image_url}
-          autoPlay
-          muted
-          loop
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      ) : (
-        <img
-          src={slide.image_url}
-          alt={slide.title}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      )}
-
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/40" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-green-pale/30 to-white" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center pt-20">
-        {slide.subtitle && (
-          <div className="inline-flex items-center gap-2 bg-white/20 border border-white/30 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm animate-fade-in">
-            <span className="text-xs font-semibold text-white uppercase tracking-wider">{slide.subtitle}</span>
-          </div>
-        )}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left: Text Content */}
+          <div className="space-y-8">
+            {slide.subtitle && (
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 w-fit">
+                <span className="text-xs font-semibold text-primary uppercase tracking-wider">{slide.subtitle}</span>
+              </div>
+            )}
 
-        <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl lg:text-7xl text-white leading-tight mb-6 animate-fade-up drop-shadow-lg">
-          {slide.title}
-        </h1>
+            <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl text-foreground leading-tight">
+              {slide.title}
+            </h1>
 
-        {slide.description && (
-          <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto mb-8 font-inter font-light leading-relaxed animate-fade-up drop-shadow">
-            {slide.description}
-          </p>
-        )}
+            {slide.description && (
+              <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
+                {slide.description}
+              </p>
+            )}
 
-        {/* CTA Button */}
-        <div className="mb-6 animate-fade-up">
-          <Link to={slide.cta_link || '/'}>
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-green-dark font-manrope font-bold px-8 py-3 text-base rounded-xl shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all">
-              {slide.cta_text || 'Learn More'}
-            </Button>
-          </Link>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 animate-fade-up">
-          {[
-            { value: '3,500+', label: 'Startups' },
-            { value: '$4.2B+', label: 'VC Invested' },
-            { value: '#1', label: 'Best State' },
-            { value: '45+', label: 'Accelerators' },
-          ].map((stat) => (
-            <div key={stat.label} className="bg-white/20 backdrop-blur-sm rounded-2xl p-5 border border-white/20 shadow-sm hover:shadow-md transition-shadow">
-              <div className="font-manrope font-extrabold text-3xl text-white drop-shadow">{stat.value}</div>
-              <div className="text-xs text-white/70 font-medium mt-1 drop-shadow">{stat.label}</div>
+            {/* CTA Button */}
+            <div>
+              <Link to={slide.cta_link || '/'}>
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-green-dark font-manrope font-bold px-8 py-3 text-base rounded-xl transition-all">
+                  {slide.cta_text || 'Learn More'}
+                </Button>
+              </Link>
             </div>
-          ))}
+          </div>
+
+          {/* Right: Stats Grid */}
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { value: '3,500+', label: 'Startups' },
+              { value: '$4.2B+', label: 'VC Invested' },
+              { value: '#1', label: 'Best State' },
+              { value: '45+', label: 'Accelerators' },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white border border-border rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="font-manrope font-extrabold text-3xl text-primary">{stat.value}</div>
+                <div className="text-sm text-muted-foreground font-medium mt-2">{stat.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -125,14 +108,14 @@ export default function HeroCarousel() {
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors backdrop-blur-sm"
+            className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full border border-border bg-white hover:bg-muted text-foreground transition-all"
             aria-label="Previous slide"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors backdrop-blur-sm"
+            className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full border border-border bg-white hover:bg-muted text-foreground transition-all"
             aria-label="Next slide"
           >
             <ChevronRight size={24} />
@@ -146,8 +129,8 @@ export default function HeroCarousel() {
                 onClick={() => goToSlide(idx)}
                 className={`h-2 rounded-full transition-all ${
                   idx === currentIndex
-                    ? 'bg-white w-8'
-                    : 'bg-white/50 w-2 hover:bg-white/70'
+                    ? 'bg-primary w-8'
+                    : 'bg-border w-2 hover:bg-muted-foreground'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
@@ -158,8 +141,8 @@ export default function HeroCarousel() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center pt-2">
-          <div className="w-1.5 h-3 bg-white/50 rounded-full animate-pulse-gentle" />
+        <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex items-start justify-center pt-2">
+          <div className="w-1.5 h-3 bg-primary/30 rounded-full animate-pulse-gentle" />
         </div>
       </div>
     </section>
