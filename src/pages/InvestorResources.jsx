@@ -12,6 +12,7 @@ import HubDetailsPanel from '@/components/investors/HubDetailsPanel';
 function DiscoverConnectGrid() {
   const [mapZoom, setMapZoom] = useState(null);
   const [selectedHub, setSelectedHub] = useState(null);
+  const discoverStartupsRef = useState(null)[1];
 
   const handleHubClick = (hub) => {
     setSelectedHub(hub);
@@ -19,14 +20,16 @@ function DiscoverConnectGrid() {
   };
 
   const handleStartupClick = (startup) => {
-    // This is handled by clicking the marker on the map
-    // The map will focus on the startup's location
+    // Trigger map zoom and marker selection via ref callback
+    if (discoverStartupsRef?.focusStartup) {
+      discoverStartupsRef.focusStartup(startup);
+    }
   };
 
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <DiscoverStartups onHubSelect={setMapZoom} selectedHub={selectedHub} />
+        <DiscoverStartups ref={discoverStartupsRef} onHubSelect={setMapZoom} selectedHub={selectedHub} />
         <EcosystemMap zoomToCity={mapZoom} onHubClick={handleHubClick} />
       </div>
       {selectedHub && <HubDetailsPanel hub={selectedHub} onClose={() => setSelectedHub(null)} onStartupClick={handleStartupClick} />}

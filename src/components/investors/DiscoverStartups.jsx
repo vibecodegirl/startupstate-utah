@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Search, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,7 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41]
 });
 
-export default function DiscoverStartups({ onHubSelect, selectedHub }) {
+const DiscoverStartups = forwardRef(function DiscoverStartups({ onHubSelect, selectedHub }, ref) {
   const [sector, setSector] = useState('');
   const [stage, setStage] = useState('');
   const [size, setSize] = useState('');
@@ -83,6 +83,14 @@ export default function DiscoverStartups({ onHubSelect, selectedHub }) {
       }
     }
   }, [selectedHub, mapStartups]);
+
+  useImperativeHandle(ref, () => ({
+    focusStartup: (startup) => {
+      setMapCenter([startup.latitude, startup.longitude]);
+      setMapZoom(13);
+      setSelectedStartup(startup);
+    }
+  }));
 
   return (
     <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
@@ -170,4 +178,6 @@ export default function DiscoverStartups({ onHubSelect, selectedHub }) {
       )}
     </div>
   );
-}
+});
+
+export default DiscoverStartups;
