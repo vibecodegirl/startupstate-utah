@@ -13,6 +13,15 @@ export default function RoleSwitcher({ role, setRole }) {
   const current = roles.find(r => r.id === role) || roles[0];
   const Icon = current.icon;
 
+  const handleRoleChange = (newRole) => {
+    // Set demo mode flag if switching to a non-visitor role
+    sessionStorage.setItem('demoMode', newRole !== 'visitor' ? 'true' : 'false');
+    setRole(newRole);
+    setOpen(false);
+    // Refresh to pick up new role
+    window.location.reload();
+  };
+
   return (
     <div className="relative">
       <button
@@ -34,7 +43,7 @@ export default function RoleSwitcher({ role, setRole }) {
             return (
               <button
                 key={r.id}
-                onClick={() => { setRole(r.id); setOpen(false); }}
+                onClick={() => handleRoleChange(r.id)}
                 className={`w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-muted ${role === r.id ? 'bg-green-pale text-primary font-semibold' : 'text-foreground'}`}
               >
                 <RIcon size={14} />

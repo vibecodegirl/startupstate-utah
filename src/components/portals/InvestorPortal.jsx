@@ -4,11 +4,14 @@ import { TrendingUp, AlertCircle, Zap, Plus, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
+const DEMO_INVESTOR_EMAILS = ['demo-investor-1@example.com', 'demo-investor-2@example.com', 'demo-investor-3@example.com'];
+
 export default function InvestorPortal({ user }) {
   const [profile, setProfile] = useState(null);
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
+  const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
     if (!user?.email) {
@@ -16,9 +19,16 @@ export default function InvestorPortal({ user }) {
       return;
     }
 
+    // Check if we're in demo mode (role was manually switched)
+    const demoMode = sessionStorage.getItem('demoMode') === 'true';
+    setIsDemo(demoMode);
+
+    // Use demo email or current user email
+    const emailToUse = demoMode ? DEMO_INVESTOR_EMAILS[0] : user.email;
+
     Promise.all([
-      base44.entities.InvestorProfile.filter({ user_email: user.email }, '', 1),
-      base44.entities.StartupMatch.filter({ investor_email: user.email }, '-match_score', 5),
+      base44.entities.InvestorProfile.filter({ user_email: emailToUse }, '', 1),
+      base44.entities.StartupMatch.filter({ investor_email: emailToUse }, '-match_score', 5),
     ])
       .then(([profiles, matchData]) => {
         if (profiles.length > 0) {

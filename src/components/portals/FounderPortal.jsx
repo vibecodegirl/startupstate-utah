@@ -7,11 +7,14 @@ import BusinessPlanPanel from '@/components/founders/BusinessPlanPanel';
 import SavedResources from '@/components/founders/SavedResources';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+const DEMO_FOUNDER_EMAILS = ['demo-founder-1@example.com', 'demo-founder-2@example.com'];
+
 export default function FounderPortal({ user }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [activeTab, setActiveTab] = useState('overview');
+  const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
     if (!user?.email) {
@@ -19,7 +22,14 @@ export default function FounderPortal({ user }) {
       return;
     }
 
-    base44.entities.FounderProfile.filter({ user_email: user.email }, '', 1)
+    // Check if we're in demo mode (role was manually switched)
+    const demoMode = sessionStorage.getItem('demoMode') === 'true';
+    setIsDemo(demoMode);
+
+    // Use demo email or current user email
+    const emailToUse = demoMode ? DEMO_FOUNDER_EMAILS[0] : user.email;
+
+    base44.entities.FounderProfile.filter({ user_email: emailToUse }, '', 1)
       .then(profiles => {
         if (profiles.length > 0) {
           setProfile(profiles[0]);
