@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import RoleSwitcher from '@/components/layout/RoleSwitcher';
 
@@ -16,7 +17,12 @@ const navLinks = [
 
 export default function Navbar({ role, setRole }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const location = useLocation();
+
+  useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => setUser(null));
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm">
@@ -51,11 +57,27 @@ export default function Navbar({ role, setRole }) {
           {/* Right Side */}
           <div className="hidden lg:flex items-center gap-3">
             <RoleSwitcher role={role} setRole={setRole} />
-            <Link to="/add-startup">
-              <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold">
-                Add Your Startup
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <Link to="/add-startup">
+                  <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold">
+                    Add Your Startup
+                  </Button>
+                </Link>
+                <Button size="sm" variant="outline" onClick={() => base44.auth.logout()}>
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button size="sm" variant="outline" onClick={() => base44.auth.redirectToLogin()}>
+                  Sign In
+                </Button>
+                <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold" onClick={() => base44.auth.redirectToLogin()}>
+                  Create Account
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile toggle */}
@@ -82,13 +104,29 @@ export default function Navbar({ role, setRole }) {
             </Link>
           ))}
           <div className="pt-2 border-t border-border mt-2 space-y-2">
-            <RoleSwitcher role={role} setRole={setRole} />
-            <Link to="/add-startup" onClick={() => setMobileOpen(false)}>
-              <Button size="sm" className="w-full bg-primary text-primary-foreground font-semibold">
-                Add Your Startup
-              </Button>
-            </Link>
-          </div>
+             <RoleSwitcher role={role} setRole={setRole} />
+             {user ? (
+               <>
+                 <Link to="/add-startup" onClick={() => setMobileOpen(false)}>
+                   <Button size="sm" className="w-full bg-primary text-primary-foreground font-semibold">
+                     Add Your Startup
+                   </Button>
+                 </Link>
+                 <Button size="sm" variant="outline" className="w-full" onClick={() => { base44.auth.logout(); setMobileOpen(false); }}>
+                   Sign Out
+                 </Button>
+               </>
+             ) : (
+               <>
+                 <Button size="sm" variant="outline" className="w-full" onClick={() => { base44.auth.redirectToLogin(); setMobileOpen(false); }}>
+                   Sign In
+                 </Button>
+                 <Button size="sm" className="w-full bg-primary text-primary-foreground font-semibold" onClick={() => { base44.auth.redirectToLogin(); setMobileOpen(false); }}>
+                   Create Account
+                 </Button>
+               </>
+             )}
+           </div>
         </div>
       )}
     </header>
