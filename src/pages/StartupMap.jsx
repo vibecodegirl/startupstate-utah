@@ -276,92 +276,88 @@ export default function StartupMap() {
                 <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" />
               </div>
             ) : (
-              <table className="w-full text-sm table-fixed">
-                <colgroup>
-                  <col className="w-[35%]" />
-                  <col className="w-[18%]" />
-                  <col className="w-[15%]" />
-                  <col className="w-[12%]" />
-                  <col className="w-[18%]" />
-                  <col className="w-[2%]" />
-                </colgroup>
-                <thead className="sticky top-0 bg-white border-b border-border z-10 shadow-sm">
-                  <tr>
-                    <th className="text-left px-5 py-3">
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Company</span>
-                        <div className="relative">
-                          <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                          <input
-                            type="text"
-                            placeholder="Filter..."
-                            value={companySearch}
-                            onChange={e => setCompanySearch(e.target.value)}
-                            onClick={e => e.stopPropagation()}
-                            className={`pl-6 pr-2 py-1 text-xs border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-primary/40 ${companySearch ? 'border-primary bg-green-pale' : 'border-border bg-muted/30'}`}
-                          />
-                        </div>
-                      </div>
-                    </th>
-                    <th className="text-left px-4 py-3">
-                      <ColumnFilterDropdown label="Sector" value={sector} options={sectors} onChange={setSector} />
-                    </th>
-                    <th className="text-left px-4 py-3">
-                      <ColumnFilterDropdown label="Stage" value={stage} options={stages} onChange={setStage} />
-                    </th>
-                    <th className="text-left px-4 py-3">
-                      <ColumnFilterDropdown label="Size" value={size} options={sizes} onChange={setSize} />
-                    </th>
-                    <th className="text-left px-4 py-3">
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Location</span>
-                        <div className="relative">
-                          <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                          <input
-                            type="text"
-                            placeholder="Filter..."
-                            value={locationSearch}
-                            onChange={e => setLocationSearch(e.target.value)}
-                            onClick={e => e.stopPropagation()}
-                            className={`pl-6 pr-2 py-1 text-xs border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-primary/40 ${locationSearch ? 'border-primary bg-green-pale' : 'border-border bg-muted/30'}`}
-                          />
-                        </div>
-                      </div>
-                    </th>
-                    <th className="px-4 py-3"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {filtered.map(s => (
-                    <tr key={s.id} onClick={() => handleSelectWithFly(s)} className="hover:bg-muted/30 transition-colors cursor-pointer">
-                      <td className="px-5 py-3">
-                        <div className="flex items-center gap-2">
-                          {s.photo_url && <img src={s.photo_url} alt={s.company_name} className="w-7 h-7 rounded-md object-cover border border-border shrink-0" />}
-                          <div className="min-w-0">
-                            <div className="font-semibold text-foreground truncate">{s.company_name}</div>
-                            {s.description && <div className="text-xs text-muted-foreground truncate">{s.description}</div>}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-50 border-y border-gray-200">
+                    <tr>
+                      <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                        <div className="flex flex-col gap-2">
+                          <span>Company</span>
+                          <div className="relative">
+                            <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              placeholder="Filter..."
+                              value={companySearch}
+                              onChange={e => setCompanySearch(e.target.value)}
+                              onClick={e => e.stopPropagation()}
+                              className={`pl-6 pr-2 py-1.5 text-xs border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-primary/40 ${companySearch ? 'border-primary bg-green-pale' : 'border-gray-200 bg-white'}`}
+                            />
                           </div>
                         </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        {s.sector && (
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground whitespace-nowrap">{s.sector}</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        {s.funding_stage && (
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground whitespace-nowrap">{s.funding_stage}</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-xs text-muted-foreground">{s.employees || '—'}</td>
-                      <td className="px-4 py-3 text-xs text-muted-foreground truncate">
-                        {s.city ? `${s.city}${s.county ? `, ${s.county}` : ''}` : '—'}
-                      </td>
-                      <td className="px-4 py-3"></td>
+                      </th>
+                      <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                        <ColumnFilterDropdown label="Sector" value={sector} options={sectors} onChange={setSector} />
+                      </th>
+                      <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                        <ColumnFilterDropdown label="Stage" value={stage} options={stages} onChange={setStage} />
+                      </th>
+                      <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                        <ColumnFilterDropdown label="Size" value={size} options={sizes} onChange={setSize} />
+                      </th>
+                      <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                        <div className="flex flex-col gap-2">
+                          <span>Location</span>
+                          <div className="relative">
+                            <Search size={11} className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="text"
+                              placeholder="Filter..."
+                              value={locationSearch}
+                              onChange={e => setLocationSearch(e.target.value)}
+                              onClick={e => e.stopPropagation()}
+                              className={`pl-6 pr-2 py-1.5 text-xs border rounded-md w-full focus:outline-none focus:ring-1 focus:ring-primary/40 ${locationSearch ? 'border-primary bg-green-pale' : 'border-gray-200 bg-white'}`}
+                            />
+                          </div>
+                        </div>
+                      </th>
+                      <th className="text-center px-4 py-3 font-semibold text-gray-700">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {filtered.map(s => (
+                      <tr key={s.id} className="hover:bg-gray-50 transition-colors cursor-pointer" onClick={() => handleSelectWithFly(s)}>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            {s.photo_url && <img src={s.photo_url} alt={s.company_name} className="w-7 h-7 rounded-md object-cover border border-gray-200 shrink-0" />}
+                            <div className="min-w-0">
+                              <div className="font-semibold text-gray-900 truncate">{s.company_name}</div>
+                              {s.description && <div className="text-xs text-gray-500 truncate">{s.description}</div>}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          {s.sector && (
+                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 whitespace-nowrap">{s.sector}</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          {s.funding_stage && (
+                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 whitespace-nowrap">{s.funding_stage}</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-xs text-gray-600">{s.employees || '—'}</td>
+                        <td className="px-4 py-3 text-xs text-gray-600 truncate">
+                          {s.city ? `${s.city}${s.county ? `, ${s.county}` : ''}` : '—'}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <ExternalLink size={14} className="text-gray-400 hover:text-primary transition-colors inline" />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         )}
