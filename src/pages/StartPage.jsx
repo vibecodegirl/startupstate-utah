@@ -113,6 +113,8 @@ export default function StartPage() {
   const handleQuizComplete = (answers) => {
     setQuizAnswers(answers);
     setShowQuiz(false);
+    // Store for auto-populate on profile creation
+    sessionStorage.setItem('pendingQuizAnswers', JSON.stringify(answers));
   };
 
   const handleLearnMore = (step) => {

@@ -40,6 +40,17 @@ export default function FounderProfile() {
         if (profiles.length > 0) {
           setProfile(profiles[0]);
           setForm(profiles[0]);
+        } else {
+          // New user - auto-populate from pending quiz answers if available
+          const pendingAnswers = sessionStorage.getItem('pendingQuizAnswers');
+          if (pendingAnswers) {
+            const answers = JSON.parse(pendingAnswers);
+            setForm(prev => ({
+              ...prev,
+              sector: answers.sector || '',
+              funding_stage: answers.stage || '',
+            }));
+          }
         }
         const allInvestors = await base44.entities.InvestorProfile.list('-created_date', 200);
         setInvestors(allInvestors);
