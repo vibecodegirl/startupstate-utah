@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'For Founders', href: '/start' },
   { label: 'For Investors', href: '/investors' },
   { label: 'Resources', href: '/resources' },
-  { label: 'Events', href: '/events' },
+  { label: 'News & Events', href: '/events' },
   { label: 'Why Utah?', href: '/why-utah' },
 ];
 
