@@ -1,27 +1,32 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Shield, CheckCircle, Clock, AlertCircle, Flag, Users, Building2, Eye, Trash2, Check, X, Plus, Edit2 } from 'lucide-react';
+import { Shield, CheckCircle, Clock, AlertCircle, Flag, Users, Building2, Eye, Trash2, Check, X, Plus, Edit2, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function AdminDashboard({ role }) {
   const [requests, setRequests] = useState([]);
   const [startups, setStartups] = useState([]);
   const [resources, setResources] = useState([]);
+  const [carouselItems, setCarouselItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('requests');
   const [updating, setUpdating] = useState(null);
   const [editingResource, setEditingResource] = useState(null);
+  const [editingCarousel, setEditingCarousel] = useState(null);
   const [resourceForm, setResourceForm] = useState({ title: '', category: '', url: '', provider: '', description: '' });
+  const [carouselForm, setCarouselForm] = useState({ title: '', subtitle: '', description: '', image_url: '', media_type: 'image', cta_text: '', cta_link: '', display_order: 0, is_active: true });
 
   useEffect(() => {
     Promise.all([
       base44.entities.ListingRequest.list('-created_date', 50),
       base44.entities.Startup.list('-created_date', 50),
       base44.entities.Resource.list('-created_date', 100),
-    ]).then(([reqs, sts, res]) => {
+      base44.entities.CarouselItem.list('display_order', 50),
+    ]).then(([reqs, sts, res, carousel]) => {
       setRequests(reqs);
       setStartups(sts);
       setResources(res);
+      setCarouselItems(carousel);
       setLoading(false);
     });
   }, []);
@@ -89,11 +94,29 @@ export default function AdminDashboard({ role }) {
     setResourceForm({ title: '', category: '', url: '', provider: '', description: '' });
   };
 
+  const handleSaveCarousel = async () => {
+    if (editingCarousel?.id) {
+      await base44.entities.CarouselItem.update(editingCarousel.id, carouselForm);
+      setCarouselItems(prev => prev.map(c => c.id === editingCarousel.id ? { ...c, ...carouselForm } : c));
+    } else {
+      const created = await base44.entities.CarouselItem.create(carouselForm);
+      setCarouselItems(prev => [...prev, created].sort((a, b) => a.display_order - b.display_order));
+    }
+    setEditingCarousel(null);
+    setCarouselForm({ title: '', subtitle: '', description: '', image_url: '', media_type: 'image', cta_text: '', cta_link: '', display_order: carouselItems.length, is_active: true });
+  };
+
+  const deleteCarousel = async (id) => {
+    await base44.entities.CarouselItem.delete(id);
+    setCarouselItems(prev => prev.filter(c => c.id !== id));
+  };
+
   const tabs = [
     { id: 'requests', label: 'Listing Requests', count: pending.length, icon: Clock },
     { id: 'startups', label: 'All Startups', count: startups.length, icon: Building2 },
     { id: 'flags', label: 'Active Flags', count: flagged.length, icon: Flag },
     { id: 'resources', label: 'Resources', count: resources.length, icon: Building2 },
+    { id: 'carousel', label: 'Hero Carousel', count: carouselItems.length, icon: ImageIcon },
   ];
 
   return (
@@ -262,6 +285,69 @@ export default function AdminDashboard({ role }) {
                     </div>
                   ))
                 )}
+              </div>
+            )}
+
+            {/* Carousel */}
+            {activeTab === 'carousel' && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-semibold text-foreground">Hero Carousel Slides</h3>
+                  <Button size="sm" onClick={() => { setEditingCarousel({ id: null }); setCarouselForm({ title: '', subtitle: '', description: '', image_url: '', media_type: 'image', cta_text: '', cta_link: '', display_order: carouselItems.length, is_active: true }); }} className="gap-1 bg-primary text-white hover:bg-green-dark">
+                    <Plus size={14} /> Add Slide
+                  </Button>
+                </div>
+
+                {editingCarousel && (
+                  <div className="bg-white rounded-2xl border border-border p-5 shadow-sm space-y-3 mb-4">
+                    <h4 className="font-semibold text-foreground">{editingCarousel.id ? 'Edit' : 'Create'} Slide</h4>
+                    <input type="text" placeholder="Title" value={carouselForm.title} onChange={e => setCarouselForm(f => ({ ...f, title: e.target.value }))} className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                    <input type="text" placeholder="Subtitle" value={carouselForm.subtitle} onChange={e => setCarouselForm(f => ({ ...f, subtitle: e.target.value }))} className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                    <textarea placeholder="Description" value={carouselForm.description} onChange={e => setCarouselForm(f => ({ ...f, description: e.target.value }))} className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none" rows={2} />
+                    <select value={carouselForm.media_type} onChange={e => setCarouselForm(f => ({ ...f, media_type: e.target.value }))} className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary">
+                      <option value="image">Image</option>
+                      <option value="video">Video</option>
+                      <option value="particles">Particles (Default)</option>
+                    </select>
+                    {carouselForm.media_type !== 'particles' && (
+                      <input type="url" placeholder="Image/Video URL" value={carouselForm.image_url} onChange={e => setCarouselForm(f => ({ ...f, image_url: e.target.value }))} className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                    )}
+                    <input type="text" placeholder="CTA Button Text" value={carouselForm.cta_text} onChange={e => setCarouselForm(f => ({ ...f, cta_text: e.target.value }))} className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                    <input type="text" placeholder="CTA Link (e.g. /resources)" value={carouselForm.cta_link} onChange={e => setCarouselForm(f => ({ ...f, cta_link: e.target.value }))} className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                    <input type="number" placeholder="Display Order" value={carouselForm.display_order} onChange={e => setCarouselForm(f => ({ ...f, display_order: parseInt(e.target.value) }))} className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" checked={carouselForm.is_active} onChange={e => setCarouselForm(f => ({ ...f, is_active: e.target.checked }))} className="accent-primary" />
+                      <span className="text-sm text-foreground">Active</span>
+                    </label>
+                    <div className="flex gap-2 justify-end">
+                      <Button size="sm" variant="outline" onClick={() => { setEditingCarousel(null); setCarouselForm({ title: '', subtitle: '', description: '', image_url: '', media_type: 'image', cta_text: '', cta_link: '', display_order: carouselItems.length, is_active: true }); }}>
+                        Cancel
+                      </Button>
+                      <Button size="sm" onClick={handleSaveCarousel} className="bg-primary text-white hover:bg-green-dark">
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  {carouselItems.map(c => (
+                    <div key={c.id} className="bg-white rounded-lg border border-border p-4 flex items-center gap-3">
+                      <div className="flex-1">
+                        <div className="font-semibold text-sm text-foreground">{c.title}</div>
+                        <div className="text-xs text-muted-foreground">Order: {c.display_order} · {c.media_type} · {c.is_active ? '✓ Active' : '✗ Inactive'}</div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline" onClick={() => { setEditingCarousel(c); setCarouselForm({ title: c.title, subtitle: c.subtitle || '', description: c.description || '', image_url: c.image_url || '', media_type: c.media_type, cta_text: c.cta_text || '', cta_link: c.cta_link || '', display_order: c.display_order, is_active: c.is_active }); }} className="gap-1">
+                          <Edit2 size={12} /> Edit
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => deleteCarousel(c.id)} className="gap-1 border-red-200 text-red-600 hover:bg-red-50">
+                          <Trash2 size={12} /> Delete
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 

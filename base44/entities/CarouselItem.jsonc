@@ -1,0 +1,53 @@
+{
+  "name": "CarouselItem",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Carousel slide title"
+    },
+    "subtitle": {
+      "type": "string",
+      "description": "Carousel slide subtitle"
+    },
+    "description": {
+      "type": "string",
+      "description": "Carousel slide description text"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Background image or video URL"
+    },
+    "media_type": {
+      "type": "string",
+      "enum": [
+        "image",
+        "video",
+        "particles"
+      ],
+      "default": "image",
+      "description": "Type of media displayed"
+    },
+    "cta_text": {
+      "type": "string",
+      "description": "Call-to-action button text"
+    },
+    "cta_link": {
+      "type": "string",
+      "description": "Call-to-action link/route"
+    },
+    "display_order": {
+      "type": "number",
+      "description": "Order in carousel (lower numbers appear first)"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this slide is visible in the carousel"
+    }
+  },
+  "required": [
+    "title",
+    "display_order"
+  ]
+}

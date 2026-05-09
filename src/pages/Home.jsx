@@ -7,12 +7,12 @@ import { ArrowRight, MapPin, Sparkles, Zap, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 
-export default function Home({ role }) {
+export default function Home() {
   const [showQuiz, setShowQuiz] = useState(false);
 
   return (
     <div className="min-h-screen">
-      <HeroSection role={role} />
+      <HeroSection />
       <JourneyCards />
 
       {/* Quiz Modal */}

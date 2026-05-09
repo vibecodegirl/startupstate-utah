@@ -65,7 +65,7 @@ const AuthenticatedApp = () => {
     <>
       <Navbar role={role} setRole={setRole} />
       <Routes>
-        <Route path="/" element={<Home role={role} />} />
+        <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/advisor" element={<Advisor />} />
         <Route path="/map" element={<StartupMap />} />
