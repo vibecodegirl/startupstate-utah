@@ -28,11 +28,14 @@ const verificationIcons = {
   'Flagged': <AlertCircle size={13} className="text-red-500" />,
 };
 
-export default function StartupCard({ startup, compact = false }) {
+export default function StartupCard({ startup, compact = false, disableLink = false }) {
   if (!startup) return null;
 
-  return (
-    <Link to={`/startups/${startup.id}`} className={`block bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden ${compact ? 'p-4' : 'p-6'}`}>
+  const className = `block bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden ${compact ? 'p-4' : 'p-6'}`;
+
+  const inner = (
+    <>
+
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
@@ -109,6 +112,9 @@ export default function StartupCard({ startup, compact = false }) {
       </div>
 
 
-    </Link>
+    </>
   );
+
+  if (disableLink) return <div className={className}>{inner}</div>;
+  return <Link to={`/startups/${startup.id}`} className={className}>{inner}</Link>;
 }

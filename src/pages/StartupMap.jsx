@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { Search, Filter, X, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import StartupCard from '@/components/map/StartupCard';
+import StartupPreviewPanel from '@/components/map/StartupPreviewPanel';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -157,30 +158,22 @@ export default function StartupMap() {
               )}
             </div>
 
-            {/* Side panel */}
+            {/* Side list panel */}
             <div className="w-80 bg-white border-l border-border overflow-y-auto">
               <div className="p-4 border-b border-border">
-                <h2 className="font-manrope font-bold text-sm text-foreground">
-                  {selected ? 'Selected Company' : `${filtered.length} Companies`}
-                </h2>
+                <h2 className="font-manrope font-bold text-sm text-foreground">{filtered.length} Companies</h2>
               </div>
               <div className="p-3 space-y-3">
-                {selected ? (
-                  <>
-                    <button onClick={() => setSelected(null)} className="text-xs text-primary hover:underline flex items-center gap-1">
-                      ← Back to list
-                    </button>
-                    <StartupCard startup={selected} />
-                  </>
-                ) : (
-                  filtered.slice(0, 30).map(s => (
-                    <div key={s.id} onClick={() => setSelected(s)} className="cursor-pointer">
-                      <StartupCard startup={s} compact />
-                    </div>
-                  ))
-                )}
+                {filtered.slice(0, 30).map(s => (
+                  <div key={s.id} onClick={() => setSelected(s)} className="cursor-pointer">
+                    <StartupCard startup={s} compact disableLink />
+                  </div>
+                ))}
               </div>
             </div>
+
+            {/* Preview slideout */}
+            {selected && <StartupPreviewPanel startup={selected} onClose={() => setSelected(null)} />}
           </>
         )}
 
