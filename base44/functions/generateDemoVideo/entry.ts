@@ -4,44 +4,44 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
-    // Detailed prompt for the demo video
-    const videoPrompt = `Create a professional 15-second marketing demo video for "Startup State" - Utah's startup ecosystem platform. 
+    // Detailed prompt for the demo video with actual app screens
+    const videoPrompt = `Create a professional 8-second marketing demo video for "Startup State" - Utah's startup ecosystem platform. Show actual app UI in motion.
 
-The video should showcase:
-
-SEGMENT 1 (0-3 seconds): Opening/Innovation Hub
-- Dynamic, modern tech aesthetic
-- Show the Startup State logo
+SEGMENT 1 (0-2 seconds): Opening/Innovation Hub
+- Open with Startup State logo and branding
+- Show dynamic green-to-blue gradient background
 - Text overlay: "Innovation Blooms in Utah"
-- Use vibrant colors (greens and blues) reflecting Utah landscape
+- Subtle tech ambient sound
 
-SEGMENT 2 (3-7 seconds): Founder Experience
-- Show a user clicking to access a founder profile/dashboard
-- Quick pan through a business plan sidebar panel opening with resources
-- Display step-by-step roadmap with checkmarks
-- Text overlay: "Personalized Roadmaps. Essential Resources."
-- Show resource cards with links and status badges
+SEGMENT 2 (2-4 seconds): Founder Portal in Motion
+- Show actual founder dashboard with "Founder Portal" header
+- Quick screen capture of the "Business Plan" tab with numbered steps (1, 2, 3...)
+- Pan through personalized plan with completed checkmarks and resources
+- Display resource cards with status badges (Saved, In Progress, Completed)
+- Text overlay: "Founders: Personalized Roadmaps in 3 Clicks"
+- Smooth slide transition
 
-SEGMENT 3 (7-11 seconds): Investor Insights
-- Show an interactive map with startup clusters
-- Quick glimpse of trending sectors with percentage growth
-- Display key statistics: $1.96B VC, 3,500+ Startups, #1 Economic Outlook
-- Text overlay: "Data-Driven Insights. Discover Opportunities."
-- Show investor matching panel sliding in with startup matches
+SEGMENT 3 (4-6 seconds): Investor Dashboard in Motion
+- Show actual Investor Resources page with stats grid
+- Quick showcase of key metrics: "$1.96B", "3,500+", "#1" 
+- Show the interactive Ecosystem Map with startup markers
+- Quick pan of Trending Sectors cards with startup counts
+- Show investor matching panel sliding in with match scores and recommendations
+- Text overlay: "Investors: Discover Utah's Best in 1 Click"
 
-SEGMENT 4 (11-15 seconds): Call to Action
-- Fast-paced montage of platform features
-- Show successful founder stories
-- Display the Startup State branding
-- Final text: "Utah: The Standard for Entrepreneurship"
-- Website: "StartupState.com"
-- Use green-to-blue gradient transitions between segments
+SEGMENT 4 (6-8 seconds): Call to Action
+- Fast montage showing Startup Map, founder stories, successful exits
+- Show "Invest Here. Start Here." messaging
+- Display Startup State logo prominently
+- Final frame with website: "StartupState.com"
+- Text: "Utah: The Standard for Entrepreneurship"
+- Use smooth green-to-orange gradient transitions
 
-Style: Modern, professional, energetic but not overwhelming. Use smooth transitions and professional animation. Include subtle sound design cues (ambient tech sounds, positive notifications). Aspect ratio: 16:9.`;
+Style: Modern, professional, fast-paced but clear. Show actual app UI screens in motion with smooth camera pans. Use positive notification sounds and tech ambient audio. Aspect ratio: 16:9.`;
 
     const { url } = await base44.integrations.Core.GenerateVideo({
       prompt: videoPrompt,
-      duration: 6,
+      duration: 8,
       aspect_ratio: '16:9'
     });
 
