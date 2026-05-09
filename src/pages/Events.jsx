@@ -228,30 +228,6 @@ export default function Events() {
         {/* Events Tab */}
         {activeTab === 'events' && (
           <div className="mb-16">
-            {/* Upcoming/Past Toggle */}
-            <div className="flex gap-2 mb-6 border-b border-border pb-4">
-              <button
-                onClick={() => setEventTab('upcoming')}
-                className={`px-4 py-2 font-semibold text-sm transition-all border-b-2 ${
-                  eventTab === 'upcoming'
-                    ? 'text-primary border-primary'
-                    : 'text-muted-foreground border-transparent hover:text-foreground'
-                }`}
-              >
-                Upcoming Events
-              </button>
-              <button
-                onClick={() => setEventTab('past')}
-                className={`px-4 py-2 font-semibold text-sm transition-all border-b-2 ${
-                  eventTab === 'past'
-                    ? 'text-primary border-primary'
-                    : 'text-muted-foreground border-transparent hover:text-foreground'
-                }`}
-              >
-                Past Events
-              </button>
-            </div>
-
             {/* Filters */}
             <div className="flex flex-wrap gap-3 items-center mb-8 pb-6 border-b border-border">
               <div className="flex gap-2 flex-wrap">
@@ -268,7 +244,19 @@ export default function Events() {
               </label>
             </div>
 
-            <p className="text-sm text-muted-foreground mb-6">Showing <span className="font-semibold text-foreground">{filtered.length}</span> event{filtered.length !== 1 ? 's' : ''}</p>
+            <div className="flex items-center justify-between mb-6">
+              <p className="text-sm text-muted-foreground">Showing <span className="font-semibold text-foreground">{filtered.length}</span> event{filtered.length !== 1 ? 's' : ''}</p>
+              {eventTab === 'upcoming' && (
+                <button onClick={() => setEventTab('past')} className="text-sm text-primary font-medium hover:underline">
+                  View past events
+                </button>
+              )}
+              {eventTab === 'past' && (
+                <button onClick={() => setEventTab('upcoming')} className="text-sm text-primary font-medium hover:underline">
+                  View upcoming events
+                </button>
+              )}
+            </div>
 
             {/* Events grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
