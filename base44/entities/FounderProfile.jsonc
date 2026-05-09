@@ -85,6 +85,60 @@
       "type": "string",
       "description": "LinkedIn profile URL"
     },
+    "quiz_answers": {
+      "type": "object",
+      "description": "Founder's quiz responses for personalization",
+      "properties": {
+        "stage": {
+          "type": "string",
+          "description": "Funding stage from quiz"
+        },
+        "sector": {
+          "type": "string",
+          "description": "Business sector from quiz"
+        },
+        "challenge": {
+          "type": "string",
+          "description": "Primary challenge from quiz"
+        },
+        "location": {
+          "type": "string",
+          "description": "Location in Utah from quiz"
+        },
+        "community": {
+          "type": "string",
+          "description": "Community affiliation from quiz"
+        }
+      }
+    },
+    "personalized_plan": {
+      "type": "array",
+      "description": "Tailored founder roadmap steps based on quiz answers",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "completed": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
     "profile_complete": {
       "type": "boolean",
       "default": false,
