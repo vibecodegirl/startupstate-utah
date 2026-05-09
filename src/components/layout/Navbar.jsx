@@ -56,7 +56,7 @@ export default function Navbar({ role, setRole }) {
           <div className="hidden lg:flex items-center gap-4 ml-auto">
             {/* Main Action Buttons */}
             <div className="flex items-center gap-3">
-              {user ? (
+              {user?.email ? (
                 <>
                   <Link to="/add-startup">
                     <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold">
@@ -122,7 +122,7 @@ export default function Navbar({ role, setRole }) {
           ))}
           <div className="pt-2 border-t border-border mt-2 space-y-2">
              <RoleSwitcher role={role} setRole={setRole} />
-             {user ? (
+             {user?.email ? (
                <>
                  <Link to="/add-startup" onClick={() => setMobileOpen(false)}>
                    <Button size="sm" className="w-full bg-primary text-primary-foreground font-semibold">
