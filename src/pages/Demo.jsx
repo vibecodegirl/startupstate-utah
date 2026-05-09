@@ -1,9 +1,33 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Play, Users, MapPin, Zap } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Play, Users, MapPin, Zap, Loader } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { base44 } from '@/api/base44Client';
 
 export default function Demo() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [videoLoading, setVideoLoading] = useState(false);
+  const [videoError, setVideoError] = useState(null);
+
+  // Generate demo video on mount
+  useEffect(() => {
+    const generateVideo = async () => {
+      setVideoLoading(true);
+      try {
+        const response = await base44.functions.invoke('generateDemoVideo', {});
+        if (response.data.success) {
+          setVideoUrl(response.data.videoUrl);
+        } else {
+          setVideoError('Failed to generate video');
+        }
+      } catch (err) {
+        setVideoError('Error generating video');
+      }
+      setVideoLoading(false);
+    };
+
+    generateVideo();
+  }, []);
 
   const slides = [
     {
@@ -153,8 +177,42 @@ export default function Demo() {
             {/* Slide 3: Marketing Initiative */}
             {currentSlide === 2 && (
               <div className="space-y-8 mt-8">
+                {/* Demo Video */}
+                {videoLoading && (
+                  <div className="bg-white/60 backdrop-blur rounded-2xl p-12 flex flex-col items-center justify-center gap-4 min-h-[300px]">
+                    <Loader size={40} className="text-orange-600 animate-spin" />
+                    <p className="text-foreground font-semibold">Generating demo video...</p>
+                  </div>
+                )}
+
+                {videoError && (
+                  <div className="bg-red-50/60 backdrop-blur rounded-2xl p-8 text-center border border-red-200/50">
+                    <p className="text-red-700 font-semibold">{videoError}</p>
+                    <p className="text-sm text-red-600 mt-2">Video generation in progress. Refresh to see when ready.</p>
+                  </div>
+                )}
+
+                {videoUrl && (
+                  <div className="bg-black rounded-2xl overflow-hidden shadow-lg">
+                    <video
+                      controls
+                      className="w-full aspect-video"
+                      src={videoUrl}
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                )}
+
+                {!videoUrl && !videoLoading && !videoError && (
+                  <div className="bg-white/60 backdrop-blur rounded-2xl p-8 flex flex-col items-center justify-center gap-4 min-h-[300px]">
+                    <Play size={48} className="text-orange-600 opacity-60" />
+                    <p className="text-foreground font-semibold">Demo video ready</p>
+                  </div>
+                )}
+
                 {/* Stats Showcase */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {slide.stats.map((stat, idx) => (
                     <div key={idx} className="bg-white/80 backdrop-blur rounded-2xl p-6 border border-orange-200/50 text-center">
                       <p className="text-4xl font-extrabold text-transparent bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text mb-2">
