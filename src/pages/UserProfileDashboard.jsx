@@ -37,8 +37,8 @@ export default function UserProfileDashboard({ role }) {
     setIsSaving(false);
   };
 
-  const handleLogout = () => {
-    base44.auth.logout('/');
+  const handleLogout = async () => {
+    await base44.auth.logout('/');
   };
 
   if (loading) {
