@@ -89,27 +89,26 @@ export default function StartupCard({ startup, compact = false, disableLink = fa
         </p>
       )}
 
-      {/* Links */}
-      <div className="flex items-center gap-3 mt-auto" onClick={e => e.preventDefault()}>
-        {startup.website && (
-          <a href={startup.website} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
-            className="flex items-center gap-1 text-xs text-primary hover:underline font-medium">
-            <Globe size={13} /> Website
-          </a>
-        )}
-        {startup.linkedin_url && (
-          <a href={startup.linkedin_url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
-            className="flex items-center gap-1 text-xs text-blue-600 hover:underline font-medium">
-            <Linkedin size={13} /> LinkedIn
-          </a>
-        )}
-        {startup.job_postings_url && startup.hiring && (
-          <a href={startup.job_postings_url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
-            className="ml-auto flex items-center gap-1 text-xs text-green-700 hover:underline font-medium">
-            <ExternalLink size={11} /> Jobs
-          </a>
-        )}
-      </div>
+      {/* Links — only shown when card is a standalone link (not inside map list) */}
+      {!disableLink && (
+        <div className="flex items-center gap-3 mt-auto">
+          {startup.website && (
+            <span className="flex items-center gap-1 text-xs text-primary font-medium">
+              <Globe size={13} /> Website
+            </span>
+          )}
+          {startup.linkedin_url && (
+            <span className="flex items-center gap-1 text-xs text-blue-600 font-medium">
+              <Linkedin size={13} /> LinkedIn
+            </span>
+          )}
+          {startup.hiring && (
+            <span className="ml-auto flex items-center gap-1 text-xs text-green-700 font-medium">
+              <ExternalLink size={11} /> Jobs
+            </span>
+          )}
+        </div>
+      )}
 
 
     </>

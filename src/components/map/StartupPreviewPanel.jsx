@@ -40,8 +40,7 @@ export default function StartupPreviewPanel({ startup, onClose }) {
 
       {/* Panel */}
       <div className="fixed bottom-0 right-0 z-50 w-full sm:w-96 bg-white shadow-2xl border-l border-t border-border
-        h-auto max-h-[85vh] sm:h-full sm:max-h-none
-        sm:bottom-0 sm:top-[112px]
+        h-[85vh] sm:h-auto sm:top-[112px] sm:bottom-0
         flex flex-col rounded-t-2xl sm:rounded-none overflow-hidden
         animate-slide-in"
       >
