@@ -60,7 +60,7 @@ function FlyToMarker({ target }) {
   const map = useMap();
   useEffect(() => {
     if (target?.latitude && target?.longitude) {
-      map.flyTo([target.latitude, target.longitude], 14, { duration: 1 });
+      map.flyTo([target.latitude, target.longitude], 15, { duration: 0.8 });
     }
   }, [target, map]);
   return null;
@@ -86,7 +86,7 @@ export default function StartupMap() {
     setSelected(startup);
     if (startup?.latitude && startup?.longitude) {
       setView('map');
-      setFlyTarget(startup);
+      setFlyTarget({ ...startup, _ts: Date.now() });
     }
   }, []);
 
