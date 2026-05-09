@@ -12,8 +12,8 @@ export default function Footer() {
               <img
                 src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/e8fef4a72_StartupState_Logo_Web_Color_Horiz.webp"
                 alt="Startup State"
-                className="h-8 w-auto mb-4 hover:opacity-80 transition-opacity cursor-pointer"
-              />
+                className="h-8 w-auto mb-4 hover:opacity-80 transition-opacity cursor-pointer" />
+              
             </a>
             <p className="text-white/60 text-sm leading-relaxed">
               The global standard for innovation and entrepreneurship. Powered by the Governor's Office of Economic Opportunity.
@@ -21,8 +21,8 @@ export default function Footer() {
             <img
               src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/50f598190_GOEO_BLACK_Standard.webp"
               alt="GOEO"
-              className="h-8 w-auto mt-4 brightness-0 invert"
-            />
+              className="h-8 w-auto mt-4 brightness-0 invert" />
+            
           </div>
 
           {/* Explore */}
@@ -30,14 +30,14 @@ export default function Footer() {
             <h4 className="font-manrope font-semibold text-sm mb-4 text-white/90 uppercase tracking-wider">Explore</h4>
             <ul className="space-y-2 text-sm text-white/60">
               {[
-                { label: 'Start Your Journey', href: '/start' },
-                { label: 'Resource Navigator', href: '/resources' },
-                { label: 'Startup Map', href: '/map' },
-                { label: 'Get Funding', href: '/funding' },
-                { label: 'Events', href: '/events' },
-              ].map(l => (
-                <li key={l.href}><Link to={l.href} className="hover:text-primary transition-colors">{l.label}</Link></li>
-              ))}
+              { label: 'Start Your Journey', href: '/start' },
+              { label: 'Resource Navigator', href: '/resources' },
+              { label: 'Startup Map', href: '/map' },
+              { label: 'Get Funding', href: '/funding' },
+              { label: 'Events', href: '/events' }].
+              map((l) =>
+              <li key={l.href}><Link to={l.href} className="hover:text-primary transition-colors">{l.label}</Link></li>
+              )}
             </ul>
           </div>
 
@@ -46,13 +46,13 @@ export default function Footer() {
             <h4 className="font-manrope font-semibold text-sm mb-4 text-white/90 uppercase tracking-wider">Programs</h4>
             <ul className="space-y-2 text-sm text-white/60">
               {[
-                { label: 'Why Utah?', href: '/why-utah' },
-                { label: 'Add Your Startup', href: '/add-startup' },
-                { label: 'AI Advisor', href: '/advisor' },
-                { label: 'Admin Dashboard', href: '/admin' },
-              ].map(l => (
-                <li key={l.href}><Link to={l.href} className="hover:text-primary transition-colors">{l.label}</Link></li>
-              ))}
+              { label: 'Why Utah?', href: '/why-utah' },
+              { label: 'Add Your Startup', href: '/add-startup' },
+              { label: 'AI Advisor', href: '/advisor' },
+              { label: 'Admin Dashboard', href: '/admin' }].
+              map((l) =>
+              <li key={l.href}><Link to={l.href} className="hover:text-primary transition-colors">{l.label}</Link></li>
+              )}
             </ul>
           </div>
 
@@ -80,10 +80,10 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/40">
-          <p>© 2024 State of Utah — Startup State Initiative. All rights reserved.</p>
+          <p>© 2026 State of Utah — Startup State Initiative. All rights reserved.</p>
           <p>Startup Capital of the World 🌎</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 }
