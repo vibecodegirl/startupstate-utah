@@ -65,9 +65,30 @@ export default function HeroCarousel() {
   const colors = getSlideColors();
 
   return (
-    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden ${colors.bg}`}>
-      {/* Background Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/80 to-transparent" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Media */}
+      {slide.media_type === 'particles' ? (
+        <div className={`absolute inset-0 ${colors.bg}`} />
+      ) : slide.media_type === 'video' ? (
+        <video
+          src={slide.image_url}
+          autoPlay
+          muted
+          loop
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      ) : slide.image_url ? (
+        <img
+          src={slide.image_url}
+          alt={slide.title}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      ) : (
+        <div className={`absolute inset-0 ${colors.bg}`} />
+      )}
+
+      {/* Overlay - gradient with stronger coverage on left for text */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent" />
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-20">
@@ -80,12 +101,12 @@ export default function HeroCarousel() {
               </div>
             )}
 
-            <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl text-foreground leading-tight">
+            <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl text-foreground leading-tight drop-shadow-lg">
               {slide.title}
             </h1>
 
             {slide.description && (
-              <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
+              <p className="text-lg text-muted-foreground max-w-xl leading-relaxed drop-shadow">
                 {slide.description}
               </p>
             )}
@@ -155,8 +176,8 @@ export default function HeroCarousel() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-        <div className={`w-6 h-10 border-2 rounded-full flex items-start justify-center pt-2`} style={{ borderColor: colors.accent.replace('bg-', '') + '/30' }}>
-          <div className={`w-1.5 h-3 rounded-full animate-pulse-gentle`} style={{ backgroundColor: colors.accent.replace('bg-', '') + '/30' }} />
+        <div className="w-6 h-10 border-2 border-foreground/20 rounded-full flex items-start justify-center pt-2">
+          <div className="w-1.5 h-3 bg-foreground/20 rounded-full animate-pulse-gentle" />
         </div>
       </div>
     </section>
