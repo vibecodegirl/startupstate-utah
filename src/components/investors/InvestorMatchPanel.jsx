@@ -1,8 +1,224 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { X, Zap } from 'lucide-react';
+import { X, Zap, AlertCircle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+
+const SECTORS = ['AI', 'Aerospace & Defense', 'Life Sciences', 'Fintech', 'B2B Software', 'Marketplaces', 'Energy', 'Consumer', 'Security', 'All'];
+const STAGES = ['Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C', 'Series D+', 'All'];
+const INVESTOR_TYPES = ['Angel', 'Venture Capital', 'Corporate', 'Accelerator', 'Family Office', 'Individual'];
+
+function InvestorProfileForm({ user, onProfileCreated }) {
+  const [formData, setFormData] = useState({
+    investor_name: '',
+    investor_type: '',
+    focus_sectors: [],
+    focus_stages: [],
+    check_size_min: '',
+    check_size_max: '',
+    investment_thesis: '',
+    portfolio_focus: '',
+    bio: '',
+    linkedin_url: '',
+    website: '',
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleMultiSelect = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: prev[field].includes(value)
+        ? prev[field].filter(v => v !== value)
+        : [...prev[field], value]
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.investor_name || !formData.investor_type) {
+      setError('Name and investor type are required');
+      return;
+    }
+
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const profile = await base44.entities.InvestorProfile.create({
+        user_email: user.email,
+        ...formData,
+        check_size_min: formData.check_size_min ? parseFloat(formData.check_size_min) : null,
+        check_size_max: formData.check_size_max ? parseFloat(formData.check_size_max) : null,
+      });
+
+      setSuccess(true);
+      setTimeout(() => onProfileCreated(profile), 1000);
+    } catch (err) {
+      setError('Failed to create profile. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (success) {
+    return (
+      <div className="text-center py-12">
+        <CheckCircle size={48} className="text-green-600 mx-auto mb-4" />
+        <h3 className="font-semibold text-foreground mb-2">Profile Created!</h3>
+        <p className="text-sm text-muted-foreground">Finding your matched startups...</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 max-h-[calc(100vh-180px)] overflow-y-auto">
+      <h3 className="font-semibold text-foreground">Create Your Investor Profile</h3>
+
+      {error && (
+        <div className="flex items-start gap-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <AlertCircle size={16} className="text-red-600 shrink-0 mt-0.5" />
+          <p className="text-sm text-red-700">{error}</p>
+        </div>
+      )}
+
+      <input
+        type="text"
+        name="investor_name"
+        placeholder="Investor/Fund Name *"
+        value={formData.investor_name}
+        onChange={handleInputChange}
+        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+        required
+      />
+
+      <select
+        name="investor_type"
+        value={formData.investor_type}
+        onChange={handleInputChange}
+        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white"
+        required
+      >
+        <option value="">Select Investor Type *</option>
+        {INVESTOR_TYPES.map(t => (
+          <option key={t} value={t}>{t}</option>
+        ))}
+      </select>
+
+      <div>
+        <label className="text-xs font-semibold text-foreground mb-2 block">Focus Sectors</label>
+        <div className="grid grid-cols-2 gap-2">
+          {SECTORS.map(s => (
+            <label key={s} className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.focus_sectors.includes(s)}
+                onChange={() => handleMultiSelect('focus_sectors', s)}
+                className="accent-primary rounded"
+              />
+              <span className="text-xs text-foreground">{s}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label className="text-xs font-semibold text-foreground mb-2 block">Focus Stages</label>
+        <div className="grid grid-cols-2 gap-2">
+          {STAGES.map(s => (
+            <label key={s} className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.focus_stages.includes(s)}
+                onChange={() => handleMultiSelect('focus_stages', s)}
+                className="accent-primary rounded"
+              />
+              <span className="text-xs text-foreground">{s}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2">
+        <input
+          type="number"
+          name="check_size_min"
+          placeholder="Min Check (K)"
+          value={formData.check_size_min}
+          onChange={handleInputChange}
+          className="px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+        />
+        <input
+          type="number"
+          name="check_size_max"
+          placeholder="Max Check (K)"
+          value={formData.check_size_max}
+          onChange={handleInputChange}
+          className="px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+        />
+      </div>
+
+      <textarea
+        name="investment_thesis"
+        placeholder="Investment Thesis"
+        value={formData.investment_thesis}
+        onChange={handleInputChange}
+        rows={2}
+        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+      />
+
+      <textarea
+        name="portfolio_focus"
+        placeholder="Portfolio Focus / Geographic Focus"
+        value={formData.portfolio_focus}
+        onChange={handleInputChange}
+        rows={2}
+        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+      />
+
+      <textarea
+        name="bio"
+        placeholder="Your Background & Experience"
+        value={formData.bio}
+        onChange={handleInputChange}
+        rows={2}
+        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+      />
+
+      <input
+        type="url"
+        name="linkedin_url"
+        placeholder="LinkedIn Profile URL"
+        value={formData.linkedin_url}
+        onChange={handleInputChange}
+        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+      />
+
+      <input
+        type="url"
+        name="website"
+        placeholder="Fund/Company Website"
+        value={formData.website}
+        onChange={handleInputChange}
+        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+      />
+
+      <Button
+        type="submit"
+        disabled={submitting}
+        className="w-full bg-primary text-white hover:bg-green-dark font-semibold py-2"
+      >
+        {submitting ? 'Creating Profile...' : 'Create Profile & Get Matches'}
+      </Button>
+    </form>
+  );
+}
 
 export default function InvestorMatchPanel({ onClose }) {
   const [user, setUser] = useState(null);
@@ -67,15 +283,14 @@ export default function InvestorMatchPanel({ onClose }) {
               </Link>
             </div>
           ) : !profile ? (
-            <div className="text-center py-12 space-y-4">
-              <h3 className="font-semibold text-foreground">Create Your Investor Profile</h3>
-              <p className="text-sm text-muted-foreground">Build your profile to get matched with Utah startups aligned with your investment thesis.</p>
-              <Link to="/investor-profile">
-                <Button className="bg-primary text-white hover:bg-green-dark font-semibold gap-2">
-                  Create Profile
-                </Button>
-              </Link>
-            </div>
+            <InvestorProfileForm user={user} onProfileCreated={(newProfile) => {
+              setProfile(newProfile);
+              base44.entities.StartupMatch.filter(
+                { investor_email: user.email },
+                '-match_score',
+                10
+              ).then(setMatches).catch(() => setMatches([]));
+            }} />
           ) : matches.length === 0 ? (
             <div className="text-center py-12 space-y-4">
               <p className="text-muted-foreground">No matches yet. Check back soon or update your profile criteria.</p>
