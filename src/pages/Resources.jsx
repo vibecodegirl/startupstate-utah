@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Search, ExternalLink, BookOpen, DollarSign, Users, Briefcase, Globe, GraduationCap, Building, Grid3X3, List, Table2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -161,11 +162,12 @@ const categories = ['All', 'Funding', 'Mentorship', 'Government', 'Education', '
 const audienceFilters = ['All Stages', 'Pre-Seed', 'Seed', 'Series A', 'Series B', 'Growth'];
 
 export default function Resources() {
+  const [searchParams] = useSearchParams();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [audience, setAudience] = useState('All Stages');
   const [view, setView] = useState('grid');
-  const [showQuiz, setShowQuiz] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(searchParams.get('quiz') === '1');
   const [quizAnswers, setQuizAnswers] = useState(null);
   const [dbResources, setDbResources] = useState([]);
 

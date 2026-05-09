@@ -22,7 +22,7 @@ export default function Home({ role }) {
           <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
             Take our quick 3-question quiz to get personalized recommendations from Utah's startup ecosystem tailored to your stage, sector, and challenges.
           </p>
-          <Link to="/resources">
+          <Link to="/resources?quiz=1">
             <Button size="lg" className="bg-primary text-white hover:bg-green-dark font-manrope font-bold px-8 gap-2">
               Try the Resource Quiz <ArrowRight size={16} />
             </Button>
