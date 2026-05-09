@@ -70,8 +70,8 @@ export default function Footer() {
               </li>
             </ul>
             <div className="mt-4 p-3 bg-white/5 rounded-lg border border-white/10">
-              <p className="text-xs text-white/50">
-                A program of the <span className="text-primary font-medium">Governor's Office of Economic Opportunity</span>
+              <p className="text-xs text-white/70 leading-relaxed">
+                The Startup State Initiative is a program of Utah's Governor's Office of Economic Opportunity, celebrating and empowering entrepreneurs statewide.
               </p>
             </div>
           </div>
