@@ -8,82 +8,82 @@ import QuickWinActionPanel from '@/components/founders/QuickWinActionPanel';
 import FounderStories from '@/components/founders/FounderStories';
 
 const steps = [
-  {
-    number: '01',
-    title: 'Develop Your Idea',
-    description: 'Validate your concept with real customers. Use the Utah SBDC\'s free business planning resources and the University of Utah\'s I-Corps program.',
-    icon: Lightbulb,
-    resources: ['Utah SBDC Free Consulting', 'NSF I-Corps', 'Business Plan Builder — startup.utah.gov'],
-    link: 'https://startup.utah.gov/business-plan/',
-    isExternal: true,
-    relevant_stages: ['Pre-Seed', 'Seed'],
-    relevant_sectors: ['All'],
-    addresses_challenges: ['Mentorship & guidance', 'Building a team'],
-  },
-  {
-    number: '02',
-    title: 'Register Your Business',
-    description: 'Choose your business structure (LLC, Corp, Sole Prop) and register with the Utah Division of Corporations.',
-    icon: FileText,
-    resources: ['Utah Division of Corporations', 'IRS EIN Registration', 'Utah Business One Stop'],
-    link: 'https://corporations.utah.gov',
-    isExternal: true,
-    relevant_stages: ['Pre-Seed', 'Seed'],
-    relevant_sectors: ['All'],
-    addresses_challenges: ['All'],
-  },
-  {
-    number: '03',
-    title: 'Secure Initial Funding',
-    description: 'From bootstrapping to pre-seed grants, explore Utah\'s funding options for early-stage founders.',
-    icon: DollarSign,
-    resources: ['SBIR Phase 0 Grants', 'Utah Microloan Programs', 'Angel Investor Networks'],
-    link: '/funding',
-    isExternal: false,
-    panelTitle: 'Funding Opportunities',
-    relevant_stages: ['Pre-Seed', 'Seed', 'Series A'],
-    relevant_sectors: ['All'],
-    addresses_challenges: ['Finding capital'],
-  },
-  {
-    number: '04',
-    title: 'Build Your Team',
-    description: 'Hire Utah\'s top talent from BYU, U of U, and Utah State. Access workforce development programs.',
-    icon: Users,
-    resources: ['Silicon Slopes Job Board', 'Utah Department of Workforce Services', 'University Recruiting'],
-    link: 'https://siliconslopes.com/jobs',
-    isExternal: true,
-    relevant_stages: ['Seed', 'Series A', 'Series B'],
-    relevant_sectors: ['All'],
-    addresses_challenges: ['Building a team'],
-  },
-  {
-    number: '05',
-    title: 'Find Your Space',
-    description: 'Utah has world-class coworking, accelerators, and affordable office space across the Wasatch Front.',
-    icon: Building,
-    resources: ['Silicon Slopes Coworking', 'BioInnovations Gateway (Life Sciences)', 'University Research Park'],
-    link: '/resources',
-    isExternal: false,
-    panelTitle: 'Resource Navigator',
-    relevant_stages: ['Pre-Seed', 'Seed', 'Series A'],
-    relevant_sectors: ['All'],
-    addresses_challenges: ['All'],
-  },
-  {
-    number: '06',
-    title: 'Go to Market',
-    description: 'Access sales resources, mentorship networks, and growth-stage support to scale your business.',
-    icon: Globe,
-    resources: ['Startup State Resource Navigator', 'Utah Angels Network', 'GOED Export Programs'],
-    link: '/resources',
-    isExternal: false,
-    panelTitle: 'Resource Navigator',
-    relevant_stages: ['Series A', 'Series B', 'Series C', 'Series D+'],
-    relevant_sectors: ['All'],
-    addresses_challenges: ['Networking & partnerships'],
-  },
-];
+{
+  number: '01',
+  title: 'Develop Your Idea',
+  description: 'Validate your concept with real customers. Use the Utah SBDC\'s free business planning resources and the University of Utah\'s I-Corps program.',
+  icon: Lightbulb,
+  resources: ['Utah SBDC Free Consulting', 'NSF I-Corps', 'Business Plan Builder — startup.utah.gov'],
+  link: 'https://startup.utah.gov/business-plan/',
+  isExternal: true,
+  relevant_stages: ['Pre-Seed', 'Seed'],
+  relevant_sectors: ['All'],
+  addresses_challenges: ['Mentorship & guidance', 'Building a team']
+},
+{
+  number: '02',
+  title: 'Register Your Business',
+  description: 'Choose your business structure (LLC, Corp, Sole Prop) and register with the Utah Division of Corporations.',
+  icon: FileText,
+  resources: ['Utah Division of Corporations', 'IRS EIN Registration', 'Utah Business One Stop'],
+  link: 'https://corporations.utah.gov',
+  isExternal: true,
+  relevant_stages: ['Pre-Seed', 'Seed'],
+  relevant_sectors: ['All'],
+  addresses_challenges: ['All']
+},
+{
+  number: '03',
+  title: 'Secure Initial Funding',
+  description: 'From bootstrapping to pre-seed grants, explore Utah\'s funding options for early-stage founders.',
+  icon: DollarSign,
+  resources: ['SBIR Phase 0 Grants', 'Utah Microloan Programs', 'Angel Investor Networks'],
+  link: '/funding',
+  isExternal: false,
+  panelTitle: 'Funding Opportunities',
+  relevant_stages: ['Pre-Seed', 'Seed', 'Series A'],
+  relevant_sectors: ['All'],
+  addresses_challenges: ['Finding capital']
+},
+{
+  number: '04',
+  title: 'Build Your Team',
+  description: 'Hire Utah\'s top talent from BYU, U of U, and Utah State. Access workforce development programs.',
+  icon: Users,
+  resources: ['Silicon Slopes Job Board', 'Utah Department of Workforce Services', 'University Recruiting'],
+  link: 'https://siliconslopes.com/jobs',
+  isExternal: true,
+  relevant_stages: ['Seed', 'Series A', 'Series B'],
+  relevant_sectors: ['All'],
+  addresses_challenges: ['Building a team']
+},
+{
+  number: '05',
+  title: 'Find Your Space',
+  description: 'Utah has world-class coworking, accelerators, and affordable office space across the Wasatch Front.',
+  icon: Building,
+  resources: ['Silicon Slopes Coworking', 'BioInnovations Gateway (Life Sciences)', 'University Research Park'],
+  link: '/resources',
+  isExternal: false,
+  panelTitle: 'Resource Navigator',
+  relevant_stages: ['Pre-Seed', 'Seed', 'Series A'],
+  relevant_sectors: ['All'],
+  addresses_challenges: ['All']
+},
+{
+  number: '06',
+  title: 'Go to Market',
+  description: 'Access sales resources, mentorship networks, and growth-stage support to scale your business.',
+  icon: Globe,
+  resources: ['Startup State Resource Navigator', 'Utah Angels Network', 'GOED Export Programs'],
+  link: '/resources',
+  isExternal: false,
+  panelTitle: 'Resource Navigator',
+  relevant_stages: ['Series A', 'Series B', 'Series C', 'Series D+'],
+  relevant_sectors: ['All'],
+  addresses_challenges: ['Networking & partnerships']
+}];
+
 
 export default function StartPage() {
   const [panel, setPanel] = useState(null); // { title, link }
@@ -95,7 +95,7 @@ export default function StartPage() {
   const personalizedSteps = useMemo(() => {
     if (!quizAnswers) return steps;
 
-    return steps.filter(step => {
+    return steps.filter((step) => {
       const stageMatch = step.relevant_stages.includes(quizAnswers.stage);
       const sectorMatch = step.relevant_sectors.includes('All') || step.relevant_sectors.includes(quizAnswers.sector);
       const challengeMatch = step.addresses_challenges.includes('All') || step.addresses_challenges.includes(quizAnswers.challenge);
@@ -146,48 +146,48 @@ export default function StartPage() {
           <p className="text-white/85 text-lg max-w-2xl mx-auto leading-relaxed mb-8">
             Get personalized resources matched to your stage, sector, and goals.
           </p>
-          {!showQuiz && (
-            <Button 
-              onClick={() => setShowQuiz(true)} 
-              className="bg-white text-primary hover:bg-green-pale font-semibold gap-2 shadow-lg"
-            >
+          {!showQuiz &&
+          <Button
+            onClick={() => setShowQuiz(true)}
+            className="bg-white text-primary hover:bg-green-pale font-semibold gap-2 shadow-lg">
+            
               <Zap size={16} />
               Get Personalized Pathway
             </Button>
-          )}
+          }
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
 
         {/* Quiz Section - Conditional */}
-        {showQuiz && (
-          <div className="mb-16">
+        {showQuiz &&
+        <div className="mb-16">
             <ResourcesQuiz
-              onComplete={handleQuizComplete}
-              onSkip={() => {
-                setShowQuiz(false);
-                setQuizAnswers('skipped');
-              }}
-            />
+            onComplete={handleQuizComplete}
+            onSkip={() => {
+              setShowQuiz(false);
+              setQuizAnswers('skipped');
+            }} />
+          
           </div>
-        )}
+        }
 
       {/* Quick Wins - "Momentum Starts Now" directly below quiz */}
       <QuickWins onWinClick={setSelectedWin} />
 
         {/* Personalized Steps - Only show if quiz completed */}
-        {quizAnswers && quizAnswers !== 'skipped' && (
-          <section className="py-12 bg-muted/20">
+        {quizAnswers && quizAnswers !== 'skipped' &&
+        <section className="py-12 bg-muted/20">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
               <div className="text-center mb-12">
                 <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Your Personalized Roadmap</h2>
                 <p className="text-muted-foreground">Follow these steps tailored to your {quizAnswers.stage} stage startup.</p>
                 <Button
-                  onClick={() => setQuizAnswers(null)}
-                  variant="outline"
-                  className="mt-4 border-primary/30 text-primary hover:bg-green-pale"
-                >
+                onClick={() => setQuizAnswers(null)}
+                variant="outline"
+                className="mt-4 border-primary/30 text-primary hover:bg-green-pale">
+                
                   Retake Quiz
                 </Button>
               </div>
@@ -197,9 +197,9 @@ export default function StartPage() {
 
                 <div className="space-y-6">
                   {personalizedSteps.map((step) => {
-                    const Icon = step.icon;
-                    return (
-                      <div key={step.number} className="relative flex gap-6">
+                  const Icon = step.icon;
+                  return (
+                    <div key={step.number} className="relative flex gap-6">
                         <div className="hidden md:flex shrink-0 w-16 h-16 rounded-2xl bg-primary text-white font-manrope font-black text-xl items-center justify-center z-10 shadow-lg shadow-primary/20">
                           {step.number}
                         </div>
@@ -222,27 +222,27 @@ export default function StartPage() {
                           <div className="mb-4">
                             <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Key Resources</p>
                             <div className="flex flex-wrap gap-2">
-                              {step.resources.map(r => (
-                                <span key={r} className="text-xs bg-green-pale text-green-dark px-3 py-1 rounded-full font-medium border border-primary/20">
+                              {step.resources.map((r) =>
+                            <span key={r} className="text-xs bg-green-pale text-green-dark px-3 py-1 rounded-full font-medium border border-primary/20">
                                   {r}
                                 </span>
-                              ))}
+                            )}
                             </div>
                           </div>
 
                           <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleLearnMore(step)}
-                            className="gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold"
-                          >
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleLearnMore(step)}
+                          className="gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold">
+                          
                             Learn More
                             {step.isExternal ? <ExternalLink size={13} /> : <ArrowRight size={14} />}
                           </Button>
                         </div>
-                      </div>
-                    );
-                  })}
+                      </div>);
+
+                })}
                 </div>
               </div>
 
@@ -256,7 +256,7 @@ export default function StartPage() {
               </div>
             </div>
           </section>
-        )}
+        }
 
         {/* Founder Stories Testimonial Carousel */}
         <section className="py-12">
@@ -268,13 +268,13 @@ export default function StartPage() {
       {selectedWin && <QuickWinActionPanel win={selectedWin} onClose={() => setSelectedWin(null)} />}
 
       {/* Right Side Panel */}
-      {panel && (
-        <>
+      {panel &&
+      <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/30 z-40 transition-opacity"
-            onClick={() => setPanel(null)}
-          />
+          className="fixed inset-0 bg-black/30 z-40 transition-opacity"
+          onClick={() => setPanel(null)} />
+        
 
           {/* Panel */}
           <div className="fixed top-0 right-0 h-full w-full max-w-2xl bg-white z-50 shadow-2xl flex flex-col animate-slide-in">
@@ -283,16 +283,16 @@ export default function StartPage() {
               <h2 className="font-manrope font-bold text-lg text-foreground">{panel.title}</h2>
               <div className="flex items-center gap-2">
                 <Link
-                  to={panel.link}
-                  className="text-xs text-primary font-semibold flex items-center gap-1 hover:underline"
-                  onClick={() => setPanel(null)}
-                >
+                to={panel.link}
+                className="text-xs text-primary font-semibold flex items-center gap-1 hover:underline"
+                onClick={() => setPanel(null)}>
+                
                   Open full page <ExternalLink size={12} />
                 </Link>
                 <button
-                  onClick={() => setPanel(null)}
-                  className="ml-3 p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                >
+                onClick={() => setPanel(null)}
+                className="ml-3 p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
+                
                   <X size={18} />
                 </button>
               </div>
@@ -300,14 +300,14 @@ export default function StartPage() {
 
             {/* Embedded content via iframe */}
             <iframe
-              key={panel.link}
-              src={panel.link}
-              className="flex-1 w-full border-none"
-              title={panel.title}
-            />
+            key={panel.link}
+            src={panel.link}
+            className="flex-1 w-full border-none"
+            title={panel.title} />
+          
           </div>
         </>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
