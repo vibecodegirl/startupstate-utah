@@ -20,13 +20,13 @@ const statsAnimationStyle = `
 `;
 
 const stats = [
-  { value: '#1', label: 'Best State to Start a Business', source: 'WalletHub 2023' },
-  { value: '3,500+', label: 'Active Startups', source: 'Silicon Slopes' },
-  { value: '$4.2B+', label: 'Annual VC Investment', source: 'NVCA' },
-  { value: '45+', label: 'Active Accelerators & Incubators', source: 'GOEO' },
-  { value: '15%', label: 'Annual Tech Job Growth', source: 'BLS' },
-  { value: 'Top 5', label: 'Most Educated Workforce', source: 'US Census' },
-];
+{ value: '#1', label: 'Best State to Start a Business', source: 'WalletHub 2023' },
+{ value: '3,500+', label: 'Active Startups', source: 'Silicon Slopes' },
+{ value: '$4.2B+', label: 'Annual VC Investment', source: 'NVCA' },
+{ value: '45+', label: 'Active Accelerators & Incubators', source: 'GOEO' },
+{ value: '15%', label: 'Annual Tech Job Growth', source: 'BLS' },
+{ value: 'Top 5', label: 'Most Educated Workforce', source: 'US Census' }];
+
 
 export default function Home() {
   const [showQuiz, setShowQuiz] = useState(false);
@@ -39,44 +39,44 @@ export default function Home() {
       {/* Stats Section */}
       <section className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 -mt-8 relative z-10 mb-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {stats.map((s, i) => (
-            <div key={s.label} className="bg-white rounded-2xl border border-border p-4 text-center shadow-lg hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:scale-105 group cursor-default" style={{
-              animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`
-            }}>
+          {stats.map((s, i) =>
+          <div key={s.label} className="bg-white rounded-2xl border border-border p-4 text-center shadow-lg hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:scale-105 group cursor-default" style={{
+            animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`
+          }}>
               <div className="font-manrope font-extrabold text-2xl bg-gradient-to-r from-primary to-green-mid bg-clip-text text-transparent mb-1 group-hover:scale-110 transition-transform duration-300">{s.value}</div>
               <div className="text-xs text-foreground font-semibold leading-snug mb-1">{s.label}</div>
               <div className="text-xs text-muted-foreground">{s.source}</div>
             </div>
-          ))}
+          )}
         </div>
       </section>
 
       {/* Quiz Section */}
-      {showQuiz ? (
-        <section className="relative py-16 bg-muted/30">
+      {showQuiz ?
+      <section className="relative py-16 bg-muted/30">
           <div className="max-w-4xl mx-auto px-4">
             <ResourcesQuiz
-              onComplete={(answers) => {
-                setShowQuiz(false);
-                const params = new URLSearchParams({
-                  stage: answers.stage || '',
-                  sector: answers.sector || '',
-                  challenge: answers.challenge || '',
-                  location: answers.location || '',
-                  community: answers.community || '',
-                });
-                window.location.href = `/quiz-results?${params.toString()}`;
-              }}
-              onSkip={() => setShowQuiz(false)}
-            />
+            onComplete={(answers) => {
+              setShowQuiz(false);
+              const params = new URLSearchParams({
+                stage: answers.stage || '',
+                sector: answers.sector || '',
+                challenge: answers.challenge || '',
+                location: answers.location || '',
+                community: answers.community || ''
+              });
+              window.location.href = `/quiz-results?${params.toString()}`;
+            }}
+            onSkip={() => setShowQuiz(false)} />
+          
           </div>
-        </section>
-      ) : (
-        <section className="relative py-16 border-y border-green-pale overflow-hidden">
+        </section> :
+
+      <section className="relative py-16 border-y border-green-pale overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-green-pale/20 to-primary/10 opacity-60" />
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(145, 200, 100, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(145, 200, 100, 0.05) 0%, transparent 50%)'
-          }} />
+          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(145, 200, 100, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(145, 200, 100, 0.05) 0%, transparent 50%)'
+        }} />
           <div className="relative max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 text-center">
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-1.5 mb-6 hover:border-primary/40 transition-colors">
               <Zap size={14} className="text-primary animate-pulse" />
@@ -91,7 +91,7 @@ export default function Home() {
             </Button>
           </div>
         </section>
-      )}
+      }
 
       {/* CTA Strip */}
       <section className="relative bg-gradient-to-r from-primary via-green-mid to-primary py-20 overflow-hidden">
@@ -120,19 +120,19 @@ export default function Home() {
       </section>
 
       {/* GOEO Attribution */}
-      <section className="py-10 bg-white border-t border-border">
+      <section className="py-10 bg-white border-t border-border hidden">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-center">
           <img
             src="https://media.base44.com/images/public/user_67cc86b158aeb10359268a7e/25e11e655_GOEO_BLACK_Standard_Web.webp"
             alt="Governor's Office of Economic Opportunity"
-            className="h-10 w-auto opacity-80"
-          />
+            className="h-10 w-auto opacity-80" />
+          
           <div className="hidden sm:block w-px h-10 bg-border" />
           <p className="text-sm text-muted-foreground max-w-sm">
             The Startup State Initiative is a program of Utah's Governor's Office of Economic Opportunity, celebrating and empowering entrepreneurs statewide.
           </p>
         </div>
       </section>
-    </div>
-  );
+    </div>);
+
 }
