@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Search, ExternalLink, BookOpen, DollarSign, Users, Briefcase, Globe, GraduationCap, Building } from 'lucide-react';
+import { Search, ExternalLink, BookOpen, DollarSign, Users, Briefcase, Globe, GraduationCap, Building, Grid3X3, List, Table2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const UTAH_RESOURCES = [
@@ -163,6 +163,7 @@ export default function Resources() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [audience, setAudience] = useState('All Stages');
+  const [view, setView] = useState('grid');
   const [dbResources, setDbResources] = useState([]);
 
   useEffect(() => {
@@ -189,8 +190,8 @@ export default function Resources() {
           </h1>
         </div>
 
-        {/* Search + Audience row */}
-        <div className="flex gap-3 mb-6">
+        {/* Search + Audience + View row */}
+        <div className="flex gap-3 mb-6 items-center">
           <div className="relative flex-1">
             <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -208,6 +209,25 @@ export default function Resources() {
           >
             {audienceFilters.map(a => <option key={a}>{a}</option>)}
           </select>
+          <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-white">
+            {[
+              { id: 'grid', icon: Grid3X3, label: 'Grid' },
+              { id: 'list', icon: List, label: 'List' },
+              { id: 'table', icon: Table2, label: 'Table' }
+            ].map(v => {
+              const Icon = v.icon;
+              return (
+                <button
+                  key={v.id}
+                  onClick={() => setView(v.id)}
+                  title={v.label}
+                  className={`p-2 transition-colors ${view === v.id ? 'bg-primary text-white' : 'text-gray-400 hover:text-gray-600'}`}
+                >
+                  <Icon size={16} />
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Category tabs */}
@@ -230,57 +250,130 @@ export default function Resources() {
         {/* Count */}
         <p className="text-sm text-gray-400 mb-6">{filtered.length} resource{filtered.length !== 1 ? 's' : ''} found</p>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
-          {filtered.map((r, i) => {
-            const Icon = categoryIcons[r.category] || BookOpen;
-            const colors = categoryColors[r.category] || { badge: 'bg-gray-50 text-gray-500', icon: 'bg-gray-50 text-gray-400', dot: 'bg-gray-300' };
-            return (
-              <div
-                key={r.id || i}
-                className="bg-white rounded-xl border border-gray-100 p-5 hover:border-gray-200 hover:shadow-sm transition-all duration-200 flex flex-col"
-              >
-                {/* Top row: icon + badge */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${colors.icon}`}>
-                    <Icon size={15} />
+        {/* Grid View */}
+        {view === 'grid' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+            {filtered.map((r, i) => {
+              const Icon = categoryIcons[r.category] || BookOpen;
+              const colors = categoryColors[r.category] || { badge: 'bg-gray-50 text-gray-500', icon: 'bg-gray-50 text-gray-400', dot: 'bg-gray-300' };
+              return (
+                <div
+                  key={r.id || i}
+                  className="bg-white rounded-xl border border-gray-100 p-5 hover:border-gray-200 hover:shadow-sm transition-all duration-200 flex flex-col"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${colors.icon}`}>
+                      <Icon size={15} />
+                    </div>
+                    <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${colors.badge}`}>
+                      {r.category}
+                    </span>
                   </div>
-                  <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${colors.badge}`}>
-                    {r.category}
-                  </span>
+                  <h3 className="font-manrope font-bold text-sm text-gray-900 mb-1 leading-snug">{r.title}</h3>
+                  <p className="text-xs text-primary font-medium mb-2">{r.provider}</p>
+                  <p className="text-xs text-gray-500 leading-relaxed flex-1 mb-3 line-clamp-3">{r.description}</p>
+                  {r.tags && r.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {r.tags.map(t => (
+                        <span key={t} className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <a href={r.url} target="_blank" rel="noopener noreferrer" className="mt-auto">
+                    <button className="flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-primary transition-colors group">
+                      Visit Resource
+                      <ExternalLink size={11} className="group-hover:text-primary" />
+                    </button>
+                  </a>
                 </div>
+              );
+            })}
+          </div>
+        )}
 
-                {/* Title */}
-                <h3 className="font-manrope font-bold text-sm text-gray-900 mb-1 leading-snug">{r.title}</h3>
-
-                {/* Provider */}
-                <p className="text-xs text-primary font-medium mb-2">{r.provider}</p>
-
-                {/* Description */}
-                <p className="text-xs text-gray-500 leading-relaxed flex-1 mb-3 line-clamp-3">{r.description}</p>
-
-                {/* Tags */}
-                {r.tags && r.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {r.tags.map(t => (
-                      <span key={t} className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
-                        {t}
-                      </span>
-                    ))}
+        {/* List View */}
+        {view === 'list' && (
+          <div className="space-y-3 mb-16">
+            {filtered.map((r, i) => {
+              const Icon = categoryIcons[r.category] || BookOpen;
+              const colors = categoryColors[r.category] || { badge: 'bg-gray-50 text-gray-500', icon: 'bg-gray-50 text-gray-400' };
+              return (
+                <div
+                  key={r.id || i}
+                  className="bg-white rounded-lg border border-gray-100 p-4 hover:border-gray-200 hover:shadow-sm transition-all duration-200 flex items-start gap-4"
+                >
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${colors.icon}`}>
+                    <Icon size={18} />
                   </div>
-                )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-3 mb-1">
+                      <h3 className="font-manrope font-bold text-sm text-gray-900">{r.title}</h3>
+                      <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full shrink-0 ${colors.badge}`}>
+                        {r.category}
+                      </span>
+                    </div>
+                    <p className="text-xs text-primary font-medium mb-1">{r.provider}</p>
+                    <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-2">{r.description}</p>
+                    <div className="flex items-center justify-between">
+                      {r.tags && r.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {r.tags.slice(0, 2).map(t => (
+                            <span key={t} className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
+                              {t}
+                            </span>
+                          ))}
+                          {r.tags.length > 2 && <span className="text-xs text-gray-400">+{r.tags.length - 2}</span>}
+                        </div>
+                      )}
+                      <a href={r.url} target="_blank" rel="noopener noreferrer">
+                        <button className="flex items-center gap-1 text-xs font-medium text-gray-600 hover:text-primary transition-colors">
+                          Visit
+                          <ExternalLink size={10} />
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
-                {/* CTA */}
-                <a href={r.url} target="_blank" rel="noopener noreferrer" className="mt-auto">
-                  <button className="flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-primary transition-colors group">
-                    Visit Resource
-                    <ExternalLink size={11} className="group-hover:text-primary" />
-                  </button>
-                </a>
-              </div>
-            );
-          })}
-        </div>
+        {/* Table View */}
+        {view === 'table' && (
+          <div className="overflow-x-auto mb-16">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 border-y border-gray-200">
+                <tr>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Resource</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Category</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Provider</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Description</th>
+                  <th className="text-center px-4 py-3 font-semibold text-gray-700">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {filtered.map((r, i) => (
+                  <tr key={r.id || i} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 font-medium text-gray-900">{r.title}</td>
+                    <td className="px-4 py-3 text-gray-600">{r.category}</td>
+                    <td className="px-4 py-3 text-gray-600">{r.provider}</td>
+                    <td className="px-4 py-3 text-gray-500 line-clamp-2">{r.description}</td>
+                    <td className="px-4 py-3 text-center">
+                      <a href={r.url} target="_blank" rel="noopener noreferrer">
+                        <button className="text-primary hover:text-primary/80 transition-colors">
+                          <ExternalLink size={14} />
+                        </button>
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         {/* AI Advisor CTA */}
         <div className="bg-primary rounded-2xl p-10 text-center mb-16">
