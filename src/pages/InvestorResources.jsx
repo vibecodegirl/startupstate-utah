@@ -134,40 +134,7 @@ export default function InvestorResources() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 
-        {/* Section 1: Trending Sectors */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-1 h-8 bg-primary rounded-full" />
-            <div>
-              <h2 className="font-manrope font-bold text-2xl text-foreground">Market Insights</h2>
-              <p className="text-sm text-muted-foreground">Real-time trends across Utah's innovation sectors</p>
-            </div>
-          </div>
-          <TrendingSectors />
-        </section>
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
-        {/* Section 2: Interactive Discovery */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-1 h-8 bg-primary rounded-full" />
-            <div>
-              <h2 className="font-manrope font-bold text-2xl text-foreground">Discover & Connect</h2>
-              <p className="text-sm text-muted-foreground">Explore startup hubs and find matching opportunities</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <EcosystemMap />
-            <DiscoverStartups />
-          </div>
-        </section>
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
-        {/* Key Stats */}
+        {/* Section 1: Key Stats - Lead with credibility */}
         <section>
           <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">By the Numbers</h2>
           <p className="text-muted-foreground mb-8">Source: 2026 State of Innovation Report — Nucleus Institute</p>
@@ -187,63 +154,43 @@ export default function InvestorResources() {
           </div>
         </section>
 
-        {/* VC Investment Chart */}
-        <section>
-          <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">VC Deal Activity</h2>
-          <p className="text-muted-foreground mb-8">Total venture capital deployed in Utah ($B), 2019–2024</p>
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-            <ResponsiveContainer width="100%" height={280}>
-              <BarChart data={vcData} barSize={40}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                <XAxis dataKey="year" tick={{ fontSize: 12, fill: '#64748b' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 12, fill: '#64748b' }} axisLine={false} tickLine={false} tickFormatter={v => `$${v}B`} />
-                <Tooltip formatter={v => [`$${v}B`, 'VC Invested']} contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12 }} />
-                <Bar dataKey="amount" fill="#16a34a" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-        {/* Sector Breakdown */}
-        <section>
-          <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Sector Growth</h2>
-          <p className="text-muted-foreground mb-8">Active startups by sector and YoY growth rate</p>
+        {/* Section 2: Interactive Discovery - Immediate action */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-8 bg-primary rounded-full" />
+            <div>
+              <h2 className="font-manrope font-bold text-2xl text-foreground">Discover & Connect</h2>
+              <p className="text-sm text-muted-foreground">Explore startup hubs and find matching opportunities</p>
+            </div>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-              <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={sectorData} layout="vertical" barSize={14}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
-                  <YAxis dataKey="sector" type="category" width={110} tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
-                  <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12 }} />
-                  <Bar dataKey="startups" fill="#16a34a" radius={[0, 6, 6, 0]} name="Startups" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-              <ResponsiveContainer width="100%" height={280}>
-                <PieChart>
-                  <Pie data={ecosystemPie} cx="50%" cy="50%" outerRadius={100} dataKey="value" label={({ name, value }) => `${name} ${value}%`} labelLine={false} fontSize={10}>
-                    {ecosystemPie.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                  </Pie>
-                  <Tooltip formatter={v => [`${v}%`, 'Share']} contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12 }} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Growth rate cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-4">
-            {sectorData.map(s => (
-              <div key={s.sector} className="bg-green-50 border border-green-100 rounded-xl p-3 text-center">
-                <div className="font-manrope font-extrabold text-xl text-green-primary">+{s.growth}%</div>
-                <div className="text-xs text-muted-foreground mt-0.5 leading-tight">{s.sector}</div>
-              </div>
-            ))}
+            <EcosystemMap />
+            <DiscoverStartups />
           </div>
         </section>
 
-        {/* Why Invest in Utah */}
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+        {/* Section 3: Trending Sectors - Show what's hot */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-8 bg-primary rounded-full" />
+            <div>
+              <h2 className="font-manrope font-bold text-2xl text-foreground">Market Insights</h2>
+              <p className="text-sm text-muted-foreground">Real-time trends across Utah's innovation sectors</p>
+            </div>
+          </div>
+          <TrendingSectors />
+        </section>
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+        {/* Section 4: Why Invest in Utah */}
         <section>
           <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Why Invest in Utah</h2>
           <p className="text-muted-foreground mb-8">The fundamentals that make Utah a sustained, high-conviction investment destination.</p>
@@ -263,7 +210,10 @@ export default function InvestorResources() {
           </div>
         </section>
 
-        {/* Notable Exits & Milestones */}
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+        {/* Section 5: Notable Exits & Milestones - Social proof */}
         <section>
           <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Notable Exits & Milestones</h2>
           <p className="text-muted-foreground mb-8">Proof that Utah-built companies reach the top.</p>
