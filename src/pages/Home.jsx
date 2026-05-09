@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import HeroSection from '@/components/home/HeroSection';
-import JourneyCards from '@/components/home/JourneyCards';
-import PersonaSelector from '@/components/home/PersonaSelector';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin, Sparkles, Zap, X } from 'lucide-react';
+import { ArrowRight, MapPin, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 
 
 const statsAnimationStyle = `
@@ -30,7 +29,7 @@ const stats = [
 ];
 
 export default function Home() {
-
+  const [showQuiz, setShowQuiz] = useState(false);
 
   return (
     <div className="min-h-screen">
@@ -51,13 +50,41 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <JourneyCards />
 
-
-
-
-
-      <PersonaSelector />
+      {/* Quiz Section */}
+      {showQuiz ? (
+        <section className="relative py-16 bg-muted/30">
+          <div className="max-w-4xl mx-auto px-4">
+            <ResourcesQuiz
+              onComplete={(answers) => {
+                setShowQuiz(false);
+                window.location.href = `/resources?quiz=1&stage=${answers.stage}&sector=${answers.sector}&challenge=${answers.challenge}`;
+              }}
+              onSkip={() => setShowQuiz(false)}
+            />
+          </div>
+        </section>
+      ) : (
+        <section className="relative py-16 border-y border-green-pale overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-green-pale/20 to-primary/10 opacity-60" />
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(145, 200, 100, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(145, 200, 100, 0.05) 0%, transparent 50%)'
+          }} />
+          <div className="relative max-w-4xl mx-auto px-4 text-center">
+            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-1.5 mb-6 hover:border-primary/40 transition-colors">
+              <Zap size={14} className="text-primary animate-pulse" />
+              <span className="text-xs font-semibold text-primary uppercase tracking-wider">Find Your Path</span>
+            </div>
+            <h2 className="font-manrope font-extrabold text-3xl sm:text-4xl text-foreground mb-3">Discover Resources That Match Your Journey</h2>
+            <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
+              Answer 3 quick questions about your stage, sector, and challenges to get personalized recommendations from Utah's startup ecosystem.
+            </p>
+            <Button onClick={() => setShowQuiz(true)} size="lg" className="bg-primary text-white hover:bg-green-dark font-manrope font-bold px-8 gap-2 shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+              Start the Quiz <ArrowRight size={16} />
+            </Button>
+          </div>
+        </section>
+      )}
 
       {/* CTA Strip */}
       <section className="relative bg-gradient-to-r from-primary via-green-mid to-primary py-20 overflow-hidden">
