@@ -1,0 +1,237 @@
+import { Link } from 'react-router-dom';
+import { ArrowRight, TrendingUp, DollarSign, Users, Globe, Zap, Award, Building2, ExternalLink } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend } from 'recharts';
+import { Button } from '@/components/ui/button';
+
+const vcData = [
+  { year: '2019', amount: 0.8 },
+  { year: '2020', amount: 1.1 },
+  { year: '2021', amount: 2.9 },
+  { year: '2022', amount: 2.4 },
+  { year: '2023', amount: 1.7 },
+  { year: '2024', amount: 1.96 },
+];
+
+const sectorData = [
+  { sector: 'AI / ML', startups: 420, growth: 38 },
+  { sector: 'Life Sciences', startups: 310, growth: 22 },
+  { sector: 'Fintech', startups: 280, growth: 29 },
+  { sector: 'B2B SaaS', startups: 680, growth: 31 },
+  { sector: 'Aerospace & Defense', startups: 190, growth: 18 },
+  { sector: 'Energy', startups: 160, growth: 42 },
+];
+
+const ecosystemPie = [
+  { name: 'B2B SaaS', value: 29, color: '#16a34a' },
+  { name: 'AI / ML', value: 18, color: '#2563eb' },
+  { name: 'Life Sciences', value: 13, color: '#dc2626' },
+  { name: 'Fintech', value: 12, color: '#7c3aed' },
+  { name: 'Aerospace', value: 8, color: '#ea580c' },
+  { name: 'Other', value: 20, color: '#94a3b8' },
+];
+
+const stats = [
+  { value: '$1.96B', label: 'VC Deal Activity (2024)', icon: DollarSign, color: 'text-green-600 bg-green-50' },
+  { value: '$10B+', label: 'Assets Under Management by Utah VCs', icon: TrendingUp, color: 'text-blue-600 bg-blue-50' },
+  { value: '3,500+', label: 'Active Startups', icon: Building2, color: 'text-purple-600 bg-purple-50' },
+  { value: '#1', label: 'Economic Outlook (19 Consecutive Years)', icon: Award, color: 'text-orange-600 bg-orange-50' },
+  { value: '$315B+', label: 'State GDP (2025)', icon: Globe, color: 'text-teal-600 bg-teal-50' },
+  { value: '4.5%', label: 'Real GDP Growth Rate — #1 Nationally', icon: Zap, color: 'text-red-600 bg-red-50' },
+];
+
+const whyUtah = [
+  {
+    title: 'Talent Pipeline',
+    description: '3 R1 research universities — University of Utah, Utah State, and BYU — producing top engineering, life sciences, and computer science graduates.',
+    icon: Users,
+  },
+  {
+    title: 'Innovation Infrastructure',
+    description: 'Top 5 patent ranking among peer institutions (U of U). $603.7M in SBIR/STTR funding won by Utah companies since 2008.',
+    icon: Zap,
+  },
+  {
+    title: 'Business Climate',
+    description: '#1 economic outlook for 19 consecutive years. Low regulatory burden, competitive tax environment, and a state government that actively supports innovation.',
+    icon: TrendingUp,
+  },
+  {
+    title: 'Geographic Advantage',
+    description: 'Mountain West hub with direct access to West Coast capital markets, a central US timezone, and growing international trade corridors.',
+    icon: Globe,
+  },
+  {
+    title: 'Strong VC Ecosystem',
+    description: 'Kickstart Fund, Pelion, Signal Peak, Album VC, Sorenson Capital, and Mercato Partners — all Utah-based, all actively deploying capital.',
+    icon: DollarSign,
+  },
+  {
+    title: 'Sector Depth',
+    description: 'World-class clusters in AI/ML, Life Sciences, Aerospace & Defense, and Fintech — supported by federal contracts, university research, and industry associations.',
+    icon: Award,
+  },
+];
+
+const notableExits = [
+  { name: 'Qualtrics', outcome: 'IPO / SAP acquisition — $8B', sector: 'B2B SaaS' },
+  { name: 'Domo', outcome: 'NASDAQ IPO', sector: 'B2B SaaS' },
+  { name: 'Entrust Datacard', outcome: 'Acquired — $1.2B', sector: 'Security' },
+  { name: 'Ancestry.com', outcome: 'Acquired — $1.6B', sector: 'Consumer' },
+  { name: 'Ivanti', outcome: 'PE backed — $3B valuation', sector: 'B2B Software' },
+  { name: 'MX Technologies', outcome: 'Series C — $300M+', sector: 'Fintech' },
+];
+
+export default function InvestorResources() {
+  return (
+    <div className="min-h-screen bg-white pt-24">
+      {/* Hero */}
+      <div className="bg-gradient-to-br from-foreground via-green-dark to-green-primary text-white py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
+            <TrendingUp size={13} className="text-green-light" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-green-light">Investment Overview</span>
+          </div>
+          <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl mb-4 leading-tight">
+            Invest in Utah
+          </h1>
+          <p className="text-white/75 text-xl max-w-2xl mx-auto leading-relaxed">
+            A nationally ranked innovation economy with deep talent, active capital, and sustained momentum across high-growth sectors.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
+
+        {/* Key Stats */}
+        <section>
+          <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">By the Numbers</h2>
+          <p className="text-muted-foreground mb-8">Source: 2026 State of Innovation Report — Nucleus Institute</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {stats.map(s => {
+              const Icon = s.icon;
+              return (
+                <div key={s.label} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${s.color}`}>
+                    <Icon size={18} />
+                  </div>
+                  <div className="font-manrope font-extrabold text-2xl text-foreground">{s.value}</div>
+                  <div className="text-xs text-muted-foreground mt-1 leading-snug">{s.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* VC Investment Chart */}
+        <section>
+          <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">VC Deal Activity</h2>
+          <p className="text-muted-foreground mb-8">Total venture capital deployed in Utah ($B), 2019–2024</p>
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={vcData} barSize={40}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="year" tick={{ fontSize: 12, fill: '#64748b' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: '#64748b' }} axisLine={false} tickLine={false} tickFormatter={v => `$${v}B`} />
+                <Tooltip formatter={v => [`$${v}B`, 'VC Invested']} contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12 }} />
+                <Bar dataKey="amount" fill="#16a34a" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </section>
+
+        {/* Sector Breakdown */}
+        <section>
+          <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Sector Growth</h2>
+          <p className="text-muted-foreground mb-8">Active startups by sector and YoY growth rate</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart data={sectorData} layout="vertical" barSize={14}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
+                  <XAxis type="number" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+                  <YAxis dataKey="sector" type="category" width={110} tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12 }} />
+                  <Bar dataKey="startups" fill="#16a34a" radius={[0, 6, 6, 0]} name="Startups" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+              <ResponsiveContainer width="100%" height={280}>
+                <PieChart>
+                  <Pie data={ecosystemPie} cx="50%" cy="50%" outerRadius={100} dataKey="value" label={({ name, value }) => `${name} ${value}%`} labelLine={false} fontSize={10}>
+                    {ecosystemPie.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                  </Pie>
+                  <Tooltip formatter={v => [`${v}%`, 'Share']} contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12 }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Growth rate cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-4">
+            {sectorData.map(s => (
+              <div key={s.sector} className="bg-green-50 border border-green-100 rounded-xl p-3 text-center">
+                <div className="font-manrope font-extrabold text-xl text-green-primary">+{s.growth}%</div>
+                <div className="text-xs text-muted-foreground mt-0.5 leading-tight">{s.sector}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Why Invest in Utah */}
+        <section>
+          <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Why Invest in Utah</h2>
+          <p className="text-muted-foreground mb-8">The fundamentals that make Utah a sustained, high-conviction investment destination.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {whyUtah.map(w => {
+              const Icon = w.icon;
+              return (
+                <div key={w.title} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-primary/20 transition-all">
+                  <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mb-4">
+                    <Icon size={18} className="text-primary" />
+                  </div>
+                  <h3 className="font-manrope font-bold text-base text-foreground mb-2">{w.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{w.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Notable Exits & Milestones */}
+        <section>
+          <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Notable Exits & Milestones</h2>
+          <p className="text-muted-foreground mb-8">Proof that Utah-built companies reach the top.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {notableExits.map(e => (
+              <div key={e.name} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="font-manrope font-bold text-lg text-foreground mb-1">{e.name}</div>
+                <div className="text-xs font-semibold text-primary bg-green-50 px-2 py-0.5 rounded-full inline-block mb-2">{e.sector}</div>
+                <p className="text-sm text-muted-foreground">{e.outcome}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="bg-foreground rounded-3xl p-10 text-center">
+          <h2 className="font-manrope font-extrabold text-3xl text-white mb-3">Explore Utah's Startup Ecosystem</h2>
+          <p className="text-white/70 mb-8 max-w-xl mx-auto">Browse active startups across every sector, filter by stage and size, and discover your next investment opportunity.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/map">
+              <Button className="bg-primary text-white hover:bg-green-mid font-manrope font-bold px-8 gap-2">
+                View Startup Map <ArrowRight size={16} />
+              </Button>
+            </Link>
+            <a href="https://nucleusinstitute.org" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 font-semibold gap-2">
+                2026 Innovation Report <ExternalLink size={14} />
+              </Button>
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  );
+}

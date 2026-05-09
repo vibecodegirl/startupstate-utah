@@ -1,5 +1,6 @@
 import { ExternalLink, Linkedin, Users, MapPin, CheckCircle, Clock, AlertCircle, Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 
 const sectorColors = {
   'AI': 'bg-blue-100 text-blue-700',
@@ -31,7 +32,7 @@ export default function StartupCard({ startup, compact = false }) {
   if (!startup) return null;
 
   return (
-    <div className={`bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden ${compact ? 'p-4' : 'p-6'}`}>
+    <Link to={`/startups/${startup.id}`} className={`block bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden ${compact ? 'p-4' : 'p-6'}`}>
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
@@ -86,21 +87,21 @@ export default function StartupCard({ startup, compact = false }) {
       )}
 
       {/* Links */}
-      <div className="flex items-center gap-3 mt-auto">
+      <div className="flex items-center gap-3 mt-auto" onClick={e => e.preventDefault()}>
         {startup.website && (
-          <a href={startup.website} target="_blank" rel="noopener noreferrer"
+          <a href={startup.website} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
             className="flex items-center gap-1 text-xs text-primary hover:underline font-medium">
             <Globe size={13} /> Website
           </a>
         )}
         {startup.linkedin_url && (
-          <a href={startup.linkedin_url} target="_blank" rel="noopener noreferrer"
+          <a href={startup.linkedin_url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
             className="flex items-center gap-1 text-xs text-blue-600 hover:underline font-medium">
             <Linkedin size={13} /> LinkedIn
           </a>
         )}
         {startup.job_postings_url && startup.hiring && (
-          <a href={startup.job_postings_url} target="_blank" rel="noopener noreferrer"
+          <a href={startup.job_postings_url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
             className="ml-auto flex items-center gap-1 text-xs text-green-700 hover:underline font-medium">
             <ExternalLink size={11} /> Jobs
           </a>
@@ -108,6 +109,6 @@ export default function StartupCard({ startup, compact = false }) {
       </div>
 
 
-    </div>
+    </Link>
   );
 }

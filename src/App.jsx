@@ -20,6 +20,8 @@ import Events from '@/pages/Events';
 import StartPage from '@/pages/StartPage';
 import Funding from '@/pages/Funding';
 import AdminDashboard from '@/pages/AdminDashboard';
+import InvestorResources from '@/pages/InvestorResources';
+import StartupProfile from '@/pages/StartupProfile';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -72,6 +74,8 @@ const AuthenticatedApp = () => {
         <Route path="/start" element={<StartPage />} />
         <Route path="/funding" element={<Funding />} />
         <Route path="/admin" element={<AdminDashboard role={role} />} />
+        <Route path="/investors" element={<InvestorResources />} />
+        <Route path="/startups/:id" element={<StartupProfile />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

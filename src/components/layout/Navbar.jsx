@@ -11,6 +11,7 @@ const navLinks = [
   { label: 'Startup Map', href: '/map' },
   { label: 'Events', href: '/events' },
   { label: 'Why Utah?', href: '/why-utah' },
+  { label: 'Investors', href: '/investors' },
 ];
 
 export default function Navbar({ role, setRole }) {
