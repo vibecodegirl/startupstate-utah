@@ -8,10 +8,12 @@ import DiscoverStartups from '@/components/investors/DiscoverStartups';
 import EcosystemMap from '@/components/investors/EcosystemMap';
 import InvestorMatchPanel from '@/components/investors/InvestorMatchPanel';
 import HubDetailsPanel from '@/components/investors/HubDetailsPanel';
+import StartupDetailsPanel from '@/components/investors/StartupDetailsPanel';
 
 function DiscoverConnectGrid() {
   const [mapZoom, setMapZoom] = useState(null);
   const [selectedHub, setSelectedHub] = useState(null);
+  const [selectedStartup, setSelectedStartup] = useState(null);
   const discoverStartupsRef = useRef(null);
 
   const handleHubClick = (hub) => {
@@ -20,7 +22,7 @@ function DiscoverConnectGrid() {
   };
 
   const handleStartupClick = (startup) => {
-    // Trigger map zoom and marker selection via ref callback
+    setSelectedStartup(startup);
     if (discoverStartupsRef?.current?.focusStartup) {
       discoverStartupsRef.current.focusStartup(startup);
     }
@@ -33,6 +35,7 @@ function DiscoverConnectGrid() {
         <EcosystemMap zoomToCity={mapZoom} onHubClick={handleHubClick} />
       </div>
       {selectedHub && <HubDetailsPanel hub={selectedHub} onClose={() => setSelectedHub(null)} onStartupClick={handleStartupClick} />}
+      {selectedStartup && <StartupDetailsPanel startup={selectedStartup} onClose={() => setSelectedStartup(null)} />}
     </>
   );
 }
