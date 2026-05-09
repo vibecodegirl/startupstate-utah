@@ -113,12 +113,17 @@ export default function InvestorResources() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/map">
               <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8 py-3 text-base shadow-lg hover:shadow-xl transition-all">
-                Explore Startups <ArrowRight size={18} className="ml-2" />
+                View Startup Map <ArrowRight size={18} />
               </Button>
             </Link>
+            <a href="https://nucleusinstitute.org" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="border-white/60 text-white hover:bg-white/10 font-semibold px-8 py-3 text-base backdrop-blur-sm gap-2">
+                2026 Innovation Report <ExternalLink size={16} />
+              </Button>
+            </a>
             <Link to="/investor-profile">
               <Button variant="outline" className="border-white/60 text-white hover:bg-white/10 font-semibold px-8 py-3 text-base backdrop-blur-sm">
-                Build Your Profile
+                Build Investor Profile
               </Button>
             </Link>
           </div>
@@ -249,23 +254,7 @@ export default function InvestorResources() {
           </Link>
         </section>
 
-        {/* CTA */}
-        <section className="bg-foreground rounded-3xl p-10 text-center">
-          <h2 className="font-manrope font-extrabold text-3xl text-white mb-3">Explore Utah's Startup Ecosystem</h2>
-          <p className="text-white/70 mb-8 max-w-xl mx-auto">Browse active startups across every sector, filter by stage and size, and discover your next investment opportunity.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/map">
-              <Button className="bg-primary text-white hover:bg-green-mid font-manrope font-bold px-8 gap-2">
-                View Startup Map <ArrowRight size={16} />
-              </Button>
-            </Link>
-            <a href="https://nucleusinstitute.org" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 font-semibold gap-2">
-                2026 Innovation Report <ExternalLink size={14} />
-              </Button>
-            </a>
-          </div>
-        </section>
+
 
       </div>
     </div>
