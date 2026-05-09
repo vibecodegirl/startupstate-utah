@@ -16,13 +16,19 @@
         "Government",
         "Education",
         "Networking",
-        "International"
+        "International",
+        "Workforce Development",
+        "Entrepreneurship Communities",
+        "Marketing and Sales"
       ]
     },
     "description": {
       "type": "string"
     },
     "url": {
+      "type": "string"
+    },
+    "contact_email": {
       "type": "string"
     },
     "provider": {
@@ -51,7 +57,36 @@
           "Aerospace & Defense",
           "Life Sciences",
           "Fintech",
+          "B2B Software",
+          "Marketplaces",
+          "Energy",
+          "Consumer",
+          "Security",
+          "Agriculture",
+          "Manufacturing",
+          "Hospitality and Food Services",
           "All Sectors"
+        ]
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Utah counties or regions"
+    },
+    "communities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Rural",
+          "Student",
+          "Veteran",
+          "Women",
+          "Underrepresented",
+          "All"
         ]
       }
     },
