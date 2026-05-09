@@ -129,7 +129,28 @@
           "resources": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "saved",
+                    "in_progress",
+                    "completed",
+                    "not_helpful"
+                  ],
+                  "default": "saved"
+                },
+                "notes": {
+                  "type": "string"
+                }
+              }
             }
           },
           "completed": {
