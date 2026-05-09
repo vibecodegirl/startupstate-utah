@@ -96,7 +96,7 @@ export default function QuizResults() {
     <div className="min-h-screen pt-20 bg-white">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         {/* Back link */}
-        <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold text-sm mb-8 transition-colors">
+        <Link to="/start" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold text-sm mb-8 transition-colors">
           <ChevronLeft size={16} /> Back to all pathways
         </Link>
 
