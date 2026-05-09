@@ -85,18 +85,43 @@ export default function InvestorResources() {
   return (
     <div className="min-h-screen bg-white pt-24">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-foreground via-green-dark to-green-primary text-white py-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
-            <TrendingUp size={13} className="text-green-light" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-green-light">Investment Overview</span>
+      <div className="relative overflow-hidden pt-24 pb-32 text-white">
+        {/* Animated gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-green-dark to-foreground" />
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 mb-8 hover:bg-white/20 transition-colors">
+            <TrendingUp size={14} className="text-primary/80" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-white/90">Capital Deployment Hub</span>
           </div>
-          <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl mb-4 leading-tight">
-            Invest in Utah
+
+          <h1 className="font-manrope font-extrabold text-6xl sm:text-7xl lg:text-8xl mb-6 leading-tight">
+            Invest in<br/>
+            <span className="bg-gradient-to-r from-primary via-green-light to-primary bg-clip-text text-transparent">Utah</span>
           </h1>
-          <p className="text-white/75 text-xl max-w-2xl mx-auto leading-relaxed">
-            A nationally ranked innovation economy with deep talent, active capital, and sustained momentum across high-growth sectors.
+
+          <p className="text-white/80 text-xl sm:text-2xl max-w-3xl mx-auto leading-relaxed mb-10">
+            The fastest-growing innovation economy in America. Ranked #1 economic outlook for 19 consecutive years. $1.96B+ in VC deployed annually. Deep talent, strong returns, sustained momentum.
           </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/map">
+              <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8 py-3 text-base shadow-lg hover:shadow-xl transition-all">
+                Explore Startups <ArrowRight size={18} className="ml-2" />
+              </Button>
+            </Link>
+            <Link to="/investor-profile">
+              <Button variant="outline" className="border-white/60 text-white hover:bg-white/10 font-semibold px-8 py-3 text-base backdrop-blur-sm">
+                Build Your Profile
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 
