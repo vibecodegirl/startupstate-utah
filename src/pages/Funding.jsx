@@ -63,7 +63,7 @@ const pitchComps = [
 export default function Funding() {
   return (
     <div className="min-h-screen pt-24 bg-muted/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-3">

@@ -35,100 +35,54 @@ export default function FounderStories() {
   const current = stories[currentIndex];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white via-green-pale/10 to-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 mb-4">
-            <Sparkles size={14} />
-            <span className="text-xs font-semibold uppercase tracking-wider">Founder Testimonials</span>
-          </div>
-          <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Founders Like You, Thriving in Utah</h2>
-          <p className="text-muted-foreground">Real stories. Real wins. Hear directly from Utah founders who've built successful companies.</p>
+    <section className="py-12 bg-gradient-to-b from-white via-green-pale/10 to-white">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="text-center mb-8">
+          <h2 className="font-manrope font-extrabold text-2xl text-foreground mb-1">Founders Like You, Thriving in Utah</h2>
+          <p className="text-muted-foreground text-sm">Real stories from Utah founders.</p>
         </div>
 
-        {/* Carousel */}
-        <div className="relative">
-          <div className="bg-white rounded-3xl border border-border shadow-lg p-8 sm:p-12">
-            {/* Testimonial content */}
-            <div className="space-y-6">
-              {/* Quote icon */}
-              <Quote size={32} className="text-primary/20" />
-
-              {/* Story excerpt as testimonial */}
-              <div>
-                <p className="text-lg sm:text-xl text-foreground font-medium leading-relaxed italic">"{current.story_excerpt}"</p>
+        <div className="bg-white rounded-2xl border border-border shadow-sm p-6">
+          <div className="flex items-start gap-4 mb-4">
+            {current.photo_url ? (
+              <img src={current.photo_url} alt={current.founder_name} className="w-10 h-10 rounded-full object-cover border border-border shrink-0" />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-green-pale flex items-center justify-center shrink-0">
+                <span className="font-bold text-primary text-xs">{current.founder_name[0]}</span>
               </div>
-
-              {/* Founder info */}
-              <div className="border-t border-border pt-6">
-                <div className="flex items-start gap-4">
-                  {current.photo_url ? (
-                    <img src={current.photo_url} alt={current.founder_name} className="w-12 h-12 rounded-full object-cover border border-border" />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-green-pale flex items-center justify-center flex-shrink-0">
-                      <span className="font-bold text-primary text-sm">{current.founder_name[0]}</span>
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-foreground">{current.founder_name}</p>
-                    <p className="text-sm text-muted-foreground">{current.company_name}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs font-semibold px-2 py-1 rounded-full bg-primary/10 text-primary">{current.founding_stage_when_featured}</span>
-                      {current.key_achievement && (
-                        <span className="text-xs text-muted-foreground font-medium">{current.key_achievement}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Story title/headline */}
-              <div className="bg-green-pale/30 border border-primary/20 rounded-lg p-4">
-                <p className="text-sm font-bold text-primary mb-1">Their Journey</p>
-                <p className="text-base font-semibold text-foreground">{current.story_title}</p>
-              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-foreground text-sm">{current.founder_name}</p>
+              <p className="text-xs text-muted-foreground">{current.company_name} • {current.founding_stage_when_featured}</p>
             </div>
+          </div>
 
-            {/* Navigation buttons */}
-            <div className="flex items-center justify-between mt-8">
-              <Button
-                onClick={prevSlide}
-                variant="outline"
-                size="icon"
-                className="rounded-full border-border hover:border-primary/30"
-              >
-                <ChevronLeft size={20} />
-              </Button>
+          <p className="text-foreground font-medium leading-relaxed italic mb-3 text-sm">"{current.story_excerpt}"</p>
 
-              <div className="flex gap-2">
-                {stories.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentIndex(idx)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      idx === currentIndex ? 'bg-primary w-6' : 'bg-muted hover:bg-primary/40'
-                    }`}
-                    aria-label={`Go to story ${idx + 1}`}
-                  />
-                ))}
-              </div>
+          <p className="text-xs text-primary font-semibold mb-1">{current.story_title}</p>
+          {current.key_achievement && (
+            <p className="text-xs text-muted-foreground">{current.key_achievement}</p>
+          )}
 
-              <Button
-                onClick={nextSlide}
-                variant="outline"
-                size="icon"
-                className="rounded-full border-border hover:border-primary/30"
-              >
-                <ChevronRight size={20} />
-              </Button>
+          <div className="flex items-center justify-between mt-4">
+            <Button onClick={prevSlide} variant="ghost" size="icon" className="h-8 w-8">
+              <ChevronLeft size={16} />
+            </Button>
+            <div className="flex gap-1.5">
+              {stories.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`h-1 rounded-full transition-all ${
+                    idx === currentIndex ? 'bg-primary w-5' : 'bg-muted hover:bg-primary/40 w-1'
+                  }`}
+                  aria-label={`Go to story ${idx + 1}`}
+                />
+              ))}
             </div>
-
-            {/* Slide counter */}
-            <div className="text-center mt-4">
-              <p className="text-xs text-muted-foreground font-medium">
-                Story {currentIndex + 1} of {stories.length}
-              </p>
-            </div>
+            <Button onClick={nextSlide} variant="ghost" size="icon" className="h-8 w-8">
+              <ChevronRight size={16} />
+            </Button>
           </div>
         </div>
       </div>

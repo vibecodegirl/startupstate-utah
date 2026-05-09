@@ -158,7 +158,7 @@ export default function StartPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
 
         {/* Quiz Section - Conditional */}
         {showQuiz && (
@@ -181,7 +181,7 @@ export default function StartPage() {
         {/* Personalized Steps - Only show if quiz completed */}
         {quizAnswers && quizAnswers !== 'skipped' && (
           <section className="py-12 bg-muted/20">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
               <div className="text-center mb-12">
                 <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Your Personalized Roadmap</h2>
                 <p className="text-muted-foreground">Follow these steps tailored to your {quizAnswers.stage} stage startup.</p>

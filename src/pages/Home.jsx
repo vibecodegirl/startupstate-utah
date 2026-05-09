@@ -37,7 +37,7 @@ export default function Home() {
       <HeroSection />
 
       {/* Stats Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10 mb-16">
+      <section className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 -mt-8 relative z-10 mb-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {stats.map((s, i) => (
             <div key={s.label} className="bg-white rounded-2xl border border-border p-4 text-center shadow-lg hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:scale-105 group cursor-default" style={{
@@ -77,7 +77,7 @@ export default function Home() {
           <div className="absolute inset-0" style={{
             backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(145, 200, 100, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(145, 200, 100, 0.05) 0%, transparent 50%)'
           }} />
-          <div className="relative max-w-4xl mx-auto px-4 text-center">
+          <div className="relative max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 text-center">
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-1.5 mb-6 hover:border-primary/40 transition-colors">
               <Zap size={14} className="text-primary animate-pulse" />
               <span className="text-xs font-semibold text-primary uppercase tracking-wider">Find Your Path</span>
@@ -121,7 +121,7 @@ export default function Home() {
 
       {/* GOEO Attribution */}
       <section className="py-10 bg-white border-t border-border">
-        <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-6 text-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-center">
           <img
             src="https://media.base44.com/images/public/user_67cc86b158aeb10359268a7e/25e11e655_GOEO_BLACK_Standard_Web.webp"
             alt="Governor's Office of Economic Opportunity"
