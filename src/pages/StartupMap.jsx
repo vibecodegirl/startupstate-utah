@@ -238,8 +238,7 @@ export default function StartupMap() {
                       key={s.id}
                       position={[s.latitude, s.longitude]}
                       eventHandlers={{ click: () => setSelected(s) }}
-                      icon={selected && selected.id !== s.id ? dimmedIcon : selectedIcon}
-                      opacity={selected && selected.id !== s.id ? 0.25 : 1}
+                      icon={selectedIcon}
                     >
                       <Popup>
                         <div className="min-w-48">
