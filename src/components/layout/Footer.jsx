@@ -18,10 +18,12 @@ export default function Footer() {
             <p className="text-white/60 text-sm leading-relaxed">
               The global standard for innovation and entrepreneurship. Powered by the Governor's Office of Economic Opportunity.
             </p>
-            <img
-              src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/50f598190_GOEO_BLACK_Standard.webp"
-              alt="GOEO"
-              className="h-8 w-auto mt-4 brightness-0 invert" />
+            <a href="https://business.utah.gov/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/50f598190_GOEO_BLACK_Standard.webp"
+                alt="GOEO"
+                className="h-8 w-auto mt-4 brightness-0 invert hover:opacity-80 transition-opacity cursor-pointer" />
+            </a>
             
           </div>
 
