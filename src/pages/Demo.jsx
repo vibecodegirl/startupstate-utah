@@ -5,29 +5,34 @@ import { base44 } from '@/api/base44Client';
 
 export default function Demo() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [videoUrl, setVideoUrl] = useState(null);
-  const [videoLoading, setVideoLoading] = useState(false);
-  const [videoError, setVideoError] = useState(null);
+  const [videos, setVideos] = useState({});
+  const [loadingSlide, setLoadingSlide] = useState(null);
+  const [videoErrors, setVideoErrors] = useState({});
 
-  // Generate demo video on mount
+  // Generate videos for each slide
   useEffect(() => {
-    const generateVideo = async () => {
-      setVideoLoading(true);
+    const generateSlideVideo = async (slideType) => {
+      if (videos[slideType]) return; // Already loaded
+      
+      setLoadingSlide(slideType);
       try {
-        const response = await base44.functions.invoke('generateDemoVideo', {});
+        const response = await base44.functions.invoke('generateDemoVideo', { videoType: slideType });
         if (response.data.success) {
-          setVideoUrl(response.data.videoUrl);
+          setVideos(prev => ({ ...prev, [slideType]: response.data.videoUrl }));
         } else {
-          setVideoError('Failed to generate video');
+          setVideoErrors(prev => ({ ...prev, [slideType]: 'Failed to generate video' }));
         }
       } catch (err) {
-        setVideoError('Error generating video');
+        setVideoErrors(prev => ({ ...prev, [slideType]: 'Error generating video' }));
       }
-      setVideoLoading(false);
+      setLoadingSlide(null);
     };
 
-    generateVideo();
-  }, []);
+    // Generate video for current slide if not already loaded
+    const slideTypes = ['slide1', 'slide2', 'slide3'];
+    const currentSlideType = slideTypes[currentSlide];
+    generateSlideVideo(currentSlideType);
+  }, [currentSlide, videos]);
 
   const slides = [
     {
@@ -115,6 +120,32 @@ export default function Demo() {
             {/* Slide 1: Founder Journey */}
             {currentSlide === 0 && (
               <div className="space-y-8 mt-8">
+                {/* Demo Video */}
+                {loadingSlide === 'slide1' && (
+                  <div className="bg-white/60 backdrop-blur rounded-2xl p-12 flex flex-col items-center justify-center gap-4 min-h-[300px]">
+                    <Loader size={40} className="text-green-600 animate-spin" />
+                    <p className="text-foreground font-semibold">Generating demo video...</p>
+                  </div>
+                )}
+
+                {videoErrors.slide1 && (
+                  <div className="bg-red-50/60 backdrop-blur rounded-2xl p-8 text-center border border-red-200/50">
+                    <p className="text-red-700 font-semibold">{videoErrors.slide1}</p>
+                  </div>
+                )}
+
+                {videos.slide1 && (
+                  <div className="bg-black rounded-2xl overflow-hidden shadow-lg">
+                    <video
+                      controls
+                      className="w-full aspect-video"
+                      src={videos.slide1}
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                )}
+
                 {/* Step Flow */}
                 <div className="flex items-center justify-between gap-4 mb-8">
                   {slide.steps.map((step, idx) => (
@@ -143,6 +174,32 @@ export default function Demo() {
             {/* Slide 2: Investor Dashboard */}
             {currentSlide === 1 && (
               <div className="space-y-8 mt-8">
+                {/* Demo Video */}
+                {loadingSlide === 'slide2' && (
+                  <div className="bg-white/60 backdrop-blur rounded-2xl p-12 flex flex-col items-center justify-center gap-4 min-h-[300px]">
+                    <Loader size={40} className="text-purple-600 animate-spin" />
+                    <p className="text-foreground font-semibold">Generating demo video...</p>
+                  </div>
+                )}
+
+                {videoErrors.slide2 && (
+                  <div className="bg-red-50/60 backdrop-blur rounded-2xl p-8 text-center border border-red-200/50">
+                    <p className="text-red-700 font-semibold">{videoErrors.slide2}</p>
+                  </div>
+                )}
+
+                {videos.slide2 && (
+                  <div className="bg-black rounded-2xl overflow-hidden shadow-lg">
+                    <video
+                      controls
+                      className="w-full aspect-video"
+                      src={videos.slide2}
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                )}
+
                 {/* Single Click Visualization */}
                 <div className="flex items-center justify-center gap-4 mb-8">
                   <div className="text-center">
@@ -178,33 +235,33 @@ export default function Demo() {
             {currentSlide === 2 && (
               <div className="space-y-8 mt-8">
                 {/* Demo Video */}
-                {videoLoading && (
+                {loadingSlide === 'slide3' && (
                   <div className="bg-white/60 backdrop-blur rounded-2xl p-12 flex flex-col items-center justify-center gap-4 min-h-[300px]">
                     <Loader size={40} className="text-orange-600 animate-spin" />
                     <p className="text-foreground font-semibold">Generating demo video...</p>
                   </div>
                 )}
 
-                {videoError && (
+                {videoErrors.slide3 && (
                   <div className="bg-red-50/60 backdrop-blur rounded-2xl p-8 text-center border border-red-200/50">
-                    <p className="text-red-700 font-semibold">{videoError}</p>
+                    <p className="text-red-700 font-semibold">{videoErrors.slide3}</p>
                     <p className="text-sm text-red-600 mt-2">Video generation in progress. Refresh to see when ready.</p>
                   </div>
                 )}
 
-                {videoUrl && (
+                {videos.slide3 && (
                   <div className="bg-black rounded-2xl overflow-hidden shadow-lg">
                     <video
                       controls
                       className="w-full aspect-video"
-                      src={videoUrl}
+                      src={videos.slide3}
                     >
                       Your browser does not support the video tag.
                     </video>
                   </div>
                 )}
 
-                {!videoUrl && !videoLoading && !videoError && (
+                {!videos.slide3 && !loadingSlide && !videoErrors.slide3 && (
                   <div className="bg-white/60 backdrop-blur rounded-2xl p-8 flex flex-col items-center justify-center gap-4 min-h-[300px]">
                     <Play size={48} className="text-orange-600 opacity-60" />
                     <p className="text-foreground font-semibold">Demo video ready</p>
