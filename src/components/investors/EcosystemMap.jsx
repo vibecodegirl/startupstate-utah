@@ -26,8 +26,7 @@ export default function EcosystemMap({ zoomToCity, onHubClick, mapStartups = [] 
           lat: data.lat,
           lon: data.lon
         }))
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 6);
+        .sort((a, b) => b.count - a.count);
 
       setHubs(hubsList);
       setLoading(false);
