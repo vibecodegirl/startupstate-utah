@@ -160,60 +160,20 @@ const categoryColors = {
 const categories = ['All', 'Funding', 'Mentorship', 'Government', 'Education', 'Networking', 'International'];
 const audienceFilters = ['All Stages', 'Pre-Seed', 'Seed', 'Series A', 'Series B', 'Growth'];
 
-const challengeToCategoryMap = {
-  'Finding capital': 'Funding',
-  'Building a team': 'Workforce Development',
-  'Mentorship & guidance': 'Mentorship',
-  'Networking & partnerships': 'Networking',
-  'Legal & compliance': 'Government',
-};
-
 export default function Resources() {
-  const [searchParams] = useSearchParams();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [audience, setAudience] = useState('All Stages');
   const [view, setView] = useState('grid');
-  const [quizAnswers, setQuizAnswers] = useState(null);
   const [dbResources, setDbResources] = useState([]);
 
   useEffect(() => {
-    const stage = searchParams.get('stage');
-    const sector = searchParams.get('sector');
-    const challenge = searchParams.get('challenge');
-    
-    if (stage || sector || challenge) {
-      setQuizAnswers({ stage, sector, challenge });
-      if (audience === 'All Stages' && stage && stage !== 'All Stages') {
-        setAudience(stage);
-      }
-      if (challenge) {
-        const matchedCategory = challengeToCategoryMap[challenge];
-        if (matchedCategory) {
-          setCategory(matchedCategory);
-        }
-      }
-    }
-    
     base44.entities.Resource.list('-created_date', 100).then(setDbResources).catch(() => {});
-  }, [searchParams]);
+  }, []);
 
   const allResources = [...UTAH_RESOURCES, ...dbResources];
 
-  const applyQuizFilters = (resources) => {
-    if (!quizAnswers) return resources;
-    const categoryMap = {
-      'Finding capital': ['Funding'],
-      'Building a team': ['Workforce Development', 'Networking'],
-      'Mentorship & guidance': ['Mentorship', 'Education'],
-      'Networking & partnerships': ['Networking', 'Entrepreneurship Communities'],
-      'Legal & compliance': ['Legal', 'Government'],
-    };
-    const relevantCategories = categoryMap[quizAnswers.challenge] || [];
-    return resources.filter(r => relevantCategories.length === 0 || relevantCategories.includes(r.category));
-  };
-
-  const filtered = applyQuizFilters(allResources).filter(r => {
+  const filtered = allResources.filter(r => {
     const matchSearch = !search || r.title.toLowerCase().includes(search.toLowerCase()) || r.description?.toLowerCase().includes(search.toLowerCase());
     const matchCat = category === 'All' || r.category === category;
     const matchAud = audience === 'All Stages' || r.audience?.includes(audience) || r.audience?.includes('All Stages');
@@ -231,18 +191,7 @@ export default function Resources() {
           </h1>
         </div>
 
-        {/* Quiz Results Banner */}
-        {quizAnswers && (
-          <div className="bg-green-pale border border-primary/30 rounded-2xl p-4 mb-6 flex items-center justify-between">
-            <div className="text-sm">
-              <p className="font-semibold text-green-dark">Resources filtered by your answers</p>
-              <p className="text-xs text-muted-foreground">Showing resources relevant to your {quizAnswers.stage} stage {quizAnswers.sector} company</p>
-            </div>
-            <button onClick={() => setQuizAnswers(null)} className="p-1.5 hover:bg-white/50 rounded-lg transition-colors">
-              <X size={16} className="text-primary" />
-            </button>
-          </div>
-        )}
+
 
         {/* Search + Audience + View row */}
         <div className="flex gap-3 mb-6 items-center">

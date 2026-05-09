@@ -5,7 +5,7 @@ import PersonaSelector from '@/components/home/PersonaSelector';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, Sparkles, Zap, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
+
 
 const statsAnimationStyle = `
   @keyframes fadeInUp {
@@ -30,7 +30,7 @@ const stats = [
 ];
 
 export default function Home() {
-  const [showQuiz, setShowQuiz] = useState(false);
+
 
   return (
     <div className="min-h-screen">
@@ -53,46 +53,9 @@ export default function Home() {
       </section>
       <JourneyCards />
 
-      {/* Quiz Modal */}
-      {showQuiz && (
-        <>
-          <div className="fixed inset-0 bg-black/30 z-40" onClick={() => setShowQuiz(false)} />
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full my-8 relative">
-              <button onClick={() => setShowQuiz(false)} className="absolute top-4 right-4 p-2 hover:bg-muted rounded-lg text-muted-foreground">
-                <X size={20} />
-              </button>
-              <div className="p-8">
-                <ResourcesQuiz
-                  onComplete={(answers) => { setShowQuiz(false); window.location.href = `/resources?quiz=1&stage=${answers.stage}&sector=${answers.sector}&challenge=${answers.challenge}`; }}
-                  onSkip={() => setShowQuiz(false)}
-                />
-              </div>
-            </div>
-          </div>
-        </>
-      )}
 
-      {/* Quiz Highlight */}
-      <section className="relative py-16 border-y border-green-pale overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-green-pale/20 to-primary/10 opacity-60" />
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(145, 200, 100, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(145, 200, 100, 0.05) 0%, transparent 50%)'
-        }} />
-        <div className="relative max-w-4xl mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-1.5 mb-6 hover:border-primary/40 transition-colors">
-            <Zap size={14} className="text-primary animate-pulse" />
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">New Feature</span>
-          </div>
-          <h2 className="font-manrope font-extrabold text-3xl sm:text-4xl text-foreground mb-3">Find Resources That Match Your Needs</h2>
-          <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            Take our quick 3-question quiz to get personalized recommendations from Utah's startup ecosystem tailored to your stage, sector, and challenges.
-          </p>
-          <Button onClick={() => setShowQuiz(true)} size="lg" className="bg-primary text-white hover:bg-green-dark font-manrope font-bold px-8 gap-2 shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
-            Try the Resource Quiz <ArrowRight size={16} />
-          </Button>
-        </div>
-      </section>
+
+
 
       <PersonaSelector />
 
