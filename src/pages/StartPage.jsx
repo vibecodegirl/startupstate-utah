@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, Lightbulb, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 
 const steps = [
   {
@@ -12,6 +13,9 @@ const steps = [
     resources: ['Utah SBDC Free Consulting', 'NSF I-Corps', 'Business Plan Builder — startup.utah.gov'],
     link: 'https://startup.utah.gov/business-plan/',
     isExternal: true,
+    relevant_stages: ['Pre-Seed', 'Seed'],
+    relevant_sectors: ['All'],
+    addresses_challenges: ['Mentorship & guidance', 'Building a team'],
   },
   {
     number: '02',
@@ -21,6 +25,9 @@ const steps = [
     resources: ['Utah Division of Corporations', 'IRS EIN Registration', 'Utah Business One Stop'],
     link: 'https://corporations.utah.gov',
     isExternal: true,
+    relevant_stages: ['Pre-Seed', 'Seed'],
+    relevant_sectors: ['All'],
+    addresses_challenges: ['All'],
   },
   {
     number: '03',
@@ -31,6 +38,9 @@ const steps = [
     link: '/funding',
     isExternal: false,
     panelTitle: 'Funding Opportunities',
+    relevant_stages: ['Pre-Seed', 'Seed', 'Series A'],
+    relevant_sectors: ['All'],
+    addresses_challenges: ['Finding capital'],
   },
   {
     number: '04',
@@ -40,6 +50,9 @@ const steps = [
     resources: ['Silicon Slopes Job Board', 'Utah Department of Workforce Services', 'University Recruiting'],
     link: 'https://siliconslopes.com/jobs',
     isExternal: true,
+    relevant_stages: ['Seed', 'Series A', 'Series B'],
+    relevant_sectors: ['All'],
+    addresses_challenges: ['Building a team'],
   },
   {
     number: '05',
@@ -50,6 +63,9 @@ const steps = [
     link: '/resources',
     isExternal: false,
     panelTitle: 'Resource Navigator',
+    relevant_stages: ['Pre-Seed', 'Seed', 'Series A'],
+    relevant_sectors: ['All'],
+    addresses_challenges: ['All'],
   },
   {
     number: '06',
@@ -60,11 +76,40 @@ const steps = [
     link: '/resources',
     isExternal: false,
     panelTitle: 'Resource Navigator',
+    relevant_stages: ['Series A', 'Series B', 'Series C', 'Series D+'],
+    relevant_sectors: ['All'],
+    addresses_challenges: ['Networking & partnerships'],
   },
 ];
 
 export default function StartPage() {
   const [panel, setPanel] = useState(null); // { title, link }
+  const [quizAnswers, setQuizAnswers] = useState(null); // { stage, sector, challenge }
+  const [showQuiz, setShowQuiz] = useState(false);
+
+  // Filter steps based on quiz answers
+  const personalizedSteps = useMemo(() => {
+    if (!quizAnswers) return steps;
+
+    return steps.filter(step => {
+      const stageMatch = step.relevant_stages.includes(quizAnswers.stage);
+      const sectorMatch = step.relevant_sectors.includes('All') || step.relevant_sectors.includes(quizAnswers.sector);
+      const challengeMatch = step.addresses_challenges.includes('All') || step.addresses_challenges.includes(quizAnswers.challenge);
+      return stageMatch && sectorMatch && challengeMatch;
+    }).sort((a, b) => {
+      // Prioritize steps that directly address the user's challenge
+      const aAddresses = a.addresses_challenges.includes(quizAnswers.challenge);
+      const bAddresses = b.addresses_challenges.includes(quizAnswers.challenge);
+      if (aAddresses && !bAddresses) return -1;
+      if (!aAddresses && bAddresses) return 1;
+      return parseInt(a.number) - parseInt(b.number);
+    });
+  }, [quizAnswers]);
+
+  const handleQuizComplete = (answers) => {
+    setQuizAnswers(answers);
+    setShowQuiz(false);
+  };
 
   const handleLearnMore = (step) => {
     if (step.isExternal) {
@@ -77,26 +122,55 @@ export default function StartPage() {
   return (
     <div className="min-h-screen pt-24 bg-muted/20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 mb-4">
-            <CheckCircle size={14} />
-            <span className="text-xs font-semibold uppercase tracking-wider">Step-by-Step Guide</span>
+        {/* Quiz or Pathway Content */}
+        {showQuiz ? (
+          <div className="mb-16">
+            <ResourcesQuiz onComplete={handleQuizComplete} onSkip={() => { setShowQuiz(false); setQuizAnswers('skipped'); }} />
           </div>
-          <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-4">
-            Starting a Business in Utah
-          </h1>
-          <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
-            Your comprehensive roadmap — from idea to launch — with Utah-specific resources at every step.
-          </p>
-        </div>
+        ) : (
+          <>
+            {/* Header */}
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 mb-4">
+                <CheckCircle size={14} />
+                <span className="text-xs font-semibold uppercase tracking-wider">{quizAnswers ? 'Your Personalized Pathway' : 'Step-by-Step Guide'}</span>
+              </div>
+              <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-4">
+                Starting a Business in Utah
+              </h1>
+              <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
+                {quizAnswers ? (
+                  <>Your customized roadmap based on your stage and needs.</>
+                ) : (
+                  <>Your comprehensive roadmap — from idea to launch — with Utah-specific resources at every step.</>
+                )}
+              </p>
+              {!quizAnswers && (
+                <Button
+                  onClick={() => setShowQuiz(true)}
+                  className="mt-6 bg-primary text-white hover:bg-green-dark font-semibold gap-2"
+                >
+                  <Lightbulb size={16} />
+                  Get Your Personalized Pathway
+                </Button>
+              )}
+              {quizAnswers && quizAnswers !== 'skipped' && (
+                <Button
+                  onClick={() => { setQuizAnswers(null); setShowQuiz(true); }}
+                  variant="outline"
+                  className="mt-4 border-primary/30 text-primary hover:bg-green-pale"
+                >
+                  Retake Quiz
+                </Button>
+              )}
+            </div>
 
-        {/* Steps */}
-        <div className="relative">
+            {/* Steps */}
+            <div className="relative">
           <div className="absolute left-8 top-8 bottom-8 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent hidden md:block" />
 
           <div className="space-y-6">
-            {steps.map((step) => {
+            {personalizedSteps.map((step) => {
               const Icon = step.icon;
               return (
                 <div key={step.number} className="relative flex gap-6">
@@ -143,17 +217,19 @@ export default function StartPage() {
                 </div>
               );
             })}
+            </div>
           </div>
-        </div>
 
-        {/* AI CTA */}
-        <div className="mt-16 bg-primary rounded-3xl p-8 text-center mb-12">
-          <h2 className="font-manrope font-extrabold text-2xl text-white mb-2">Have questions about your specific situation?</h2>
-          <p className="text-white/80 mb-6">Our AI Advisor can give you personalized guidance based on your stage, sector, and location.</p>
-          <Button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
-            Talk to AI Advisor <ArrowRight size={16} className="ml-2" />
-          </Button>
-        </div>
+          {/* AI CTA */}
+          <div className="mt-16 bg-primary rounded-3xl p-8 text-center mb-12">
+            <h2 className="font-manrope font-extrabold text-2xl text-white mb-2">Have questions about your specific situation?</h2>
+            <p className="text-white/80 mb-6">Our AI Advisor can give you personalized guidance based on your stage, sector, and location.</p>
+            <Button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
+              Talk to AI Advisor <ArrowRight size={16} className="ml-2" />
+            </Button>
+          </div>
+        </>
+        )}
       </div>
 
       {/* Right Side Panel */}
