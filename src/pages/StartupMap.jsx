@@ -308,7 +308,7 @@ export default function StartupMap() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {filtered.map(s => (
-                    <tr key={s.id} className="hover:bg-muted/30 transition-colors group">
+                    <tr key={s.id} onClick={() => window.location.href = `/startups/${s.id}`} className="hover:bg-muted/30 transition-colors cursor-pointer">
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2">
                           {s.photo_url && <img src={s.photo_url} alt={s.company_name} className="w-7 h-7 rounded-md object-cover border border-border shrink-0" />}
@@ -332,11 +332,7 @@ export default function StartupMap() {
                       <td className="px-4 py-3 text-xs text-muted-foreground truncate">
                         {s.city ? `${s.city}${s.county ? `, ${s.county}` : ''}` : '—'}
                       </td>
-                      <td className="px-4 py-3">
-                        <Link to={`/startups/${s.id}`} className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-primary">
-                          <ExternalLink size={14} />
-                        </Link>
-                      </td>
+                      <td className="px-4 py-3"></td>
                     </tr>
                   ))}
                 </tbody>
