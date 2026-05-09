@@ -58,7 +58,6 @@ export default function Home() {
           <div className="max-w-4xl mx-auto px-4">
             <ResourcesQuiz
             onComplete={(answers) => {
-              setShowQuiz(false);
               const params = new URLSearchParams({
                 stage: answers.stage || '',
                 sector: answers.sector || '',
