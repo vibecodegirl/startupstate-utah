@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { MapPin } from 'lucide-react';
 
-export default function MiniClusterMap({ sector, stage, size }) {
+export default function MiniClusterMap({ sector, stage, size, onHubSelect }) {
   const [clusters, setClusters] = useState([]);
 
   useEffect(() => {
@@ -36,7 +36,13 @@ export default function MiniClusterMap({ sector, stage, size }) {
       </h4>
       <div className="space-y-2">
         {clusters.slice(0, 5).map(({ city, count }) => (
-          <div key={city} className="flex items-center justify-between">
+          <button
+            key={city}
+            onClick={() => {
+              if (onHubSelect) onHubSelect({ city, count });
+            }}
+            className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-primary/5 transition-colors text-left"
+          >
             <span className="text-xs text-foreground">{city}</span>
             <div className="flex items-center gap-2">
               <div className="w-20 h-1.5 bg-muted rounded-full overflow-hidden">
@@ -47,7 +53,7 @@ export default function MiniClusterMap({ sector, stage, size }) {
               </div>
               <span className="text-xs font-bold text-primary w-6 text-right">{count}</span>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>

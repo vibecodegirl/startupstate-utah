@@ -5,10 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import HubDetailsPanel from './HubDetailsPanel';
 
-export default function EcosystemMap() {
+export default function EcosystemMap({ zoomToCity }) {
   const [hubs, setHubs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedHub, setSelectedHub] = useState(null);
+
+  useEffect(() => {
+    if (zoomToCity) {
+      setSelectedHub(zoomToCity.city);
+    }
+  }, [zoomToCity]);
 
   useEffect(() => {
     base44.entities.Startup.list('-created_date', 500).then(startups => {

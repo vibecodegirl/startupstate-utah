@@ -10,7 +10,7 @@ const SECTORS = ['AI', 'Life Sciences', 'Fintech', 'B2B Software', 'Aerospace & 
 const STAGES = ['Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C'];
 const SIZES = ['2-10', '11-50', '51-200', '201-500'];
 
-export default function DiscoverStartups() {
+export default function DiscoverStartups({ onHubSelect }) {
   const [sector, setSector] = useState('');
   const [stage, setStage] = useState('');
   const [size, setSize] = useState('');
@@ -84,6 +84,9 @@ export default function DiscoverStartups() {
           ))}
         </div>
       )}
+
+      {/* Show hubs for county selection */}
+      <MiniClusterMap sector={sector} stage={stage} size={size} onHubSelect={onHubSelect} />
 
       {/* Show map by default, updated when filters change */}
       <EmbeddedStartupMap sector={sector} stage={stage} size={size} />

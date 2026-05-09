@@ -8,6 +8,17 @@ import DiscoverStartups from '@/components/investors/DiscoverStartups';
 import EcosystemMap from '@/components/investors/EcosystemMap';
 import InvestorMatchPanel from '@/components/investors/InvestorMatchPanel';
 
+function DiscoverConnectGrid() {
+  const [mapZoom, setMapZoom] = useState(null);
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <DiscoverStartups onHubSelect={setMapZoom} />
+      <EcosystemMap zoomToCity={mapZoom} />
+    </div>
+  );
+}
+
 const vcData = [
   { year: '2019', amount: 0.8 },
   { year: '2020', amount: 1.1 },
@@ -171,10 +182,7 @@ export default function InvestorResources() {
               <p className="text-sm text-muted-foreground">Explore startup hubs and find matching opportunities</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <EcosystemMap />
-            <DiscoverStartups />
-          </div>
+          <DiscoverConnectGrid />
         </section>
 
         {/* Divider */}
