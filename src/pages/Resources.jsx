@@ -251,6 +251,20 @@ export default function Resources() {
             ))}
           </select>
 
+          {/* Sort By Filter Inline */}
+          <select
+            value={sortBy}
+            onChange={e => {
+              setSortBy(e.target.value);
+              setSortDir('asc');
+            }}
+            className="px-3 py-2.5 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white text-foreground font-medium"
+          >
+            <option value="title">Sort: Title</option>
+            <option value="category">Sort: Category</option>
+            <option value="provider">Sort: Provider</option>
+          </select>
+
           {/* View Toggle */}
           <div className="flex rounded-lg border border-border overflow-hidden bg-white ml-auto">
             {[
