@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, Lightbulb, X, ExternalLink } from 'lucide-react';
+import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, Lightbulb, X, ExternalLink, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 import QuickWins from '@/components/founders/QuickWins';
@@ -87,6 +87,7 @@ const steps = [
 export default function StartPage() {
   const [panel, setPanel] = useState(null); // { title, link }
   const [quizAnswers, setQuizAnswers] = useState(null); // { stage, sector, challenge }
+  const [showQuiz, setShowQuiz] = useState(false);
 
   // Filter steps based on quiz answers
   const personalizedSteps = useMemo(() => {
@@ -109,6 +110,7 @@ export default function StartPage() {
 
   const handleQuizComplete = (answers) => {
     setQuizAnswers(answers);
+    setShowQuiz(false);
   };
 
   const handleLearnMore = (step) => {
@@ -132,17 +134,31 @@ export default function StartPage() {
             Starting a Business in Utah
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-            Answer a quick quiz to unlock your personalized pathway. Or skip and explore the full roadmap below.
+            Get personalized resources matched to your stage, sector, and goals.
           </p>
+          {!showQuiz && (
+            <Button 
+              onClick={() => setShowQuiz(true)} 
+              className="mt-6 bg-primary text-white hover:bg-green-dark font-semibold gap-2"
+            >
+              <Zap size={16} />
+              Get Personalized Pathway
+            </Button>
+          )}
         </div>
 
-        {/* Quiz Section - Always Visible */}
-        <div className="mb-16">
-          <ResourcesQuiz
-            onComplete={handleQuizComplete}
-            onSkip={() => setQuizAnswers('skipped')}
-          />
-        </div>
+        {/* Quiz Section - Conditional */}
+        {showQuiz && (
+          <div className="mb-16">
+            <ResourcesQuiz
+              onComplete={handleQuizComplete}
+              onSkip={() => {
+                setShowQuiz(false);
+                setQuizAnswers('skipped');
+              }}
+            />
+          </div>
+        )}
 
         {/* Quick Wins - "Momentum Starts Now" directly below quiz */}
         <QuickWins />
