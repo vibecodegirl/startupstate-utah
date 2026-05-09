@@ -88,7 +88,7 @@ export default function AdminDashboard({ role }) {
           </div>
           <div>
             <h1 className="font-manrope font-extrabold text-3xl text-foreground">Admin Dashboard</h1>
-            <p className="text-muted-foreground text-sm">Startup State Control Center — Active Flagging Protocol</p>
+            <p className="text-muted-foreground text-sm">Startup State Control Center</p>
           </div>
         </div>
 

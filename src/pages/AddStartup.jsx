@@ -56,7 +56,7 @@ export default function AddStartup() {
           <div className="bg-white rounded-2xl border border-border p-5 text-left mb-6">
             <h3 className="font-semibold text-sm mb-3 text-foreground">What happens next?</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2"><span className="text-primary font-bold">1.</span> Team reviews your submission against the CLEVER Framework</li>
+              <li className="flex items-start gap-2"><span className="text-primary font-bold">1.</span> Team reviews your submission</li>
               <li className="flex items-start gap-2"><span className="text-primary font-bold">2.</span> We verify via LinkedIn or website</li>
               <li className="flex items-start gap-2"><span className="text-primary font-bold">3.</span> You receive an email confirmation with your listing link</li>
             </ul>
@@ -83,7 +83,7 @@ export default function AddStartup() {
           <AlertCircle size={18} className="text-primary shrink-0 mt-0.5" />
           <div className="text-sm">
             <p className="font-semibold text-green-dark mb-1">Verification Process</p>
-            <p className="text-muted-foreground">All listings are reviewed against our CLEVER Framework standards. Provide accurate information to speed up approval. Your listing will appear as "Pending" until verified.</p>
+            <p className="text-muted-foreground">All listings are reviewed by our team. Provide accurate information to speed up approval. Your listing will appear as "Pending" until verified.</p>
           </div>
         </div>
 
@@ -190,7 +190,7 @@ export default function AddStartup() {
           </Button>
 
           <p className="text-center text-xs text-muted-foreground">
-            By submitting, you agree to the Active Flagging Protocol — your data will be kept accurate and transparent.
+            By submitting, you agree to our listing guidelines — your data will be kept accurate and transparent.
           </p>
         </form>
       </div>

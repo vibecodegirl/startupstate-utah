@@ -107,15 +107,7 @@ export default function StartupCard({ startup, compact = false }) {
         )}
       </div>
 
-      {/* Verification badge */}
-      {startup.verification_status && startup.verification_status !== 'Verified' && (
-        <div className="mt-3 pt-3 border-t border-border">
-          <p className="text-xs text-muted-foreground italic">
-            {startup.verification_status === 'Community Sourced' ? '⚠ Community Sourced — Information Pending verification' : ''}
-            {startup.verification_status === 'Pending' ? '⏳ Verification in progress' : ''}
-          </p>
-        </div>
-      )}
+
     </div>
   );
 }
