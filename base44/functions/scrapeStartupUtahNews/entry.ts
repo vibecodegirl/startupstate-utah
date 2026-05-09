@@ -16,47 +16,42 @@ Deno.serve(async (req) => {
     }
 
     const html = await response.text();
-
-    // Simple HTML parsing for news articles
-    // Extract article metadata using regex patterns
-    const articleRegex = /<article[^>]*>(.*?)<\/article>/gs;
-    const titleRegex = /<h[2-3][^>]*>(.*?)<\/h[2-3]>/;
-    const dateRegex = /(\d{4}-\d{2}-\d{2})/;
-    const linkRegex = /<a[^>]*href=["']([^"']+)["'][^>]*>/;
-
     const articles = [];
+
+    // Parse article blocks with title, excerpt, image, and date
+    // Looking for pattern: link > img + h2 + excerpt + date
+    const articleLinkRegex = /<a[^>]*href=["']([^"']+)["'][^>]*[^>]*>\s*<figure[^>]*>.*?<img[^>]*src=["']([^"']+)["'][^>]*>.*?<\/figure>.*?<h2[^>]*>([^<]+)<\/h2>.*?<div[^>]*class="[^"]*x-text-content-text[^"]*">([^<]*)<\/div>.*?<div[^>]*>([^<]*\d{4})<\/div>/gs;
+
     let match;
+    while ((match = articleLinkRegex.exec(html)) !== null) {
+      const url = match[1];
+      const imageUrl = match[2];
+      const title = match[3].trim();
+      const excerpt = match[4].substring(0, 200).trim();
+      const dateStr = match[5].trim();
 
-    while ((match = articleRegex.exec(html)) !== null) {
-      const content = match[1];
-      const titleMatch = content.match(titleRegex);
-      const dateMatch = content.match(dateRegex);
-      const linkMatch = content.match(linkRegex);
+      // Parse date string like "February 27, 2026"
+      const dateObj = new Date(dateStr);
+      const publishDate = isNaN(dateObj.getTime()) ? new Date().toISOString() : dateObj.toISOString();
 
-      if (titleMatch && dateMatch && linkMatch) {
-        const title = titleMatch[1].replace(/<[^>]+>/g, '').trim();
-        const publishDate = dateMatch[1];
-        const url = linkMatch[1].startsWith('http') ? linkMatch[1] : `https://startup.utah.gov${linkMatch[1]}`;
+      // Check if article already exists by URL
+      const existing = await base44.asServiceRole.entities.NewsArticle.filter(
+        { url },
+        '',
+        1
+      );
 
-        // Check if article already exists by URL
-        const existing = await base44.asServiceRole.entities.NewsArticle.filter(
-          { url },
-          '',
-          1
-        );
-
-        if (existing.length === 0) {
-          articles.push({
-            title,
-            excerpt: title.substring(0, 150),
-            category: 'News',
-            publish_date: new Date(publishDate).toISOString(),
-            image_url: '',
-            source: 'Startup Utah',
-            url,
-            is_active: true,
-          });
-        }
+      if (existing.length === 0 && title && url) {
+        articles.push({
+          title,
+          excerpt: excerpt || title.substring(0, 150),
+          category: 'News',
+          publish_date: publishDate,
+          image_url: imageUrl,
+          source: 'Startup Utah',
+          url,
+          is_active: true,
+        });
       }
     }
 

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Calendar, MapPin, ExternalLink, Video, Filter, Newspaper, ArrowRight } from 'lucide-react';
+import { Calendar, MapPin, ExternalLink, Video, Filter, Newspaper, ArrowRight, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
+import FounderStorySubmissionForm from '@/components/founders/FounderStorySubmissionForm';
 
 const SAMPLE_NEWS = [
   {
@@ -39,34 +40,44 @@ const SAMPLE_NEWS = [
 
 const SAMPLE_EVENTS = [
   {
-    id: 's1', title: 'Silicon Slopes Summit 2025', description: 'Utah\'s premier tech conference bringing together thousands of entrepreneurs, investors, and innovators.',
-    event_date: '2025-01-15T09:00:00', location: 'Salt Lake City, UT', url: 'https://siliconslopes.com/events',
+    id: 's1', title: 'Silicon Slopes Summit 2026', description: 'Utah\'s premier tech conference bringing together thousands of entrepreneurs, investors, and innovators. Network with leading founders and investors shaping the future.',
+    event_date: '2026-06-15T09:00:00', location: 'Salt Lake City Convention Center', url: 'https://siliconslopes.com/events',
     organizer: 'Silicon Slopes', event_type: 'Conference', sectors: ['AI', 'Fintech', 'B2B Software'], is_virtual: false,
   },
   {
-    id: 's2', title: 'Utah Venture Entrepreneur Forum', description: 'Connect with Utah\'s top VCs and angel investors. Pitch competitions and networking for growth-stage startups.',
-    event_date: '2025-02-10T14:00:00', location: 'Provo, UT', url: 'https://www.uvef.net',
+    id: 's2', title: 'Utah Venture Entrepreneur Forum', description: 'Connect with Utah\'s top VCs and angel investors. Pitch competitions and networking for growth-stage startups looking to raise capital.',
+    event_date: '2026-07-10T14:00:00', location: 'The Lassonde Entrepreneur Institute, Provo', url: 'https://www.uvef.net',
     organizer: 'UVEF', event_type: 'Networking', sectors: ['All Sectors'], is_virtual: false,
   },
   {
-    id: 's3', title: 'Utah Life Science Summit', description: 'BioUtah\'s annual summit connecting Utah\'s biotech, medical device, and pharma ecosystem.',
-    event_date: '2025-03-05T08:00:00', location: 'Salt Lake City, UT', url: 'https://bioutah.org/events',
+    id: 's3', title: 'Utah Life Science Summit', description: 'BioUtah\'s annual summit connecting Utah\'s biotech, medical device, and pharma ecosystem. Advanced research & innovation showcase.',
+    event_date: '2026-08-05T08:00:00', location: 'Salt Lake City, UT', url: 'https://bioutah.org/events',
     organizer: 'BioUtah', event_type: 'Conference', sectors: ['Life Sciences'], is_virtual: false,
   },
   {
-    id: 's4', title: 'Startup Pitch Night — SBDC', description: 'Monthly pitch competition hosted by the Utah SBDC. Open to all stages. Cash prizes and mentor feedback.',
-    event_date: '2025-01-28T18:00:00', location: 'Salt Lake City, UT / Virtual', url: 'https://utahsbdc.org',
+    id: 's4', title: 'Monthly Startup Pitch Night', description: 'Monthly pitch competition hosted by the Utah SBDC. Open to all stages. Compete for cash prizes and mentor feedback from industry experts.',
+    event_date: '2026-06-28T18:00:00', location: 'Salt Lake City / Virtual', url: 'https://utahsbdc.org',
     organizer: 'Utah SBDC', event_type: 'Pitch Competition', sectors: ['All Sectors'], is_virtual: true,
   },
   {
-    id: 's5', title: '47G Aerospace & Defense Forum', description: 'Utah\'s aerospace and defense industry gathering. Defense primes, suppliers, and startups.',
-    event_date: '2025-02-20T09:00:00', location: 'Ogden, UT', url: 'https://www.47g.org',
+    id: 's5', title: '47G Aerospace & Defense Forum', description: 'Utah\'s aerospace and defense industry gathering featuring defense primes, suppliers, and innovative startups. Procurement opportunities showcase.',
+    event_date: '2026-07-20T09:00:00', location: 'Ogden Eccles Conference Center', url: 'https://www.47g.org',
     organizer: '47G', event_type: 'Conference', sectors: ['Aerospace & Defense'], is_virtual: false,
   },
   {
-    id: 's6', title: 'NSF I-Corps Utah Workshop', description: 'Free customer discovery training for researchers and academic founders commercializing technology.',
-    event_date: '2025-01-20T09:00:00', location: 'University of Utah', url: 'https://tco.utah.edu',
+    id: 's6', title: 'NSF I-Corps Workshop', description: 'Free customer discovery training for researchers and academic founders commercializing technology. Learn lean startup methodologies for deep tech.',
+    event_date: '2026-06-20T09:00:00', location: 'University of Utah', url: 'https://tco.utah.edu',
     organizer: 'U of U Tech Commercialization', event_type: 'Workshop', sectors: ['AI', 'Life Sciences'], is_virtual: false,
+  },
+  {
+    id: 's7', title: 'Utah Women Founders Roundtable', description: 'Exclusive networking and mentorship event for female founders and women-led startups. Connect with successful women entrepreneurs in Utah.',
+    event_date: '2026-06-25T17:00:00', location: 'The Hub, Downtown Salt Lake City', url: 'https://www.uwbc.org',
+    organizer: 'Utah Women\'s Business Center', event_type: 'Networking', sectors: ['All Sectors'], is_virtual: false,
+  },
+  {
+    id: 's8', title: 'AI & Machine Learning Workshop', description: 'Deep dive workshop on building AI-powered products. Learn deployment strategies, ethical considerations, and Utah\'s AI ecosystem.',
+    event_date: '2026-07-15T10:00:00', location: 'Startup State HQ, Salt Lake City', url: 'https://startup.utah.gov',
+    organizer: 'Startup State Initiative', event_type: 'Workshop', sectors: ['AI', 'B2B Software'], is_virtual: false,
   },
 ];
 
@@ -88,6 +99,7 @@ export default function Events() {
   const [virtualOnly, setVirtualOnly] = useState(false);
   const [activeTab, setActiveTab] = useState('events'); // 'news' or 'events'
   const [eventTab, setEventTab] = useState('upcoming'); // 'upcoming' or 'past'
+  const [showStoryForm, setShowStoryForm] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -161,6 +173,22 @@ export default function Events() {
         {/* News Tab */}
         {activeTab === 'news' && (
           <div className="mb-16">
+            {/* Share Your Story CTA */}
+            <div className="mb-8 bg-gradient-to-r from-primary/5 to-green-pale/30 rounded-2xl border border-primary/20 p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h3 className="font-manrope font-bold text-lg text-foreground mb-1">Share Your Founder Story</h3>
+                  <p className="text-sm text-muted-foreground">Inspire other entrepreneurs by sharing your journey, challenges, and wins.</p>
+                </div>
+                <Button
+                  onClick={() => setShowStoryForm(true)}
+                  className="gap-2 bg-primary hover:bg-green-dark text-white font-semibold shrink-0"
+                >
+                  <Plus size={16} /> Share Story
+                </Button>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {newsArticles.map(article => {
                 const articleDate = new Date(article.publish_date || article.date);
@@ -298,6 +326,11 @@ export default function Events() {
               </a>
             </div>
           </div>
+        )}
+
+        {/* Founder Story Submission Form */}
+        {showStoryForm && (
+          <FounderStorySubmissionForm onClose={() => setShowStoryForm(false)} />
         )}
       </div>
     </div>
