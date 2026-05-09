@@ -8,11 +8,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <img
-              src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/e8fef4a72_StartupState_Logo_Web_Color_Horiz.webp"
-              alt="Startup State"
-              className="h-8 w-auto mb-4"
-            />
+            <a href="https://business.utah.gov/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/e8fef4a72_StartupState_Logo_Web_Color_Horiz.webp"
+                alt="Startup State"
+                className="h-8 w-auto mb-4 hover:opacity-80 transition-opacity cursor-pointer"
+              />
+            </a>
             <p className="text-white/60 text-sm leading-relaxed">
               The global standard for innovation and entrepreneurship. Powered by the Governor's Office of Economic Opportunity.
             </p>
