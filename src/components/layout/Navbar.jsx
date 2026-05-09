@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import RoleSwitcher from '@/components/layout/RoleSwitcher';
@@ -52,34 +52,49 @@ export default function Navbar({ role, setRole }) {
             ))}
           </nav>
 
-          {/* Right Side */}
-          <div className="hidden lg:flex items-center gap-3">
-            <RoleSwitcher role={role} setRole={setRole} />
-            {user ? (
-              <>
-                <Link to="/add-startup">
-                  <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold">
-                    Add Your Startup
+          {/* Right Side - Main Actions */}
+          <div className="hidden lg:flex items-center gap-4 ml-auto">
+            {/* Language Translator */}
+            <button
+              title="Language"
+              className="p-2 rounded-lg text-foreground/70 hover:text-primary hover:bg-muted transition-colors"
+            >
+              <Globe size={18} />
+            </button>
+
+            {/* Main Action Buttons */}
+            <div className="flex items-center gap-3">
+              {user ? (
+                <>
+                  <Link to="/add-startup">
+                    <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold">
+                      Add Your Startup
+                    </Button>
+                  </Link>
+                  <Button size="sm" variant="outline" onClick={() => base44.auth.logout()}>
+                    Sign Out
                   </Button>
-                </Link>
-                <Button size="sm" variant="outline" onClick={() => base44.auth.logout()}>
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <>
-                <Link to="/auth">
-                  <Button size="sm" variant="outline">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/auth">
-                  <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold">
-                    Create Account
-                  </Button>
-                </Link>
-              </>
-            )}
+                </>
+              ) : (
+                <>
+                  <Link to="/add-startup">
+                    <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold">
+                      Add Your Startup
+                    </Button>
+                  </Link>
+                  <Link to="/auth">
+                    <Button size="sm" variant="outline">
+                      Sign In
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Role Selector - Icon Only, Far Right */}
+            <div className="border-l border-border pl-4">
+              <RoleSwitcher role={role} setRole={setRole} />
+            </div>
           </div>
 
           {/* Mobile toggle */}
