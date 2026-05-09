@@ -198,7 +198,6 @@ export default function StartupMap() {
                     <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Stage</th>
                     <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Size</th>
                     <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Location</th>
-                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Status</th>
                     <th className="px-4 py-3"></th>
                   </tr>
                 </thead>
@@ -234,12 +233,6 @@ export default function StartupMap() {
                         <td className="px-4 py-3 text-xs text-muted-foreground">{s.employees || '—'}</td>
                         <td className="px-4 py-3 text-xs text-muted-foreground">
                           {s.city ? `${s.city}${s.county ? `, ${s.county}` : ''}` : '—'}
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            {verificationIcon}
-                            <span>{s.verification_status || '—'}</span>
-                          </div>
                         </td>
                         <td className="px-4 py-3">
                           <Link to={`/startups/${s.id}`} className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-primary">
