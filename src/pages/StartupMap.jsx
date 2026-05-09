@@ -232,10 +232,10 @@ export default function StartupMap() {
                       eventHandlers={{ click: () => setSelected(s) }}
                     >
                       <Popup>
-                        <div className="min-w-48">
+                        <div className="min-w-80">
                           <p className="font-bold text-sm">{s.company_name}</p>
                           <p className="text-xs text-gray-500">{s.sector} · {s.funding_stage}</p>
-                          {s.description && <p className="text-xs mt-1 line-clamp-2">{s.description}</p>}
+                          {s.description && <p className="text-xs mt-1">{s.description}</p>}
                         </div>
                       </Popup>
                     </Marker>
