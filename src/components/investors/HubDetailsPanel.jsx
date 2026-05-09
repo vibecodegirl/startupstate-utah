@@ -12,7 +12,7 @@ export default function HubDetailsPanel({ hub, onClose, onStartupClick }) {
       return;
     }
     
-    base44.entities.Startup.filter({ city: hub.city }, '-created_date', 15).then(data => {
+    base44.entities.Startup.filter({ county: hub.city }, '-created_date', 15).then(data => {
       setStartups(data);
       setLoading(false);
     }).catch(() => setLoading(false));

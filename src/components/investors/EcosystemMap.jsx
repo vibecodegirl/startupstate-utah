@@ -8,19 +8,19 @@ export default function EcosystemMap({ zoomToCity, onHubClick, mapStartups = [] 
 
   useEffect(() => {
     base44.entities.Startup.list('-created_date', 500).catch(() => []).then(allStartups => {
-      // Calculate hubs
-      const cityCounts = {};
+      // Calculate hubs by county
+      const countyCounts = {};
       allStartups.forEach(s => {
-        if (s.city) {
-          if (!cityCounts[s.city]) cityCounts[s.city] = { count: 0, sectors: new Set(), lat: s.latitude, lon: s.longitude };
-          cityCounts[s.city].count++;
-          if (s.sector) cityCounts[s.city].sectors.add(s.sector);
+        if (s.county) {
+          if (!countyCounts[s.county]) countyCounts[s.county] = { count: 0, sectors: new Set(), lat: s.latitude, lon: s.longitude };
+          countyCounts[s.county].count++;
+          if (s.sector) countyCounts[s.county].sectors.add(s.sector);
         }
       });
 
-      const hubsList = Object.entries(cityCounts)
-        .map(([city, data]) => ({
-          city,
+      const hubsList = Object.entries(countyCounts)
+        .map(([county, data]) => ({
+          city: county,
           count: data.count,
           sectors: Array.from(data.sectors).slice(0, 2),
           lat: data.lat,
