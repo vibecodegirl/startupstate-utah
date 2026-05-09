@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { MapPin, Sparkles } from 'lucide-react';
 
-export default function EcosystemMap({ zoomToCity }) {
+export default function EcosystemMap({ zoomToCity, onHubClick, mapStartups = [] }) {
   const [hubs, setHubs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +49,7 @@ export default function EcosystemMap({ zoomToCity }) {
             <button
               key={hub.city}
               onClick={() => {
-                // Trigger map zoom (handled by MapController via zoomToCity prop)
+                onHubClick?.(hub);
               }}
               className="bg-gradient-to-br from-green-pale/40 to-primary/5 border border-primary/20 rounded-xl p-4 hover:shadow-md hover:border-primary/50 transition-all text-left group"
             >

@@ -7,15 +7,25 @@ import TrendingSectors from '@/components/investors/TrendingSectors';
 import DiscoverStartups from '@/components/investors/DiscoverStartups';
 import EcosystemMap from '@/components/investors/EcosystemMap';
 import InvestorMatchPanel from '@/components/investors/InvestorMatchPanel';
+import HubDetailsPanel from '@/components/investors/HubDetailsPanel';
 
 function DiscoverConnectGrid() {
   const [mapZoom, setMapZoom] = useState(null);
+  const [selectedHub, setSelectedHub] = useState(null);
+
+  const handleHubClick = (hub) => {
+    setSelectedHub(hub);
+    setMapZoom({ lat: hub.lat, lon: hub.lon });
+  };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <DiscoverStartups onHubSelect={setMapZoom} />
-      <EcosystemMap zoomToCity={mapZoom} />
-    </div>
+    <>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <DiscoverStartups onHubSelect={setMapZoom} />
+        <EcosystemMap zoomToCity={mapZoom} onHubClick={handleHubClick} />
+      </div>
+      {selectedHub && <HubDetailsPanel hub={selectedHub} onClose={() => setSelectedHub(null)} />}
+    </>
   );
 }
 
