@@ -3,10 +3,10 @@ import { base44 } from '@/api/base44Client';
 import { Search, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import StartupPreviewPanel from '@/components/map/StartupPreviewPanel';
+
 
 const SECTORS = ['AI', 'Life Sciences', 'Fintech', 'B2B Software', 'Aerospace & Defense', 'Energy', 'Consumer'];
 const STAGES = ['Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C'];
@@ -29,7 +29,7 @@ const DiscoverStartups = forwardRef(function DiscoverStartups({ onHubSelect, sel
   const [loading, setLoading] = useState(false);
   const [mapStartups, setMapStartups] = useState([]);
   const [mapCenter, setMapCenter] = useState([39.3210, -111.0937]);
-  const [selectedStartup, setSelectedStartup] = useState(null);
+
   const [mapLoading, setMapLoading] = useState(true);
   const [mapZoom, setMapZoom] = useState(7);
 
@@ -88,7 +88,6 @@ const DiscoverStartups = forwardRef(function DiscoverStartups({ onHubSelect, sel
     focusStartup: (startup) => {
       setMapCenter([startup.latitude, startup.longitude]);
       setMapZoom(13);
-      setSelectedStartup(startup);
     }
   }), []);
 
@@ -155,10 +154,15 @@ const DiscoverStartups = forwardRef(function DiscoverStartups({ onHubSelect, sel
                 key={startup.id}
                 position={[startup.latitude, startup.longitude]}
                 icon={defaultIcon}
-                eventHandlers={{
-                  click: () => setSelectedStartup(startup)
-                }}
-              />
+              >
+                <Popup>
+                  <div className="text-sm">
+                    <div className="font-semibold">{startup.company_name}</div>
+                    {startup.address && <div className="text-xs text-gray-600">{startup.address}</div>}
+                    {startup.city && <div className="text-xs text-gray-600">{startup.city}, {startup.county || 'UT'}</div>}
+                  </div>
+                </Popup>
+              </Marker>
             ))}
           </MapContainer>
         </div>
@@ -170,12 +174,7 @@ const DiscoverStartups = forwardRef(function DiscoverStartups({ onHubSelect, sel
         </Button>
       </Link>
 
-      {selectedStartup && (
-        <StartupPreviewPanel 
-          startup={selectedStartup} 
-          onClose={() => setSelectedStartup(null)} 
-        />
-      )}
+
     </div>
   );
 });
