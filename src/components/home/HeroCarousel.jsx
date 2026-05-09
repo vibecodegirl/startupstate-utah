@@ -12,7 +12,11 @@ export default function HeroCarousel() {
   useEffect(() => {
     base44.entities.CarouselItem.list('-display_order', 50)
       .then(items => {
-        const activeSlides = items.filter(item => item.is_active).sort((a, b) => a.display_order - b.display_order);
+        let activeSlides = items.filter(item => item.is_active).sort((a, b) => a.display_order - b.display_order);
+        // Reorder: keep first, swap positions 2 and 3 (indices 1 and 2)
+        if (activeSlides.length > 2) {
+          [activeSlides[1], activeSlides[2]] = [activeSlides[2], activeSlides[1]];
+        }
         setSlides(activeSlides.length > 0 ? activeSlides : [getDefaultSlide()]);
         setLoading(false);
       })
@@ -90,6 +94,13 @@ export default function HeroCarousel() {
               {slide.cta_text || 'Get Started'}
             </Button>
           </Link>
+          {currentIndex === 0 && (
+            <Link to="/resources">
+              <Button size="lg" className="bg-white/20 text-white hover:bg-white/30 border-2 border-white font-manrope font-bold px-8 py-3 text-base rounded-xl transition-all backdrop-blur-sm">
+                Explore Resources
+              </Button>
+            </Link>
+          )}
           <button
             onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))}
             className="px-8 py-3 rounded-xl font-manrope font-bold text-base border-2 border-white text-white hover:bg-white/10 transition-all"
