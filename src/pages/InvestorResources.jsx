@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, TrendingUp, DollarSign, Users, Globe, Zap, Award, Building2, ExternalLink } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend } from 'recharts';
@@ -12,7 +12,7 @@ import HubDetailsPanel from '@/components/investors/HubDetailsPanel';
 function DiscoverConnectGrid() {
   const [mapZoom, setMapZoom] = useState(null);
   const [selectedHub, setSelectedHub] = useState(null);
-  const discoverStartupsRef = useState(null)[1];
+  const discoverStartupsRef = useRef(null);
 
   const handleHubClick = (hub) => {
     setSelectedHub(hub);
@@ -21,8 +21,8 @@ function DiscoverConnectGrid() {
 
   const handleStartupClick = (startup) => {
     // Trigger map zoom and marker selection via ref callback
-    if (discoverStartupsRef?.focusStartup) {
-      discoverStartupsRef.focusStartup(startup);
+    if (discoverStartupsRef?.current?.focusStartup) {
+      discoverStartupsRef.current.focusStartup(startup);
     }
   };
 
