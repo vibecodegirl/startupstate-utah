@@ -10,7 +10,7 @@ const quizSteps = [
   },
   {
     question: "Which sector best describes your business?",
-    options: ['AI & Software (B2B SaaS, IT, Tech)', 'Life Sciences & MedTech', 'Aerospace & Defense', 'Fintech', 'Consumer Products & Marketplaces', 'Energy & Cleantech', 'Other'],
+    options: ['AI', 'Life Sciences', 'Aerospace & Defense', 'Fintech', 'Consumer', 'Energy', 'Other'],
     key: 'sector',
   },
   {
