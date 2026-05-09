@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { X, MapPin, TrendingUp, Building2 } from 'lucide-react';
 
-export default function HubDetailsPanel({ hub, onClose }) {
+export default function HubDetailsPanel({ hub, onClose, onStartupClick }) {
   const [startups, setStartups] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -58,10 +58,14 @@ export default function HubDetailsPanel({ hub, onClose }) {
             ) : startups.length > 0 ? (
               <div className="space-y-2">
                 {startups.map(s => (
-                  <div key={s.id} className="bg-muted/50 rounded-lg p-3 border border-border hover:border-primary/30 transition-colors">
+                  <button
+                    key={s.id}
+                    onClick={() => onStartupClick?.(s)}
+                    className="w-full text-left bg-muted/50 rounded-lg p-3 border border-border hover:border-primary/30 hover:bg-primary/5 transition-colors"
+                  >
                     <div className="font-semibold text-sm text-foreground">{s.company_name}</div>
                     <div className="text-xs text-muted-foreground mt-1">{s.sector} • {s.funding_stage}</div>
-                  </div>
+                  </button>
                 ))}
               </div>
             ) : (

@@ -137,7 +137,7 @@ export default function DiscoverStartups({ onHubSelect, selectedHub }) {
 
       {!mapLoading && mapStartups.length > 0 && (
         <div className="bg-white rounded-xl border border-border overflow-hidden shadow-sm h-80 mb-6">
-          <MapContainer center={mapCenter} zoom={mapZoom} style={{ height: '100%', width: '100%' }}>
+          <MapContainer center={mapCenter} zoom={mapZoom} style={{ height: '100%', width: '100%' }} key={`${mapCenter[0]}-${mapCenter[1]}-${mapZoom}`}>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; OpenStreetMap contributors'

@@ -18,13 +18,18 @@ function DiscoverConnectGrid() {
     setMapZoom({ lat: hub.lat, lon: hub.lon });
   };
 
+  const handleStartupClick = (startup) => {
+    // This is handled by clicking the marker on the map
+    // The map will focus on the startup's location
+  };
+
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <DiscoverStartups onHubSelect={setMapZoom} selectedHub={selectedHub} />
         <EcosystemMap zoomToCity={mapZoom} onHubClick={handleHubClick} />
       </div>
-      {selectedHub && <HubDetailsPanel hub={selectedHub} onClose={() => setSelectedHub(null)} />}
+      {selectedHub && <HubDetailsPanel hub={selectedHub} onClose={() => setSelectedHub(null)} onStartupClick={handleStartupClick} />}
     </>
   );
 }
