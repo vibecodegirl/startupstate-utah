@@ -73,6 +73,9 @@ export default function HeroCarousel() {
       <div className="absolute inset-0 opacity-10">
         <img src="https://startup.utah.gov/wp-content/uploads/asset-1@3x.webp" alt="SLC" className="w-full h-full object-cover" />
       </div>
+      
+      {/* Overlay Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-600/30 via-blue-500/20 to-white/10 pointer-events-none"></div>
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
