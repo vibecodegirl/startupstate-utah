@@ -166,7 +166,6 @@ export default function Resources() {
   const [audience, setAudience] = useState('All Stages');
   const [view, setView] = useState('grid');
   const [dbResources, setDbResources] = useState([]);
-  const [sortBy, setSortBy] = useState('title');
   const [sortDir, setSortDir] = useState('asc');
 
   useEffect(() => {
@@ -183,26 +182,15 @@ export default function Resources() {
   });
 
   const sorted = [...filtered].sort((a, b) => {
-    let aVal = a[sortBy] || '';
-    let bVal = b[sortBy] || '';
-    if (typeof aVal === 'string') {
-      aVal = aVal.toLowerCase();
-      bVal = bVal.toLowerCase();
-    }
+    let aVal = a.title.toLowerCase();
+    let bVal = b.title.toLowerCase();
     const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
     return sortDir === 'asc' ? cmp : -cmp;
   });
 
   const hasActiveFilters = category !== 'All' || audience !== 'All Stages';
 
-  const handleSort = (field) => {
-    if (sortBy === field) {
-      setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(field);
-      setSortDir('asc');
-    }
-  };
+
 
   return (
     <div className="min-h-screen bg-white pt-24">
@@ -251,18 +239,14 @@ export default function Resources() {
             ))}
           </select>
 
-          {/* Sort By Filter Inline */}
+          {/* Sort Direction Filter Inline */}
           <select
-            value={sortBy}
-            onChange={e => {
-              setSortBy(e.target.value);
-              setSortDir('asc');
-            }}
+            value={sortDir}
+            onChange={e => setSortDir(e.target.value)}
             className="px-3 py-2.5 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white text-foreground font-medium"
           >
-            <option value="title">Sort: Title</option>
-            <option value="category">Sort: Category</option>
-            <option value="provider">Sort: Provider</option>
+            <option value="asc">A to Z</option>
+            <option value="desc">Z to A</option>
           </select>
 
           {/* View Toggle */}
@@ -402,24 +386,9 @@ export default function Resources() {
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-y border-gray-200">
                 <tr>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-700">
-                    <button onClick={() => handleSort('title')} className="flex items-center gap-1 hover:text-primary transition-colors group">
-                      Resource
-                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">{sortBy === 'title' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
-                    </button>
-                  </th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-700">
-                    <button onClick={() => handleSort('category')} className="flex items-center gap-1 hover:text-primary transition-colors group">
-                      Category
-                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">{sortBy === 'category' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
-                    </button>
-                  </th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-700">
-                    <button onClick={() => handleSort('provider')} className="flex items-center gap-1 hover:text-primary transition-colors group">
-                      Provider
-                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">{sortBy === 'provider' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
-                    </button>
-                  </th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Resource</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Category</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Provider</th>
                   <th className="text-left px-4 py-3 font-semibold text-gray-700">Description</th>
                   <th className="text-center px-4 py-3 font-semibold text-gray-700">Action</th>
                 </tr>
