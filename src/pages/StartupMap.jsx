@@ -223,8 +223,6 @@ export default function StartupMap() {
 
             <CompanyListPanel startups={filtered} onSelect={setSelected} />
 
-            {/* Preview slideout */}
-            {selected && <StartupPreviewPanel startup={selected} onClose={() => setSelected(null)} />}
           </>
         )}
 
@@ -341,6 +339,9 @@ export default function StartupMap() {
           </div>
         )}
       </div>
+
+      {/* Preview slideout — available in all views */}
+      {selected && <StartupPreviewPanel startup={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }
