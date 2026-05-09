@@ -104,12 +104,12 @@ export default function QuickWins({ onWinClick }) {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 bg-gradient-to-r from-primary via-green-mid to-primary rounded-3xl p-10 text-center">
-          <h3 className="font-manrope font-extrabold text-2xl text-white mb-3">Not sure which to start with?</h3>
-          <p className="text-white/80 mb-6">Our AI Advisor can help you prioritize based on your specific stage and goals.</p>
+        <div className="mt-6 -mx-3 sm:-mx-4 lg:-mx-6 bg-gradient-to-r from-primary via-green-mid to-primary px-6 sm:px-8 py-4 text-center">
+          <h3 className="font-manrope font-extrabold text-lg text-white mb-2">Not sure which to start with?</h3>
+          <p className="text-white/80 text-sm mb-3 inline-block">Our AI Advisor can help you prioritize.</p>
           <button
             onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))}
-            className="px-8 py-2.5 rounded-lg font-manrope font-bold text-base bg-white text-primary hover:bg-green-pale transition-colors"
+            className="ml-3 px-6 py-1.5 rounded-lg font-manrope font-bold text-sm bg-white text-primary hover:bg-green-pale transition-colors"
           >
             Talk to AI Advisor
           </button>
