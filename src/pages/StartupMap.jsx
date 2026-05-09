@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { base44 } from '@/api/base44Client';
-import { Search, Filter, X, SlidersHorizontal } from 'lucide-react';
+import { Search, Filter, X, SlidersHorizontal, ExternalLink, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import StartupCard from '@/components/map/StartupCard';
 import StartupPreviewPanel from '@/components/map/StartupPreviewPanel';
@@ -82,7 +83,7 @@ export default function StartupMap() {
 
           {/* View toggle */}
           <div className="flex rounded-lg border border-border overflow-hidden">
-            {['map', 'list'].map(v => (
+            {['map', 'list', 'table'].map(v => (
               <button key={v} onClick={() => setView(v)}
                 className={`px-3 py-1.5 text-xs font-semibold capitalize transition-colors ${view === v ? 'bg-primary text-white' : 'bg-white text-muted-foreground hover:bg-muted'}`}>
                 {v}
@@ -177,6 +178,79 @@ export default function StartupMap() {
               <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                 {filtered.map(s => <StartupCard key={s.id} startup={s} />)}
               </div>
+            )}
+          </div>
+        )}
+
+        {/* Table view */}
+        {view === 'table' && (
+          <div className="flex-1 overflow-auto">
+            {loading ? (
+              <div className="flex items-center justify-center h-40">
+                <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" />
+              </div>
+            ) : (
+              <table className="w-full text-sm">
+                <thead className="sticky top-0 bg-white border-b border-border z-10 shadow-sm">
+                  <tr>
+                    <th className="text-left px-5 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Company</th>
+                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Sector</th>
+                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Stage</th>
+                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Size</th>
+                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Location</th>
+                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Status</th>
+                    <th className="px-4 py-3"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {filtered.map(s => {
+                    const verificationIcon = {
+                      'Verified': <CheckCircle size={13} className="text-primary" />,
+                      'Pending': <Clock size={13} className="text-yellow-500" />,
+                      'Community Sourced': <AlertCircle size={13} className="text-blue-500" />,
+                      'Flagged': <AlertCircle size={13} className="text-red-500" />,
+                    }[s.verification_status];
+                    return (
+                      <tr key={s.id} className="hover:bg-muted/30 transition-colors group">
+                        <td className="px-5 py-3">
+                          <div className="flex items-center gap-2">
+                            {s.photo_url && <img src={s.photo_url} alt={s.company_name} className="w-7 h-7 rounded-md object-cover border border-border shrink-0" />}
+                            <div>
+                              <div className="font-semibold text-foreground">{s.company_name}</div>
+                              {s.description && <div className="text-xs text-muted-foreground line-clamp-1 max-w-xs">{s.description}</div>}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          {s.sector && (
+                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{s.sector}</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          {s.funding_stage && (
+                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{s.funding_stage}</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-xs text-muted-foreground">{s.employees || '—'}</td>
+                        <td className="px-4 py-3 text-xs text-muted-foreground">
+                          {s.city ? `${s.city}${s.county ? `, ${s.county}` : ''}` : '—'}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            {verificationIcon}
+                            <span>{s.verification_status || '—'}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <Link to={`/startups/${s.id}`} className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-primary">
+                            <ExternalLink size={14} />
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             )}
           </div>
         )}
