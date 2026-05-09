@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { base44 } from '@/api/base44Client';
-import { Search, Filter, X, SlidersHorizontal, ExternalLink, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Search, Filter, X, SlidersHorizontal, ExternalLink, CheckCircle, Clock, AlertCircle, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import StartupCard from '@/components/map/StartupCard';
@@ -21,6 +21,39 @@ L.Icon.Default.mergeOptions({
 const sectors = ['All Sectors', 'AI', 'Aerospace & Defense', 'Life Sciences', 'Fintech', 'B2B Software', 'Other'];
 const stages = ['All Stages', 'Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C', 'Series D+', 'Bootstrapped'];
 const sizes = ['All Sizes', '2-10', '11-50', '51-200', '201-500', '500+'];
+
+function ColumnFilterDropdown({ label, value, options, onChange }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const isFiltered = value !== options[0];
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative inline-flex items-center gap-1 cursor-pointer group select-none" onClick={() => setOpen(o => !o)}>
+      <span className={`text-xs uppercase tracking-wider font-semibold ${isFiltered ? 'text-primary' : 'text-muted-foreground'}`}>{label}</span>
+      <ChevronDown size={11} className={`transition-transform ${open ? 'rotate-180' : ''} ${isFiltered ? 'text-primary' : 'text-muted-foreground'}`} />
+      {isFiltered && <span className="w-1.5 h-1.5 rounded-full bg-primary absolute -top-1 -right-2" />}
+      {open && (
+        <div className="absolute top-full left-0 mt-1 bg-white border border-border rounded-xl shadow-lg z-50 py-1 min-w-[140px]" onClick={e => e.stopPropagation()}>
+          {options.map(opt => (
+            <button
+              key={opt}
+              onClick={() => { onChange(opt); setOpen(false); }}
+              className={`w-full text-left px-3 py-1.5 text-xs hover:bg-muted/60 transition-colors ${value === opt ? 'text-primary font-semibold bg-green-pale' : 'text-foreground'}`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function StartupMap() {
   const [startups, setStartups] = useState([]);
@@ -202,9 +235,15 @@ export default function StartupMap() {
                 <thead className="sticky top-0 bg-white border-b border-border z-10 shadow-sm">
                   <tr>
                     <th className="text-left px-5 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Company</th>
-                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Sector</th>
-                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Stage</th>
-                    <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Size</th>
+                    <th className="text-left px-4 py-3">
+                      <ColumnFilterDropdown label="Sector" value={sector} options={sectors} onChange={setSector} />
+                    </th>
+                    <th className="text-left px-4 py-3">
+                      <ColumnFilterDropdown label="Stage" value={stage} options={stages} onChange={setStage} />
+                    </th>
+                    <th className="text-left px-4 py-3">
+                      <ColumnFilterDropdown label="Size" value={size} options={sizes} onChange={setSize} />
+                    </th>
                     <th className="text-left px-4 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Location</th>
                     <th className="px-4 py-3"></th>
                   </tr>
