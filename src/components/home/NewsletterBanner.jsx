@@ -40,7 +40,7 @@ export default function NewsletterBanner() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="px-3 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm w-full sm:w-40"
+              className="px-3 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm w-full sm:w-80"
             />
             <Button
               type="submit"
