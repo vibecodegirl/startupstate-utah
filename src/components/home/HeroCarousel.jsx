@@ -98,26 +98,7 @@ export default function HeroCarousel() {
           </button>
         </div>
 
-        {/* Innovation Stats Callout */}
-        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 inline-block">
-          <p className="text-sm font-semibold text-white/90 mb-3">The Global Standard for Innovation</p>
-          <div className="flex gap-6 text-center">
-            <div>
-              <div className="text-2xl font-extrabold text-white mb-1">#1</div>
-              <p className="text-xs text-white/70">Economic Outlook</p>
-            </div>
-            <div className="w-px bg-white/20" />
-            <div>
-              <div className="text-2xl font-extrabold text-white mb-1">3,500+</div>
-              <p className="text-xs text-white/70">Active Startups</p>
-            </div>
-            <div className="w-px bg-white/20" />
-            <div>
-              <div className="text-2xl font-extrabold text-white mb-1">$4.2B+</div>
-              <p className="text-xs text-white/70">VC Investment</p>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Carousel Navigation */}
