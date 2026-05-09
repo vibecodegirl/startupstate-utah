@@ -21,15 +21,12 @@ const statsAnimationStyle = `
 `;
 
 const stats = [
-{ value: '#1', label: "Best Economic Outlook", source: 'ALEC', icon: Zap },
-{ value: '3,500+', label: 'Active Startups', source: 'Silicon Slopes', icon: Building },
-{ value: '$4.2B+', label: 'Annual VC Investment', source: 'NVCA', icon: DollarSign },
-{ value: '45+', label: 'Active Accelerators', source: 'GOEO', icon: Sparkles },
-{ value: '15%', label: 'Tech Job Growth', source: 'BLS', icon: TrendingUp },
-{ value: 'Top 5', label: 'Educated Workforce', source: 'US Census', icon: Users }
-];
-
-import { Building, DollarSign, TrendingUp, Users } from 'lucide-react';
+{ value: '#1', label: "Best Economic Outlook", source: 'ALEC' },
+{ value: '3,500+', label: 'Active Startups', source: 'Silicon Slopes' },
+{ value: '$4.2B+', label: 'Annual VC Investment', source: 'NVCA' },
+{ value: '45+', label: 'Active Accelerators & Incubators', source: 'GOEO' },
+{ value: '15%', label: 'Annual Tech Job Growth', source: 'BLS' },
+{ value: 'Top 5', label: 'Most Educated Workforce', source: 'US Census' }];
 
 
 export default function Home() {
@@ -40,26 +37,18 @@ export default function Home() {
       <style>{statsAnimationStyle}</style>
       <HeroSection />
 
-      {/* Momentum Stats Section */}
-      <section className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 -mt-8 relative z-10 mb-20">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {stats.map((s, i) => {
-            const Icon = s.icon;
-            return (
-          <div key={s.label} className="group cursor-default" style={{
-            animation: `fadeInUp 0.6s ease-out ${i * 0.08}s both`
+      {/* Stats Section */}
+      <section className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 -mt-8 relative z-10 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {stats.map((s, i) =>
+          <div key={s.label} className="bg-white rounded-2xl border border-border p-4 text-center shadow-lg hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:scale-105 group cursor-default" style={{
+            animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`
           }}>
-            <div className="bg-white rounded-xl border border-border p-5 text-center shadow-md hover:shadow-lg hover:border-primary/40 transition-all duration-300 h-full flex flex-col items-center justify-center">
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                <Icon size={22} className="text-primary" />
-              </div>
-              <div className="font-manrope font-extrabold text-xl text-foreground mb-1">{s.value}</div>
-              <div className="text-xs text-foreground font-semibold leading-snug mb-1.5">{s.label}</div>
+              <div className="font-manrope font-extrabold text-2xl bg-gradient-to-r from-primary to-green-mid bg-clip-text text-transparent mb-1 group-hover:scale-110 transition-transform duration-300">{s.value}</div>
+              <div className="text-xs text-foreground font-semibold leading-snug mb-1">{s.label}</div>
               <div className="text-xs text-muted-foreground">{s.source}</div>
             </div>
-          </div>
-          );
-          })}
+          )}
         </div>
       </section>
 

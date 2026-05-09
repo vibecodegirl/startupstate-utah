@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, Lightbulb, X, ExternalLink, Zap, Rocket, Briefcase, MapPin as MapPinIcon } from 'lucide-react';
+import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, Lightbulb, X, ExternalLink, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 import QuickWins from '@/components/founders/QuickWins';
@@ -127,33 +127,32 @@ export default function StartPage() {
 
   return (
     <div className="min-h-screen pt-20 bg-white">
-      {/* Hero Header with Bold Momentum */}
-      <div className="relative py-24 bg-gradient-to-br from-primary via-green-mid to-green-dark overflow-hidden">
+      {/* Hero Header with Background */}
+      <div className="relative py-20 bg-gradient-to-br from-primary via-green-mid to-green-dark overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute inset-0 opacity-15">
+        <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full blur-3xl" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm border border-white/30">
-            <Rocket size={14} className="text-white" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-white">Your Path to Growth</span>
+            <Lightbulb size={14} className="text-white" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-white">Launch Your Journey</span>
           </div>
-          <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl text-white mb-6 leading-tight">
-            Build Your Business
-            <span className="block bg-gradient-to-r from-white via-green-pale to-white bg-clip-text text-transparent">in Utah</span>
+          <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-white mb-4 leading-tight">
+            Starting a Business in Utah
           </h1>
-          <p className="text-white/80 text-lg max-w-2xl mx-auto leading-relaxed mb-10">
-            From idea to growth—get personalized guidance at every stage.
+          <p className="text-white/85 text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+            Get personalized resources matched to your stage, sector, and goals.
           </p>
           {!showQuiz && (
             <Button 
               onClick={() => setShowQuiz(true)} 
-              className="bg-white text-primary hover:bg-green-pale font-manrope font-bold gap-2 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 px-8 py-6 text-base"
+              className="bg-white text-primary hover:bg-green-pale font-semibold gap-2 shadow-lg"
             >
-              <Zap size={18} />
-              Start Your Pathway
+              <Zap size={16} />
+              Get Personalized Pathway
             </Button>
           )}
         </div>
@@ -174,12 +173,8 @@ export default function StartPage() {
           </div>
         )}
 
-        {/* Momentum Stats - Quick Wins Before Steps */}
-        {!showQuiz && (
-          <section className="py-16 -mt-8 relative z-20">
-            <QuickWins onWinClick={setSelectedWin} />
-          </section>
-        )}
+      {/* Quick Wins - "Momentum Starts Now" directly below quiz */}
+      <QuickWins onWinClick={setSelectedWin} />
 
         {/* Personalized Steps - Only show if quiz completed */}
         {quizAnswers && quizAnswers !== 'skipped' && (
@@ -209,16 +204,16 @@ export default function StartPage() {
                           {step.number}
                         </div>
 
-                        <div className="flex-1 bg-white rounded-2xl border border-border p-6 shadow-sm hover:border-primary/40 hover:shadow-lg transition-all duration-300 group">
-                          <div className="flex items-start gap-4 mb-4">
+                        <div className="flex-1 bg-white rounded-2xl border border-border p-6 shadow-sm hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+                          <div className="flex items-start gap-3 mb-4">
                             <div className="md:hidden w-8 h-8 rounded-lg bg-primary text-white font-manrope font-black text-sm flex items-center justify-center shrink-0">
                               {step.number}
                             </div>
-                            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
-                              <Icon size={24} className="text-primary" />
+                            <div className="w-10 h-10 rounded-xl bg-green-pale flex items-center justify-center shrink-0">
+                              <Icon size={20} className="text-primary" />
                             </div>
-                            <div className="flex-1">
-                              <h2 className="font-manrope font-bold text-lg text-foreground">{step.title}</h2>
+                            <div>
+                              <h2 className="font-manrope font-bold text-xl text-foreground">{step.title}</h2>
                             </div>
                           </div>
 
