@@ -88,7 +88,6 @@ const DiscoverStartups = forwardRef(function DiscoverStartups({ onHubSelect, sel
     focusStartup: (startup) => {
       setMapCenter([startup.latitude, startup.longitude]);
       setMapZoom(13);
-      setSelectedStartup(startup);
     }
   }), []);
 
