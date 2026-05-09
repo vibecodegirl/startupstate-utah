@@ -75,7 +75,7 @@ export default function HeroCarousel() {
       </div>
       
       {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-600/15 via-blue-500/10 to-white/5 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-green-600/8 via-blue-500/5 pointer-events-none"></div>
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
