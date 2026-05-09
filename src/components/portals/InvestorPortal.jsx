@@ -17,12 +17,15 @@ export default function InvestorPortal({ user }) {
     const currentRole = sessionStorage.getItem('currentRole');
     const isDemoMode = currentRole === 'investor';
 
-    // Use demo email for investor demo role
+    // Use demo email for investor demo role - works even without auth
     const emailToUse = isDemoMode ? DEMO_INVESTOR_EMAILS[0] : user?.email;
 
     if (!emailToUse) {
-      setLoading(false);
-      return;
+      // Allow demo mode to load even without user email
+      if (!isDemoMode) {
+        setLoading(false);
+        return;
+      }
     }
 
     Promise.all([

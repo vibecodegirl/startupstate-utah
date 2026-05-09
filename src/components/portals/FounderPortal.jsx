@@ -20,12 +20,15 @@ export default function FounderPortal({ user }) {
     const currentRole = sessionStorage.getItem('currentRole');
     const isDemoMode = currentRole === 'founder';
     
-    // Use demo email for founder demo role
+    // Use demo email for founder demo role - works even without auth
     const emailToUse = isDemoMode ? DEMO_FOUNDER_EMAILS[0] : user?.email;
 
     if (!emailToUse) {
-      setLoading(false);
-      return;
+      // Allow demo mode to load even without user email
+      if (!isDemoMode) {
+        setLoading(false);
+        return;
+      }
     }
 
     base44.entities.FounderProfile.filter({ user_email: emailToUse }, '', 1)
