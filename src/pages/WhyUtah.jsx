@@ -1,6 +1,7 @@
 import { TrendingUp, Award, Users, Globe, Building, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import WhyCarousel from '@/components/why-utah/WhyCarousel';
 
 const stats = [
   { value: '#1', label: 'Best State to Start a Business', source: 'WalletHub 2023' },
@@ -86,26 +87,13 @@ export default function WhyUtah() {
         </div>
       </section>
 
-      {/* Why items */}
+      {/* Why items Carousel */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-12">
           <h2 className="font-manrope font-extrabold text-4xl text-foreground mb-3">Utah's Competitive Advantage</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Six reasons why Utah is the smartest place to build your startup.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {whyItems.map(item => {
-            const Icon = item.icon;
-            return (
-              <div key={item.title} className="bg-white rounded-2xl border border-border p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-green-pale flex items-center justify-center mb-4">
-                  <Icon size={22} className="text-primary" />
-                </div>
-                <h3 className="font-manrope font-bold text-lg text-foreground mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-              </div>
-            );
-          })}
-        </div>
+        <WhyCarousel items={whyItems} />
       </section>
 
       {/* Sectors */}
