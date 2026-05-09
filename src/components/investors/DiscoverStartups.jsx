@@ -90,7 +90,7 @@ const DiscoverStartups = forwardRef(function DiscoverStartups({ onHubSelect, sel
       setMapZoom(13);
       setSelectedStartup(startup);
     }
-  }));
+  }), []);
 
   return (
     <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
