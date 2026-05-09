@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 const quizSteps = [
   {
     question: "What stage is your startup or idea currently in?",
-    options: ['Idea / Pre-Seed', 'Seed', 'Series A', 'Series B+', 'Bootstrapped'],
+    options: ['Idea / Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series B+', 'Bootstrapped'],
     key: 'stage',
   },
   {
