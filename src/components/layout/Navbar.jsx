@@ -54,14 +54,6 @@ export default function Navbar({ role, setRole }) {
 
           {/* Right Side - Main Actions */}
           <div className="hidden lg:flex items-center gap-4 ml-auto">
-            {/* Language Translator */}
-            <button
-              title="Language"
-              className="p-2 rounded-lg text-foreground/70 hover:text-primary hover:bg-muted transition-colors"
-            >
-              <Globe size={18} />
-            </button>
-
             {/* Main Action Buttons */}
             <div className="flex items-center gap-3">
               {user ? (
@@ -90,6 +82,14 @@ export default function Navbar({ role, setRole }) {
                 </>
               )}
             </div>
+
+            {/* Language Translator */}
+            <button
+              title="Language"
+              className="p-2 rounded-lg text-foreground/70 hover:text-primary hover:bg-muted transition-colors"
+            >
+              <Globe size={18} />
+            </button>
 
             {/* Role Selector - Icon Only, Far Right */}
             <div className="border-l border-border pl-4">
