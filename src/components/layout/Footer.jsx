@@ -71,7 +71,7 @@ export default function Footer() {
             </ul>
             <div className="mt-4 p-3 bg-white/5 rounded-lg border border-white/10">
               <p className="text-xs text-white/50">
-                A program of the <span className="text-primary font-medium">Governor's Office of Economic Opportunity</span>
+                A program of the <a href="https://business.utah.gov/" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">Governor's Office of Economic Opportunity</a>
               </p>
             </div>
           </div>
