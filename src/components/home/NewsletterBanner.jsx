@@ -18,27 +18,30 @@ export default function NewsletterBanner() {
   };
 
   return (
-    <section className="bg-gradient-to-r from-primary via-green-mid to-primary py-12 my-16 rounded-2xl shadow-lg mx-4 sm:mx-6 lg:mx-8">
-      <div className="max-w-3xl mx-auto px-8 text-center">
-        <h2 className="font-manrope font-extrabold text-3xl sm:text-4xl text-white mb-2">
-          Stay in the Loop — Utah Startup Updates
-        </h2>
-        <p className="text-white/85 text-base mb-6">
-          Get monthly funding, events, and ecosystem insights straight to your inbox.
+    <section className="bg-gradient-to-r from-primary/10 via-green-pale/20 to-primary/10 py-16 border-y border-primary/20">
+      <div className="max-w-2xl mx-auto px-4 text-center">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <Mail size={20} className="text-primary" />
+          <h2 className="font-manrope font-extrabold text-2xl text-foreground">
+            Stay Connected with Utah's Startup Ecosystem
+          </h2>
+        </div>
+        <p className="text-muted-foreground text-sm mb-6">
+          Get monthly updates on funding opportunities, events, and resources for founders and investors.
         </p>
 
-        <form onSubmit={handleSubmit} className="flex gap-3 max-w-md mx-auto">
+        <form onSubmit={handleSubmit} className="flex gap-2 max-w-md mx-auto">
           <input
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="flex-1 px-4 py-3 rounded-lg bg-white/95 border-0 focus:outline-none focus:ring-2 focus:ring-white/50 text-sm font-medium"
+            className="flex-1 px-4 py-2.5 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
           />
           <Button
             type="submit"
-            className="bg-white text-primary hover:bg-white/90 font-bold gap-2 whitespace-nowrap px-6"
+            className="bg-primary text-white hover:bg-green-dark font-semibold gap-2 whitespace-nowrap"
           >
             {submitted ? (
               <>
@@ -49,6 +52,8 @@ export default function NewsletterBanner() {
             )}
           </Button>
         </form>
+
+        <p className="text-xs text-muted-foreground mt-3">No spam, just helpful startup resources.</p>
       </div>
     </section>
   );
