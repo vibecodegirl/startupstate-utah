@@ -123,29 +123,38 @@ export default function StartPage() {
 
   return (
     <div className="min-h-screen pt-20 bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 mb-4">
-            <Lightbulb size={14} />
-            <span className="text-xs font-semibold uppercase tracking-wider">Launch Your Journey</span>
+      {/* Hero Header with Background */}
+      <div className="relative py-20 bg-gradient-to-br from-primary via-green-mid to-green-dark overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm border border-white/30">
+            <Lightbulb size={14} className="text-white" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-white">Launch Your Journey</span>
           </div>
-          <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-3">
+          <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-white mb-4 leading-tight">
             Starting a Business in Utah
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-white/85 text-lg max-w-2xl mx-auto leading-relaxed mb-8">
             Get personalized resources matched to your stage, sector, and goals.
           </p>
           {!showQuiz && (
             <Button 
               onClick={() => setShowQuiz(true)} 
-              className="mt-6 bg-primary text-white hover:bg-green-dark font-semibold gap-2"
+              className="bg-white text-primary hover:bg-green-pale font-semibold gap-2 shadow-lg"
             >
               <Zap size={16} />
               Get Personalized Pathway
             </Button>
           )}
         </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Quiz Section - Conditional */}
         {showQuiz && (
@@ -160,8 +169,10 @@ export default function StartPage() {
           </div>
         )}
 
+      <div className="py-16">
         {/* Quick Wins - "Momentum Starts Now" directly below quiz */}
         <QuickWins />
+      </div>
 
         {/* Personalized Steps - Only show if quiz completed */}
         {quizAnswers && quizAnswers !== 'skipped' && (
