@@ -25,12 +25,12 @@ export default function HeroCarousel() {
 
   const getDefaultSlide = () => ({
     id: 'default',
-    title: "Utah's Thriving Ecosystem",
-    subtitle: 'Startup Capital of the World',
-    description: 'Be a part of Utah\'s startup scene. Start, grow, and build your business with the resources, connections, and capital you need — all in one place.',
+    title: "Start Building Your Startup Today",
+    subtitle: 'Get Personalized Guidance for Utah Founders',
+    description: 'Find exactly what you need right now — from funding and mentorship to legal guidance and talent. Take our quick resource quiz and get matched with Utah\'s best startup support.',
     media_type: 'particles',
-    cta_text: 'Explore the Map',
-    cta_link: '/map',
+    cta_text: 'Take the Quiz',
+    cta_link: '/resources?quiz=1',
   });
 
   const goToSlide = (index) => {
@@ -121,19 +121,41 @@ export default function HeroCarousel() {
             </div>
           </div>
 
-          {/* Right: Stats Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { value: '3,500+', label: 'Startups' },
-              { value: '$4.2B+', label: 'VC Invested' },
-              { value: '#1', label: 'Best State' },
-              { value: '45+', label: 'Accelerators' },
-            ].map((stat) => (
-              <div key={stat.label} className={`bg-white border ${colors.border} rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow`}>
-                <div className={`font-manrope font-extrabold text-3xl ${colors.stat}`}>{stat.value}</div>
-                <div className="text-sm text-muted-foreground font-medium mt-2">{stat.label}</div>
+          {/* Right: Action Steps */}
+          <div className="space-y-4">
+            <div className="bg-white border border-border rounded-2xl p-5 shadow-sm">
+              <div className="flex items-start gap-3">
+                <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${colors.accent}/10 shrink-0`}>
+                  <span className={`text-sm font-bold ${colors.stat}`}>1</span>
+                </div>
+                <div>
+                  <div className="font-semibold text-foreground text-sm">Answer 3 Questions</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Tell us about your stage, sector, and needs</div>
+                </div>
               </div>
-            ))}
+            </div>
+            <div className="bg-white border border-border rounded-2xl p-5 shadow-sm">
+              <div className="flex items-start gap-3">
+                <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${colors.accent}/10 shrink-0`}>
+                  <span className={`text-sm font-bold ${colors.stat}`}>2</span>
+                </div>
+                <div>
+                  <div className="font-semibold text-foreground text-sm">Get Matched Resources</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Curated Utah support tailored to you</div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white border border-border rounded-2xl p-5 shadow-sm">
+              <div className="flex items-start gap-3">
+                <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${colors.accent}/10 shrink-0`}>
+                  <span className={`text-sm font-bold ${colors.stat}`}>3</span>
+                </div>
+                <div>
+                  <div className="font-semibold text-foreground text-sm">Connect & Launch</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Explore mentors, funding, and your network</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
