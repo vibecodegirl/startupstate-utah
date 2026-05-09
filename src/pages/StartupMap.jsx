@@ -308,7 +308,7 @@ export default function StartupMap() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {filtered.map(s => (
-                    <tr key={s.id} onClick={() => window.location.href = `/startups/${s.id}`} className="hover:bg-muted/30 transition-colors cursor-pointer">
+                    <tr key={s.id} onClick={() => setSelected(s)} className="hover:bg-muted/30 transition-colors cursor-pointer">
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2">
                           {s.photo_url && <img src={s.photo_url} alt={s.company_name} className="w-7 h-7 rounded-md object-cover border border-border shrink-0" />}
