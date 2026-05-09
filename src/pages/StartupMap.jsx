@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { base44 } from '@/api/base44Client';
 import { Search, Filter, X, SlidersHorizontal, ExternalLink, CheckCircle, Clock, AlertCircle, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -55,6 +55,17 @@ function ColumnFilterDropdown({ label, value, options, onChange }) {
   );
 }
 
+// Inner component that can access the map instance
+function FlyToMarker({ target }) {
+  const map = useMap();
+  useEffect(() => {
+    if (target?.latitude && target?.longitude) {
+      map.flyTo([target.latitude, target.longitude], 14, { duration: 1 });
+    }
+  }, [target, map]);
+  return null;
+}
+
 export default function StartupMap() {
   const [startups, setStartups] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -67,8 +78,17 @@ export default function StartupMap() {
   const [size, setSize] = useState('All Sizes');
   const [hiringOnly, setHiringOnly] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [flyTarget, setFlyTarget] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
   const [view, setView] = useState('map');
+
+  const handleSelectWithFly = useCallback((startup) => {
+    setSelected(startup);
+    if (startup?.latitude && startup?.longitude) {
+      setView('map');
+      setFlyTarget(startup);
+    }
+  }, []);
 
   useEffect(() => {
     base44.entities.Startup.list('-created_date', 500).then(data => {
@@ -198,6 +218,7 @@ export default function StartupMap() {
                   style={{ height: '100%', width: '100%' }}
                   className="z-0"
                 >
+                  <FlyToMarker target={flyTarget} />
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -221,7 +242,7 @@ export default function StartupMap() {
               )}
             </div>
 
-            <CompanyListPanel startups={filtered} onSelect={setSelected} />
+            <CompanyListPanel startups={filtered} onSelect={handleSelectWithFly} />
 
           </>
         )}
@@ -235,7 +256,11 @@ export default function StartupMap() {
               </div>
             ) : (
               <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-                {filtered.map(s => <StartupCard key={s.id} startup={s} />)}
+                {filtered.map(s => (
+                  <div key={s.id} onClick={() => handleSelectWithFly(s)} className="cursor-pointer">
+                    <StartupCard startup={s} disableLink />
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -306,7 +331,7 @@ export default function StartupMap() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {filtered.map(s => (
-                    <tr key={s.id} onClick={() => setSelected(s)} className="hover:bg-muted/30 transition-colors cursor-pointer">
+                    <tr key={s.id} onClick={() => handleSelectWithFly(s)} className="hover:bg-muted/30 transition-colors cursor-pointer">
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2">
                           {s.photo_url && <img src={s.photo_url} alt={s.company_name} className="w-7 h-7 rounded-md object-cover border border-border shrink-0" />}
