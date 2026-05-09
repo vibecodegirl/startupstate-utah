@@ -71,7 +71,7 @@ export default function StartupMap() {
   const [view, setView] = useState('map');
 
   useEffect(() => {
-    base44.entities.Startup.list('-created_date', 200).then(data => {
+    base44.entities.Startup.list('-created_date', 500).then(data => {
       setStartups(data);
       setFiltered(data);
       setLoading(false);
