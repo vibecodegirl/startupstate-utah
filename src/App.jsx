@@ -26,6 +26,7 @@ import Auth from '@/pages/Auth';
 import FounderProfile from '@/pages/FounderProfile';
 import InvestorProfile from '@/pages/InvestorProfile';
 import StartupMatch from '@/pages/StartupMatch';
+import QuizResults from '@/pages/QuizResults';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -84,6 +85,7 @@ const AuthenticatedApp = () => {
         <Route path="/founder-profile" element={<FounderProfile />} />
         <Route path="/investor-profile" element={<InvestorProfile />} />
         <Route path="/matches" element={<StartupMatch />} />
+        <Route path="/quiz-results" element={<QuizResults />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

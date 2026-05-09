@@ -58,7 +58,14 @@ export default function Home() {
             <ResourcesQuiz
               onComplete={(answers) => {
                 setShowQuiz(false);
-                window.location.href = `/resources?quiz=1&stage=${answers.stage}&sector=${answers.sector}&challenge=${answers.challenge}`;
+                const params = new URLSearchParams({
+                  stage: answers.stage || '',
+                  sector: answers.sector || '',
+                  challenge: answers.challenge || '',
+                  location: answers.location || '',
+                  community: answers.community || '',
+                });
+                window.location.href = `/quiz-results?${params.toString()}`;
               }}
               onSkip={() => setShowQuiz(false)}
             />

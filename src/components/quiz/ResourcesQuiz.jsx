@@ -4,19 +4,30 @@ import { Button } from '@/components/ui/button';
 
 const quizSteps = [
   {
-    question: "What stage is your business?",
-    options: ['Pre-Seed', 'Seed', 'Series A', 'Series B', 'Growth'],
+    question: "What stage is your startup or idea currently in?",
+    options: ['Idea / Pre-Seed', 'Seed', 'Series A', 'Series B+', 'Bootstrapped'],
     key: 'stage',
   },
   {
-    question: "What sector are you in?",
-    options: ['AI', 'Aerospace & Defense', 'Life Sciences', 'Fintech', 'B2B Software', 'Other'],
+    question: "Which sector best describes your business?",
+    options: ['AI & Software (B2B SaaS, IT, Tech)', 'Life Sciences & MedTech', 'Aerospace & Defense', 'Fintech', 'Consumer Products & Marketplaces', 'Energy & Cleantech', 'Other'],
     key: 'sector',
   },
   {
-    question: "What's your main challenge right now?",
-    options: ['Finding capital', 'Building a team', 'Mentorship & guidance', 'Networking & partnerships', 'Legal & compliance'],
+    question: "What is your primary goal or biggest challenge right now?",
+    options: ['Raising Capital / Funding', 'Finding Mentors & Guidance', 'Building a Strong Team / Hiring', 'Market Expansion & Sales', 'Product Development & R&D', 'Legal & Compliance', 'International Growth', 'Networking & Partnerships'],
     key: 'challenge',
+  },
+  {
+    question: "Where is your business primarily located or looking to operate within Utah?",
+    options: ['Salt Lake County (Salt Lake City area)', 'Utah County (Provo/Orem area)', 'Weber / Davis Counties (Ogden area)', 'Southern Utah (St. George, Cedar City)', 'Rural Utah', 'Remote / Flexible'],
+    key: 'location',
+  },
+  {
+    question: "Do any of these describe your founding team or target community? (Optional)",
+    options: ['Woman-owned / Woman-led', 'Veteran-owned / Veteran-led', 'Student-led / University Affiliate', 'None of the above'],
+    key: 'community',
+    optional: true,
   },
 ];
 
@@ -41,7 +52,7 @@ export default function ResourcesQuiz({ onComplete, onSkip }) {
   };
 
   const currentQuestion = quizSteps[step];
-  const isAnswered = answers[currentQuestion.key];
+  const isAnswered = answers[currentQuestion.key] || currentQuestion.optional;
 
   return (
     <div className="bg-white rounded-2xl border border-border p-8 max-w-2xl mx-auto">
