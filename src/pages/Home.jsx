@@ -2,7 +2,7 @@ import HeroSection from '@/components/home/HeroSection';
 import JourneyCards from '@/components/home/JourneyCards';
 import PersonaSelector from '@/components/home/PersonaSelector';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin, Sparkles } from 'lucide-react';
+import { ArrowRight, MapPin, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Home({ role }) {
@@ -10,6 +10,26 @@ export default function Home({ role }) {
     <div className="min-h-screen">
       <HeroSection role={role} />
       <JourneyCards />
+
+      {/* Quiz Highlight */}
+      <section className="bg-gradient-to-r from-primary/10 to-green-pale/20 py-16 border-y border-green-pale">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/70 border border-primary/20 rounded-full px-4 py-1.5 mb-6">
+            <Zap size={14} className="text-primary" />
+            <span className="text-xs font-semibold text-primary uppercase tracking-wider">New Feature</span>
+          </div>
+          <h2 className="font-manrope font-extrabold text-3xl sm:text-4xl text-foreground mb-3">Find Resources That Match Your Needs</h2>
+          <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
+            Take our quick 3-question quiz to get personalized recommendations from Utah's startup ecosystem tailored to your stage, sector, and challenges.
+          </p>
+          <Link to="/resources">
+            <Button size="lg" className="bg-primary text-white hover:bg-green-dark font-manrope font-bold px-8 gap-2">
+              Try the Resource Quiz <ArrowRight size={16} />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
       <PersonaSelector />
 
       {/* CTA Strip */}
