@@ -18,7 +18,7 @@ export default function NewsletterBanner() {
   };
 
   return (
-    <section className="bg-gradient-to-r from-primary/10 via-green-pale/20 to-primary/10 py-8 border-y border-primary/20">
+    <section className="bg-gradient-to-r from-primary/10 via-green-pale/20 to-primary/10 py-4 border-y border-primary/20">
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
