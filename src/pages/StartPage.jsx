@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, 
 import { Button } from '@/components/ui/button';
 import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 import QuickWins from '@/components/founders/QuickWins';
+import QuickWinActionPanel from '@/components/founders/QuickWinActionPanel';
 import FounderStories from '@/components/founders/FounderStories';
 
 const steps = [
@@ -88,6 +89,7 @@ export default function StartPage() {
   const [panel, setPanel] = useState(null); // { title, link }
   const [quizAnswers, setQuizAnswers] = useState(null); // { stage, sector, challenge }
   const [showQuiz, setShowQuiz] = useState(false);
+  const [selectedWin, setSelectedWin] = useState(null);
 
   // Filter steps based on quiz answers
   const personalizedSteps = useMemo(() => {
@@ -169,14 +171,14 @@ export default function StartPage() {
           </div>
         )}
 
-      <div className="py-16">
+      <div className="py-12">
         {/* Quick Wins - "Momentum Starts Now" directly below quiz */}
-        <QuickWins />
+        <QuickWins onWinClick={setSelectedWin} />
       </div>
 
         {/* Personalized Steps - Only show if quiz completed */}
         {quizAnswers && quizAnswers !== 'skipped' && (
-          <section className="py-20 bg-muted/20">
+          <section className="py-12 bg-muted/20">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
                 <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Your Personalized Roadmap</h2>
@@ -257,8 +259,13 @@ export default function StartPage() {
         )}
 
         {/* Founder Stories Testimonial Carousel */}
-        <FounderStories />
+        <section className="py-12">
+          <FounderStories />
+        </section>
       </div>
+
+      {/* Quick Win Action Panel */}
+      {selectedWin && <QuickWinActionPanel win={selectedWin} onClose={() => setSelectedWin(null)} />}
 
       {/* Right Side Panel */}
       {panel && (

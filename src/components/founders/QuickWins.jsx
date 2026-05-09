@@ -59,9 +59,9 @@ const quickWins = [
   },
 ];
 
-export default function QuickWins() {
+export default function QuickWins({ onWinClick }) {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-12 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 mb-6">
@@ -95,26 +95,16 @@ export default function QuickWins() {
                   <div className="text-xs text-muted-foreground">{win.impact}</div>
                 </div>
 
-                {win.link.startsWith('http') ? (
-                  <a href={win.link} target="_blank" rel="noopener noreferrer">
-                    <Button size="sm" className="w-full bg-primary text-white hover:bg-green-dark font-semibold gap-2">
-                      {win.action} <Zap size={12} />
-                    </Button>
-                  </a>
-                ) : (
-                  <Link to={win.link}>
-                    <Button size="sm" className="w-full bg-primary text-white hover:bg-green-dark font-semibold gap-2">
-                      {win.action} <Zap size={12} />
-                    </Button>
-                  </Link>
-                )}
+                <Button size="sm" onClick={() => onWinClick(win)} className="w-full bg-primary text-white hover:bg-green-dark font-semibold gap-2">
+                  {win.action} <Zap size={12} />
+                </Button>
               </div>
             );
           })}
         </div>
 
         {/* CTA */}
-        <div className="mt-16 bg-gradient-to-r from-primary via-green-mid to-primary rounded-3xl p-10 text-center">
+        <div className="mt-12 bg-gradient-to-r from-primary via-green-mid to-primary rounded-3xl p-10 text-center">
           <h3 className="font-manrope font-extrabold text-2xl text-white mb-3">Not sure which to start with?</h3>
           <p className="text-white/80 mb-6">Our AI Advisor can help you prioritize based on your specific stage and goals.</p>
           <button
