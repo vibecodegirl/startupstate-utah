@@ -32,6 +32,26 @@ function MapFlyTo({ selected }) {
   return null;
 }
 
+const selectedIcon = new L.Icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  shadowSize: [41, 41],
+  className: 'marker-selected',
+});
+
+const dimmedIcon = new L.Icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  shadowSize: [41, 41],
+  className: 'marker-dimmed',
+});
+
 function ColumnFilterDropdown({ label, value, options, onChange }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -218,6 +238,8 @@ export default function StartupMap() {
                       key={s.id}
                       position={[s.latitude, s.longitude]}
                       eventHandlers={{ click: () => setSelected(s) }}
+                      icon={selected && selected.id !== s.id ? dimmedIcon : selectedIcon}
+                      opacity={selected && selected.id !== s.id ? 0.25 : 1}
                     >
                       <Popup>
                         <div className="min-w-48">
