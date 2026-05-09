@@ -119,7 +119,20 @@ export default function Home() {
         </div>
       </section>
 
-
+      {/* GOEO Attribution */}
+      <section className="py-10 bg-white border-t border-border">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-center">
+          <img
+            src="https://media.base44.com/images/public/user_67cc86b158aeb10359268a7e/25e11e655_GOEO_BLACK_Standard_Web.webp"
+            alt="Governor's Office of Economic Opportunity"
+            className="h-10 w-auto opacity-80"
+          />
+          <div className="hidden sm:block w-px h-10 bg-border" />
+          <p className="text-sm text-muted-foreground max-w-sm">
+            The Startup State Initiative is a program of Utah's Governor's Office of Economic Opportunity, celebrating and empowering entrepreneurs statewide.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
