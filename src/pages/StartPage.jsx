@@ -111,10 +111,17 @@ export default function StartPage() {
   }, [quizAnswers]);
 
   const handleQuizComplete = (answers) => {
-    setQuizAnswers(answers);
-    setShowQuiz(false);
     // Store for auto-populate on profile creation
     sessionStorage.setItem('pendingQuizAnswers', JSON.stringify(answers));
+    // Redirect to personalized results page
+    const params = new URLSearchParams({
+      stage: answers.stage || '',
+      sector: answers.sector || '',
+      challenge: answers.challenge || '',
+      location: answers.location || '',
+      community: answers.community || ''
+    });
+    window.location.href = `/quiz-results?${params.toString()}`;
   };
 
   const handleLearnMore = (step) => {
