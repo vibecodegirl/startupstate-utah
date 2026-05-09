@@ -29,8 +29,15 @@ export default function StartupProfile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!id) {
+      setLoading(false);
+      return;
+    }
     base44.entities.Startup.filter({ id }).then(results => {
       setStartup(results[0] || null);
+      setLoading(false);
+    }).catch(() => {
+      setStartup(null);
       setLoading(false);
     });
   }, [id]);
