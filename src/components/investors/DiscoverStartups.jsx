@@ -85,9 +85,6 @@ export default function DiscoverStartups({ onHubSelect }) {
         </div>
       )}
 
-      {/* Show map by default, updated when filters change */}
-      <EmbeddedStartupMap sector={sector} stage={stage} size={size} />
-      
       <Link to="/map">
         <Button variant="outline" className="w-full border-primary/30 text-primary hover:bg-green-pale font-semibold">
           Explore Full Map <ArrowRight size={14} />
