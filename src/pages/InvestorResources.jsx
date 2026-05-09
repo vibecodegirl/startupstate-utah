@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, TrendingUp, DollarSign, Users, Globe, Zap, Award, Building2, ExternalLink } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
+import TrendingSectors from '@/components/investors/TrendingSectors';
+import DiscoverStartups from '@/components/investors/DiscoverStartups';
+import EcosystemMap from '@/components/investors/EcosystemMap';
 
 const vcData = [
   { year: '2019', amount: 0.8 },
@@ -130,6 +133,23 @@ export default function InvestorResources() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
+
+        {/* Today's Trending */}
+        <section>
+          <TrendingSectors onSectorClick={(sector) => {}} />
+        </section>
+
+        {/* Interactive Hub */}
+        <section>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <EcosystemMap />
+            </div>
+            <div>
+              <DiscoverStartups />
+            </div>
+          </div>
+        </section>
 
         {/* Key Stats */}
         <section>
