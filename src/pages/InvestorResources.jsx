@@ -85,7 +85,7 @@ export default function InvestorResources() {
   return (
     <div className="min-h-screen bg-white pt-24">
       {/* Hero */}
-      <div className="relative overflow-hidden pt-24 pb-32 text-white">
+      <div className="relative overflow-hidden pt-16 pb-16 text-white">
         {/* Animated gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-green-dark to-foreground" />
         <div className="absolute inset-0 opacity-30">
@@ -95,34 +95,33 @@ export default function InvestorResources() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 mb-8 hover:bg-white/20 transition-colors">
-            <TrendingUp size={14} className="text-primary/80" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/30 rounded-full px-4 py-1.5 mb-4 hover:bg-white/20 transition-colors">
+            <TrendingUp size={13} className="text-primary/80" />
             <span className="text-xs font-semibold uppercase tracking-wider text-white/90">Capital Deployment Hub</span>
           </div>
 
-          <h1 className="font-manrope font-extrabold text-6xl sm:text-7xl lg:text-8xl mb-6 leading-tight">
-            Invest in<br/>
-            <span className="bg-gradient-to-r from-primary via-green-light to-primary bg-clip-text text-transparent">Utah</span>
+          <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl lg:text-7xl mb-4 leading-tight">
+            Invest in <span className="bg-gradient-to-r from-primary via-green-light to-primary bg-clip-text text-transparent">Utah</span>
           </h1>
 
-          <p className="text-white/80 text-xl sm:text-2xl max-w-3xl mx-auto leading-relaxed mb-10">
-            The fastest-growing innovation economy in America. Ranked #1 economic outlook for 19 consecutive years. $1.96B+ in VC deployed annually. Deep talent, strong returns, sustained momentum.
+          <p className="text-white/80 text-lg sm:text-xl max-w-4xl mx-auto leading-relaxed mb-8">
+            The fastest-growing innovation economy in America. Ranked #1 economic outlook for 19 consecutive years. $1.96B+ in VC deployed annually.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/map">
-              <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8 py-3 text-base shadow-lg hover:shadow-xl transition-all">
-                View Startup Map <ArrowRight size={18} />
+              <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-7 py-2.5 text-sm shadow-lg hover:shadow-xl transition-all">
+                View Startup Map <ArrowRight size={16} />
               </Button>
             </Link>
             <a href="https://nucleusinstitute.org" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="border-white/60 text-white hover:bg-white/10 font-semibold px-8 py-3 text-base backdrop-blur-sm gap-2">
-                2026 Innovation Report <ExternalLink size={16} />
+              <Button variant="outline" className="border-white/60 text-white hover:bg-white/10 font-semibold px-7 py-2.5 text-sm backdrop-blur-sm gap-2">
+                2026 Innovation Report <ExternalLink size={14} />
               </Button>
             </a>
             <Link to="/investor-profile">
-              <Button variant="outline" className="border-white/60 text-white hover:bg-white/10 font-semibold px-8 py-3 text-base backdrop-blur-sm">
+              <Button variant="outline" className="border-white/60 text-white hover:bg-white/10 font-semibold px-7 py-2.5 text-sm backdrop-blur-sm">
                 Build Investor Profile
               </Button>
             </Link>
