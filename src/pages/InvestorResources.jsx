@@ -132,24 +132,40 @@ export default function InvestorResources() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 
-        {/* Today's Trending */}
-        <section>
-          <TrendingSectors onSectorClick={(sector) => {}} />
-        </section>
-
-        {/* Interactive Hub */}
-        <section>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <EcosystemMap />
-            </div>
+        {/* Section 1: Trending Sectors */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-8 bg-primary rounded-full" />
             <div>
-              <DiscoverStartups />
+              <h2 className="font-manrope font-bold text-2xl text-foreground">Market Insights</h2>
+              <p className="text-sm text-muted-foreground">Real-time trends across Utah's innovation sectors</p>
             </div>
           </div>
+          <TrendingSectors />
         </section>
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+        {/* Section 2: Interactive Discovery */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-8 bg-primary rounded-full" />
+            <div>
+              <h2 className="font-manrope font-bold text-2xl text-foreground">Discover & Connect</h2>
+              <p className="text-sm text-muted-foreground">Explore startup hubs and find matching opportunities</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <EcosystemMap />
+            <DiscoverStartups />
+          </div>
+        </section>
+
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
         {/* Key Stats */}
         <section>

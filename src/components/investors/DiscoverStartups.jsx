@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { Search, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import MiniClusterMap from './MiniClusterMap';
 
 const SECTORS = ['AI', 'Life Sciences', 'Fintech', 'B2B Software', 'Aerospace & Defense', 'Energy', 'Consumer'];
 const STAGES = ['Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C'];
@@ -86,6 +87,8 @@ export default function DiscoverStartups() {
       {!loading && results.length === 0 && (sector || stage || size) && (
         <div className="text-center py-4 text-muted-foreground text-sm">No startups match your criteria.</div>
       )}
+
+      {(sector || stage || size) && <MiniClusterMap sector={sector} stage={stage} size={size} />}
 
       <Link to="/map">
         <Button className="w-full bg-primary text-white hover:bg-green-dark font-semibold gap-2">
