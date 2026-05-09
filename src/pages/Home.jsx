@@ -21,7 +21,7 @@ const statsAnimationStyle = `
 `;
 
 const stats = [
-{ value: '#1', label: "Economic Outlook", source: 'WalletHub 2023' },
+{ value: '#1', label: "Best State to Start a Business", source: 'WalletHub 2023' },
 { value: '3,500+', label: 'Active Startups', source: 'Silicon Slopes' },
 { value: '$4.2B+', label: 'Annual VC Investment', source: 'NVCA' },
 { value: '45+', label: 'Active Accelerators & Incubators', source: 'GOEO' },
