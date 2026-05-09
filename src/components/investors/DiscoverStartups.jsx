@@ -85,20 +85,14 @@ export default function DiscoverStartups() {
         </div>
       )}
 
-      {!loading && results.length === 0 && (sector || stage || size) && (
-        <div className="text-center py-4 text-muted-foreground text-sm">No startups match your criteria.</div>
-      )}
-
-      {(sector || stage || size) && (
-        <>
-          <EmbeddedStartupMap sector={sector} stage={stage} size={size} />
-          <Link to="/map">
-            <Button variant="outline" className="w-full border-primary/30 text-primary hover:bg-green-pale font-semibold">
-              Explore Full Map <ArrowRight size={14} />
-            </Button>
-          </Link>
-        </>
-      )}
+      {/* Show map by default, updated when filters change */}
+      <EmbeddedStartupMap sector={sector} stage={stage} size={size} />
+      
+      <Link to="/map">
+        <Button variant="outline" className="w-full border-primary/30 text-primary hover:bg-green-pale font-semibold">
+          Explore Full Map <ArrowRight size={14} />
+        </Button>
+      </Link>
     </div>
   );
 }
