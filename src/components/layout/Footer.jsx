@@ -11,16 +11,20 @@ export default function Footer() {
             <img
               src="https://media.base44.com/images/public/user_67cc86b158aeb10359268a7e/44ea76f88_StartupState_Logo_Web_Color_Horiz.webp"
               alt="Startup State"
-              className="h-8 w-auto brightness-0 invert mb-4"
+              className="h-8 w-auto brightness-0 invert mb-6"
             />
-            <p className="text-white/60 text-sm leading-relaxed">
-              The global standard for innovation and entrepreneurship. Powered by the Governor's Office of Economic Opportunity.
-            </p>
-            <img
-              src="https://media.base44.com/images/public/user_67cc86b158aeb10359268a7e/25e11e655_GOEO_BLACK_Standard_Web.webp"
-              alt="GOEO"
-              className="h-8 w-auto brightness-0 invert mt-4 opacity-70"
-            />
+            <div className="space-y-4">
+              <div className="flex gap-3 items-start">
+                <img
+                  src="https://media.base44.com/images/public/user_67cc86b158aeb10359268a7e/25e11e655_GOEO_BLACK_Standard_Web.webp"
+                  alt="GOEO"
+                  className="h-10 w-auto brightness-0 invert shrink-0"
+                />
+                <p className="text-white text-sm leading-relaxed">
+                  The Startup State Initiative is a program of <a href="https://business.utah.gov/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">Utah's Governor's Office of Economic Opportunity</a>, celebrating and empowering entrepreneurs statewide.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Explore */}
