@@ -63,6 +63,11 @@ export default function Navbar({ role, setRole }) {
                       Add Your Startup
                     </Button>
                   </Link>
+                  <Link to="/profile">
+                    <Button size="sm" variant="outline">
+                      Profile
+                    </Button>
+                  </Link>
                   <Button size="sm" variant="outline" onClick={() => base44.auth.logout('/')}>
                     Sign Out
                   </Button>
@@ -127,6 +132,11 @@ export default function Navbar({ role, setRole }) {
                  <Link to="/add-startup" onClick={() => setMobileOpen(false)}>
                    <Button size="sm" className="w-full bg-primary text-primary-foreground font-semibold">
                      Add Your Startup
+                   </Button>
+                 </Link>
+                 <Link to="/profile" onClick={() => setMobileOpen(false)}>
+                   <Button size="sm" variant="outline" className="w-full">
+                     Profile
                    </Button>
                  </Link>
                  <Button size="sm" variant="outline" className="w-full" onClick={() => base44.auth.logout('/')}>

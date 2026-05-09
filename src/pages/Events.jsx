@@ -1,8 +1,41 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Calendar, MapPin, ExternalLink, Video, Filter } from 'lucide-react';
+import { Calendar, MapPin, ExternalLink, Video, Filter, Newspaper, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
+
+const SAMPLE_NEWS = [
+  {
+    id: 'n1',
+    title: 'Utah Named #1 Best State to Start a Business in 2025',
+    excerpt: 'For the 19th consecutive year, Utah has been ranked as the best state for entrepreneurship.',
+    category: 'News',
+    date: '2025-01-10',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop',
+    source: 'WalletHub',
+    url: 'https://startup.utah.gov'
+  },
+  {
+    id: 'n2',
+    title: 'Silicon Slopes Ecosystem Hits $4.2B in Annual VC Investment',
+    excerpt: 'Utah\'s tech ecosystem continues to grow with record-breaking venture capital activity.',
+    category: 'News',
+    date: '2025-01-05',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop',
+    source: 'Nucleus Institute',
+    url: 'https://startup.utah.gov'
+  },
+  {
+    id: 'n3',
+    title: 'New Life Sciences Hub Opens in Salt Lake City',
+    excerpt: 'BioInnovations Gateway announces expanded space for biotech and medical device companies.',
+    category: 'News',
+    date: '2024-12-28',
+    image: 'https://images.unsplash.com/photo-1576091160550-112173f7f477?w=400&h=250&fit=crop',
+    source: 'BioUtah',
+    url: 'https://bioutah.org'
+  },
+];
 
 const SAMPLE_EVENTS = [
   {
@@ -52,6 +85,7 @@ export default function Events() {
   const [dbEvents, setDbEvents] = useState([]);
   const [typeFilter, setTypeFilter] = useState('All Types');
   const [virtualOnly, setVirtualOnly] = useState(false);
+  const [activeTab, setActiveTab] = useState('events'); // 'news' or 'events'
 
   useEffect(() => {
     base44.entities.Event.list('-event_date', 50).then(setDbEvents).catch(() => {});
@@ -66,91 +100,161 @@ export default function Events() {
   });
 
   return (
-    <div className="min-h-screen pt-24 bg-muted/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen pt-24 bg-white">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-3">Events & Connections</h1>
+        <div className="text-center mb-12">
+          <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-3">
+            News & Events
+          </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Pitch nights, conferences, workshops, and networking events across Utah's startup ecosystem.
+            Stay updated on Utah's startup ecosystem — from breaking news to upcoming events and opportunities.
           </p>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap gap-3 items-center mb-8">
-          <div className="flex gap-2 flex-wrap">
-            {types.map(t => (
-              <button key={t} onClick={() => setTypeFilter(t)}
-                className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${typeFilter === t ? 'bg-primary text-white' : 'bg-white border border-border text-muted-foreground hover:border-primary/40'}`}>
-                {t}
-              </button>
-            ))}
-          </div>
-          <label className="flex items-center gap-2 text-sm font-medium text-foreground cursor-pointer ml-auto">
-            <input type="checkbox" checked={virtualOnly} onChange={e => setVirtualOnly(e.target.checked)} className="accent-primary" />
-            Virtual only
-          </label>
+        {/* Tab Navigation */}
+        <div className="flex gap-4 mb-10 border-b border-border">
+          <button
+            onClick={() => setActiveTab('events')}
+            className={`px-4 py-3 font-semibold text-sm transition-all border-b-2 ${
+              activeTab === 'events'
+                ? 'text-primary border-primary'
+                : 'text-muted-foreground border-transparent hover:text-foreground'
+            }`}
+          >
+            <Calendar size={16} className="inline mr-2" />
+            Events
+          </button>
+          <button
+            onClick={() => setActiveTab('news')}
+            className={`px-4 py-3 font-semibold text-sm transition-all border-b-2 ${
+              activeTab === 'news'
+                ? 'text-primary border-primary'
+                : 'text-muted-foreground border-transparent hover:text-foreground'
+            }`}
+          >
+            <Newspaper size={16} className="inline mr-2" />
+            News
+          </button>
         </div>
 
-        <p className="text-sm text-muted-foreground mb-5">{filtered.length} event{filtered.length !== 1 ? 's' : ''}</p>
+        {/* News Tab */}
+        {activeTab === 'news' && (
+          <div className="mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {SAMPLE_NEWS.map(article => {
+                const articleDate = new Date(article.date);
+                return (
+                  <a key={article.id} href={article.url} target="_blank" rel="noopener noreferrer">
+                    <div className="bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col h-full">
+                      {/* Image */}
+                      <div className="h-40 bg-muted overflow-hidden">
+                        <img src={article.image} alt={article.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                      </div>
 
-        {/* Events grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {filtered.map(event => {
-            const date = new Date(event.event_date);
-            return (
-              <div key={event.id} className="bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden">
-                {/* Date strip */}
-                <div className="bg-primary px-5 py-3 flex items-center justify-between">
-                  <div className="text-white">
-                    <div className="font-manrope font-black text-2xl">{format(date, 'dd')}</div>
-                    <div className="text-white/80 text-xs font-semibold uppercase">{format(date, 'MMM yyyy')}</div>
-                  </div>
-                  <div className="text-right">
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${eventTypeColors[event.event_type] || 'bg-white/20 text-white'}`}>
-                      {event.event_type}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-5">
-                  <h3 className="font-manrope font-bold text-base text-foreground mb-2">{event.title}</h3>
-                  <p className="text-xs text-primary font-medium mb-3">{event.organizer}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">{event.description}</p>
-
-                  <div className="space-y-1.5 text-xs text-muted-foreground mb-4">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={12} />
-                      {format(date, 'MMMM d, yyyy · h:mm a')}
+                      {/* Content */}
+                      <div className="p-5 flex flex-col flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="inline-block px-2.5 py-0.5 text-xs font-semibold bg-primary/10 text-primary rounded-full">
+                            {article.category}
+                          </span>
+                          <span className="text-xs text-muted-foreground">{format(articleDate, 'MMM d, yyyy')}</span>
+                        </div>
+                        <h3 className="font-manrope font-bold text-base text-foreground mb-2 leading-snug line-clamp-2">{article.title}</h3>
+                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">{article.excerpt}</p>
+                        <div className="flex items-center justify-between pt-3 border-t border-border">
+                          <span className="text-xs text-primary font-medium">{article.source}</span>
+                          <ArrowRight size={14} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {event.is_virtual ? <Video size={12} className="text-blue-500" /> : <MapPin size={12} />}
-                      {event.location}
-                      {event.is_virtual && <span className="text-blue-600 font-medium">(Virtual)</span>}
-                    </div>
-                  </div>
-
-                  <a href={event.url} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm" className="w-full gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold">
-                      Register / Learn More <ExternalLink size={13} />
-                    </Button>
                   </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
-        {/* External link */}
-        <div className="bg-green-pale rounded-2xl border border-primary/20 p-6 text-center mb-12">
-          <h3 className="font-manrope font-bold text-lg text-foreground mb-2">More Utah Events</h3>
-          <p className="text-muted-foreground text-sm mb-4">See the full event calendar on the official Utah business portal.</p>
-          <a href="https://business.utah.gov/events/list/?tribe_eventcategory%5B0%5D=2732" target="_blank" rel="noopener noreferrer">
-            <Button className="bg-primary text-white hover:bg-green-dark gap-2 font-semibold">
-              View All Events on business.utah.gov <ExternalLink size={14} />
-            </Button>
-          </a>
-        </div>
+        {/* Events Tab */}
+        {activeTab === 'events' && (
+          <div className="mb-16">
+            {/* Filters */}
+            <div className="flex flex-wrap gap-3 items-center mb-8 pb-6 border-b border-border">
+              <div className="flex gap-2 flex-wrap">
+                {types.map(t => (
+                  <button key={t} onClick={() => setTypeFilter(t)}
+                    className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-all border ${typeFilter === t ? 'bg-primary text-white border-primary' : 'bg-white border-border text-foreground hover:border-primary/30'}`}>
+                    {t}
+                  </button>
+                ))}
+              </div>
+              <label className="flex items-center gap-2 text-sm font-medium text-foreground cursor-pointer ml-auto">
+                <input type="checkbox" checked={virtualOnly} onChange={e => setVirtualOnly(e.target.checked)} className="accent-primary rounded" />
+                Virtual only
+              </label>
+            </div>
+
+            <p className="text-sm text-muted-foreground mb-6">Showing <span className="font-semibold text-foreground">{filtered.length}</span> event{filtered.length !== 1 ? 's' : ''}</p>
+
+            {/* Events grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {filtered.map(event => {
+                const date = new Date(event.event_date);
+                return (
+                  <div key={event.id} className="bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
+                    {/* Date strip */}
+                    <div className="bg-primary px-5 py-3 flex items-center justify-between">
+                      <div className="text-white">
+                        <div className="font-manrope font-black text-2xl">{format(date, 'dd')}</div>
+                        <div className="text-white/80 text-xs font-semibold uppercase">{format(date, 'MMM')}</div>
+                      </div>
+                      <div className="text-right">
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${eventTypeColors[event.event_type] || 'bg-white/20 text-white'}`}>
+                          {event.event_type}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="p-5 flex flex-col flex-1">
+                      <h3 className="font-manrope font-bold text-base text-foreground mb-1 line-clamp-2">{event.title}</h3>
+                      <p className="text-xs text-primary font-medium mb-3">{event.organizer}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2 flex-1">{event.description}</p>
+
+                      <div className="space-y-1.5 text-xs text-muted-foreground mb-4 py-3 border-y border-border">
+                        <div className="flex items-center gap-2">
+                          <Calendar size={13} className="text-primary/60" />
+                          {format(date, 'MMM d, h:mm a')}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {event.is_virtual ? <Video size={13} className="text-blue-500" /> : <MapPin size={13} className="text-primary/60" />}
+                          {event.location}
+                        </div>
+                      </div>
+
+                      <a href={event.url} target="_blank" rel="noopener noreferrer" className="mt-auto">
+                        <Button variant="outline" size="sm" className="w-full gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold">
+                          Register <ExternalLink size={12} />
+                        </Button>
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* External link */}
+            <div className="bg-gradient-to-r from-green-pale to-white rounded-2xl border border-primary/20 p-8 text-center">
+              <Newspaper size={28} className="text-primary mx-auto mb-3 opacity-40" />
+              <h3 className="font-manrope font-bold text-lg text-foreground mb-2">Discover More Events</h3>
+              <p className="text-muted-foreground text-sm mb-5 max-w-xl mx-auto">Browse Utah's full calendar of startup events, conferences, and networking opportunities.</p>
+              <a href="https://business.utah.gov/events/list/?tribe_eventcategory%5B0%5D=2732" target="_blank" rel="noopener noreferrer">
+                <Button className="bg-primary text-white hover:bg-green-dark gap-2 font-semibold">
+                  View All Events <ExternalLink size={14} />
+                </Button>
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
