@@ -75,6 +75,7 @@ module.exports = {
         'fade-in': 'fade-in 0.4s ease-out',
         'slide-in': 'slide-in 0.4s ease-out',
         'pulse-gentle': 'pulse-gentle 2s ease-in-out infinite',
+        'fade-up': 'fade-up 0.8s ease-out forwards',
       }
     }
   },
