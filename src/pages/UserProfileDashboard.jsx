@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { User, Settings, LogOut, Zap, Edit, Save, X, CheckCircle, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import FounderPortal from '@/components/portals/FounderPortal';
+import InvestorPortal from '@/components/portals/InvestorPortal';
+import AdminPortal from '@/components/portals/AdminPortal';
 
-export default function UserProfileDashboard() {
+export default function UserProfileDashboard({ role }) {
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
@@ -13,12 +16,14 @@ export default function UserProfileDashboard() {
   useEffect(() => {
     base44.auth.me()
       .then(u => {
-        setUser(u);
-        setEditData({ full_name: u?.full_name || '', role: u?.role || 'user' });
+        // Use passed role prop if available, otherwise use user role
+        const userRole = role || u?.role || 'visitor';
+        setUser({ ...u, role: userRole });
+        setEditData({ full_name: u?.full_name || '', role: userRole });
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [role]);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -56,6 +61,31 @@ export default function UserProfileDashboard() {
             <Button onClick={() => base44.auth.redirectToLogin()} className="bg-primary text-white hover:bg-green-dark">
               Sign In
             </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render role-specific portal if user has a role
+  const showPortal = user?.role && user.role !== 'visitor';
+
+  if (showPortal) {
+    return (
+      <div className="min-h-screen pt-24 bg-gradient-to-b from-white to-green-pale/10">
+        <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6 pb-12">
+          {user.role === 'founder' && <FounderPortal user={user} />}
+          {user.role === 'investor' && <InvestorPortal user={user} />}
+          {user.role === 'admin' && <AdminPortal user={user} />}
+
+          {/* Profile Settings Link */}
+          <div className="mt-12 pt-8 border-t border-border">
+            <button
+              onClick={() => window.location.hash = '#settings'}
+              className="text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
+            >
+              ← Back to Settings
+            </button>
           </div>
         </div>
       </div>
