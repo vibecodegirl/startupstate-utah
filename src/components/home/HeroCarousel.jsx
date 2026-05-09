@@ -3,7 +3,6 @@ import { base44 } from '@/api/base44Client';
 import { ChevronLeft, ChevronRight, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import FloatingParticles from './FloatingParticles';
 
 export default function HeroCarousel() {
   const [slides, setSlides] = useState([]);
@@ -69,60 +68,51 @@ export default function HeroCarousel() {
   const colors = getSlideColors();
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-green-dark via-primary to-green-mid text-white overflow-hidden flex items-center justify-center">
-      {/* Floating Particles Background */}
-      <FloatingParticles />
-      
+    <section className="relative py-20 bg-gradient-to-br from-green-dark via-primary to-green-mid text-white overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-10">
         <img src="https://startup.utah.gov/wp-content/uploads/asset-1@3x.webp" alt="SLC" className="w-full h-full object-cover" />
       </div>
       
-      {/* Lighter Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-white/3 to-white/5 pointer-events-none"></div>
-      
-      {/* Radial Glow Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-primary/15 rounded-full blur-3xl" />
-      </div>
+      {/* Overlay Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-600/8 via-blue-500/5 pointer-events-none"></div>
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-        <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-6 hover:bg-white/20 transition-colors">
+        <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 mb-6">
           <Award size={14} />
           <span className="text-xs font-semibold uppercase tracking-wider">{slide.subtitle}</span>
         </div>
-        
-        <h1 className="font-manrope font-extrabold text-6xl sm:text-7xl mb-6 leading-tight animate-fade-up">
+        <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl mb-6 leading-tight">
           {slide.title}
         </h1>
-        
-        <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-12 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+        <p className="text-xl text-white/85 max-w-2xl mx-auto leading-relaxed mb-10">
           {slide.description}
         </p>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center" style={{ animationDelay: '0.2s' }}>
+        {/* Action Buttons - Global Innovation Leadership */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <Link to={slide.cta_link || '/'}>
-            <Button size="lg" className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-10 py-3 text-base rounded-xl transition-all shadow-lg hover:shadow-2xl transform hover:scale-105">
+            <Button size="lg" className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8 py-3 text-base rounded-xl transition-all shadow-lg">
               {slide.cta_text || 'Get Started'}
             </Button>
           </Link>
           {currentIndex === 0 && (
             <Link to="/resources">
-              <Button size="lg" className="bg-white/20 text-white hover:bg-white/30 border-2 border-white font-manrope font-bold px-10 py-3 text-base rounded-xl transition-all backdrop-blur-md hover:shadow-lg transform hover:scale-105">
+              <Button size="lg" className="bg-white/20 text-white hover:bg-white/30 border-2 border-white font-manrope font-bold px-8 py-3 text-base rounded-xl transition-all backdrop-blur-sm">
                 Explore Resources
               </Button>
             </Link>
           )}
           <button
             onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))}
-            className="px-10 py-3 rounded-xl font-manrope font-bold text-base border-2 border-white text-white hover:bg-white/15 transition-all backdrop-blur-md hover:shadow-lg transform hover:scale-105"
+            className="px-8 py-3 rounded-xl font-manrope font-bold text-base border-2 border-white text-white hover:bg-white/10 transition-all"
           >
             Talk to AI Advisor
           </button>
         </div>
+
+
       </div>
 
       {/* Carousel Navigation */}
