@@ -9,10 +9,10 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <a href="https://business.utah.gov/" target="_blank" rel="noopener noreferrer">
-              <img
-                src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/e8fef4a72_StartupState_Logo_Web_Color_Horiz.webp"
-                alt="Startup State"
-                className="h-8 w-auto mb-4 hover:opacity-80 transition-opacity cursor-pointer" />
+              <img src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/2e01ed50f_footer-logo.svg"
+
+              alt="Startup State"
+              className="h-8 w-auto mb-4 hover:opacity-80 transition-opacity cursor-pointer" />
               
             </a>
             <p className="text-white/60 text-sm leading-relaxed">
