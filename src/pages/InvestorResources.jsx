@@ -213,6 +213,17 @@ export default function InvestorResources() {
           </div>
         </section>
 
+        {/* Startup Match CTA */}
+        <section className="bg-purple-600 rounded-3xl p-10 text-center">
+          <h2 className="font-manrope font-extrabold text-3xl text-white mb-3 flex items-center justify-center gap-2"><Zap size={28} /> AI-Powered Startup Matching</h2>
+          <p className="text-white/80 mb-8 max-w-xl mx-auto">Create your investor profile and let our AI match you with startups aligned with your investment thesis.</p>
+          <Link to="/investor-profile">
+            <Button className="bg-white text-purple-600 hover:bg-purple-50 font-manrope font-bold px-8 gap-2">
+              Build Your Investor Profile <ArrowRight size={16} />
+            </Button>
+          </Link>
+        </section>
+
         {/* CTA */}
         <section className="bg-foreground rounded-3xl p-10 text-center">
           <h2 className="font-manrope font-extrabold text-3xl text-white mb-3">Explore Utah's Startup Ecosystem</h2>

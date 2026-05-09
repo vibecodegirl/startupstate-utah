@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { TrendingUp, Target, Link as LinkIcon, CheckCircle } from 'lucide-react';
+import { TrendingUp, Target, Link as LinkIcon, CheckCircle, Zap, Loader, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const investorTypes = ['Angel', 'Venture Capital', 'Corporate', 'Accelerator', 'Family Office', 'Individual'];
@@ -26,6 +26,10 @@ export default function InvestorProfile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [showMatches, setShowMatches] = useState(false);
+  const [matches, setMatches] = useState([]);
+  const [computing, setComputing] = useState(false);
+  const [founders, setFounders] = useState([]);
 
   useEffect(() => {
     const init = async () => {
@@ -37,6 +41,8 @@ export default function InvestorProfile() {
           setProfile(profiles[0]);
           setForm(profiles[0]);
         }
+        const allFounders = await base44.entities.FounderProfile.list('-created_date', 200);
+        setFounders(allFounders);
       }
       setLoading(false);
     };
@@ -79,6 +85,32 @@ export default function InvestorProfile() {
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
     setSaving(false);
+  };
+
+  const computeMatches = async () => {
+    if (!profile || !user) return;
+    setComputing(true);
+    const newMatches = [];
+
+    for (const founder of founders) {
+      if (founder.user_email === user.email) continue;
+      try {
+        const res = await base44.functions.invoke('computeStartupMatches', {
+          founderEmail: founder.user_email,
+          investorEmail: user.email,
+          founderProfile: founder,
+          investorProfile: profile,
+        });
+        if (res.data?.match) {
+          newMatches.push(res.data.match);
+        }
+      } catch (err) {
+        console.error('Match error:', err);
+      }
+    }
+
+    setMatches(newMatches.sort((a, b) => b.match_score - a.match_score));
+    setComputing(false);
   };
 
   if (loading) return <div className="min-h-screen pt-24 flex items-center justify-center"><div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" /></div>;
@@ -169,6 +201,86 @@ export default function InvestorProfile() {
             </Button>
           </div>
         </div>
+
+        {/* Startup Matches Section */}
+        {profile && (
+          <div className="mt-12">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="font-manrope font-bold text-2xl text-foreground flex items-center gap-2"><Zap size={24} className="text-purple-600" /> Find Startups</h2>
+                <p className="text-muted-foreground text-sm">Discover startups aligned with your investment thesis</p>
+              </div>
+              {!showMatches && <Button onClick={() => setShowMatches(true)} className="bg-purple-600 text-white hover:bg-purple-700 gap-2 font-semibold">
+                <TrendingUp size={16} /> Discover Matches
+              </Button>}
+            </div>
+
+            {showMatches && (
+              <div className="space-y-4">
+                {matches.length === 0 ? (
+                  <div className="bg-white rounded-2xl border border-border p-8 text-center">
+                    <Button
+                      onClick={computeMatches}
+                      disabled={computing}
+                      className="bg-purple-600 text-white hover:bg-purple-700 gap-2 font-semibold mx-auto"
+                    >
+                      {computing ? (
+                        <>
+                          <Loader size={16} className="animate-spin" /> Computing...
+                        </>
+                      ) : (
+                        <>
+                          <TrendingUp size={16} /> Compute Startup Matches
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                ) : (
+                  matches.map((match) => {
+                    const founder = founders.find(f => f.user_email === match.founder_email);
+                    if (!founder) return null;
+                    const scoreColor = match.match_score >= 80 ? 'text-green-600' : match.match_score >= 60 ? 'text-yellow-600' : 'text-orange-600';
+                    return (
+                      <div key={match.id} className="bg-white rounded-xl border border-border p-5 shadow-sm hover:shadow-md transition-all">
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-bold text-foreground">{founder.company_name}</h3>
+                              <span className={`text-xs font-bold px-2 py-0.5 rounded-full bg-purple-100 ${scoreColor}`}>
+                                {match.match_score}% Match
+                              </span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">{founder.sector} · {founder.funding_stage}</p>
+                          </div>
+                        </div>
+                        <p className="text-xs text-foreground mb-2">{match.recommendation_summary}</p>
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {match.match_reasons?.slice(0, 2).map((r, i) => (
+                            <span key={i} className="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">
+                              {r}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex gap-2">
+                          {founder.linkedin_url && (
+                            <a href={founder.linkedin_url} target="_blank" rel="noopener noreferrer">
+                              <Button size="sm" variant="outline" className="text-xs h-7">LinkedIn</Button>
+                            </a>
+                          )}
+                          {founder.website && (
+                            <a href={founder.website} target="_blank" rel="noopener noreferrer">
+                              <Button size="sm" variant="outline" className="text-xs h-7">Visit</Button>
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
