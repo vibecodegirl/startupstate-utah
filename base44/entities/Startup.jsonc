@@ -90,6 +90,13 @@
     "photo_url": {
       "type": "string"
     },
+    "logo_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of company logo/image URLs for gallery"
+    },
     "founder_name": {
       "type": "string"
     },

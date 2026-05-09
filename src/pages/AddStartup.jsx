@@ -11,10 +11,11 @@ export default function AddStartup() {
   const [form, setForm] = useState({
     company_name: '', company_linkedin: '', address: '', description: '',
     website: '', funding_stage: '', employees: '', sector: '',
-    contact_email: '', contact_name: '',
+    contact_email: '', contact_name: '', logo_urls: [],
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [uploadingLogos, setUploadingLogos] = useState(false);
   const [errors, setErrors] = useState({});
 
   const validate = () => {
@@ -41,6 +42,24 @@ export default function AddStartup() {
   };
 
   const set = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: null })); };
+
+  const handleLogoUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    setUploadingLogos(true);
+    try {
+      const urls = await Promise.all(files.map(f => base44.integrations.Core.UploadFile({ file: f }).then(r => r.file_url)));
+      setForm(f => ({ ...f, logo_urls: [...(f.logo_urls || []), ...urls] }));
+    } catch (err) {
+      console.error('Upload failed:', err);
+    } finally {
+      setUploadingLogos(false);
+    }
+  };
+
+  const removeLogoUrl = (index) => {
+    setForm(f => ({ ...f, logo_urls: f.logo_urls.filter((_, i) => i !== index) }));
+  };
 
   if (submitted) {
     return (
@@ -183,6 +202,30 @@ export default function AddStartup() {
                 {errors.contact_email && <p className="text-xs text-destructive mt-1">{errors.contact_email}</p>}
               </div>
             </div>
+          </div>
+
+          {/* Logo Gallery */}
+          <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
+            <h2 className="font-manrope font-bold text-lg text-foreground mb-5">Company Photos</h2>
+            {form.logo_urls && form.logo_urls.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                {form.logo_urls.map((url, i) => (
+                  <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-border bg-muted">
+                    <img src={url} alt={`Logo ${i + 1}`} className="w-full h-full object-cover" />
+                    <button onClick={() => removeLogoUrl(i)} className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full hover:bg-red-600">
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <label className="block">
+              <input type="file" multiple accept="image/*" onChange={handleLogoUpload} disabled={uploadingLogos} className="hidden" />
+              <div className="border-2 border-dashed border-border rounded-xl px-4 py-6 text-center cursor-pointer hover:border-primary/50 transition-colors">
+                <p className="text-sm font-medium text-foreground mb-1">{uploadingLogos ? 'Uploading...' : 'Click to upload photos'}</p>
+                <p className="text-xs text-muted-foreground">PNG, JPG, GIF up to 10MB</p>
+              </div>
+            </label>
           </div>
 
           <Button type="submit" disabled={loading} className="w-full bg-primary text-white hover:bg-green-dark font-manrope font-bold py-3 text-base rounded-xl shadow-lg shadow-primary/20">

@@ -1,22 +1,27 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Shield, CheckCircle, Clock, AlertCircle, Flag, Users, Building2, Eye, Trash2, Check, X } from 'lucide-react';
+import { Shield, CheckCircle, Clock, AlertCircle, Flag, Users, Building2, Eye, Trash2, Check, X, Plus, Edit2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function AdminDashboard({ role }) {
   const [requests, setRequests] = useState([]);
   const [startups, setStartups] = useState([]);
+  const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('requests');
   const [updating, setUpdating] = useState(null);
+  const [editingResource, setEditingResource] = useState(null);
+  const [resourceForm, setResourceForm] = useState({ title: '', category: '', url: '', provider: '', description: '' });
 
   useEffect(() => {
     Promise.all([
       base44.entities.ListingRequest.list('-created_date', 50),
       base44.entities.Startup.list('-created_date', 50),
-    ]).then(([reqs, sts]) => {
+      base44.entities.Resource.list('-created_date', 100),
+    ]).then(([reqs, sts, res]) => {
       setRequests(reqs);
       setStartups(sts);
+      setResources(res);
       setLoading(false);
     });
   }, []);
@@ -72,10 +77,23 @@ export default function AdminDashboard({ role }) {
   const pending = requests.filter(r => r.status === 'Pending');
   const flagged = startups.filter(s => s.verification_status === 'Flagged');
 
+  const handleSaveResource = async () => {
+    if (editingResource?.id) {
+      await base44.entities.Resource.update(editingResource.id, resourceForm);
+      setResources(prev => prev.map(r => r.id === editingResource.id ? { ...r, ...resourceForm } : r));
+    } else {
+      const created = await base44.entities.Resource.create(resourceForm);
+      setResources(prev => [created, ...prev]);
+    }
+    setEditingResource(null);
+    setResourceForm({ title: '', category: '', url: '', provider: '', description: '' });
+  };
+
   const tabs = [
     { id: 'requests', label: 'Listing Requests', count: pending.length, icon: Clock },
     { id: 'startups', label: 'All Startups', count: startups.length, icon: Building2 },
     { id: 'flags', label: 'Active Flags', count: flagged.length, icon: Flag },
+    { id: 'resources', label: 'Resources', count: resources.length, icon: Building2 },
   ];
 
   return (
@@ -244,6 +262,81 @@ export default function AdminDashboard({ role }) {
                     </div>
                   ))
                 )}
+              </div>
+            )}
+
+            {/* Resources */}
+            {activeTab === 'resources' && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-semibold text-foreground">Manage Resources</h3>
+                  <Button size="sm" onClick={() => setEditingResource({ id: null })} className="gap-1 bg-primary text-white hover:bg-green-dark">
+                    <Plus size={14} /> Add Resource
+                  </Button>
+                </div>
+
+                {editingResource && (
+                  <div className="bg-white rounded-2xl border border-border p-5 shadow-sm space-y-3 mb-4">
+                    <h4 className="font-semibold text-foreground">{editingResource.id ? 'Edit' : 'Create'} Resource</h4>
+                    <input
+                      type="text"
+                      placeholder="Title"
+                      value={resourceForm.title}
+                      onChange={e => setResourceForm(f => ({ ...f, title: e.target.value }))}
+                      className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Category"
+                      value={resourceForm.category}
+                      onChange={e => setResourceForm(f => ({ ...f, category: e.target.value }))}
+                      className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Provider"
+                      value={resourceForm.provider}
+                      onChange={e => setResourceForm(f => ({ ...f, provider: e.target.value }))}
+                      className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                    <input
+                      type="url"
+                      placeholder="URL"
+                      value={resourceForm.url}
+                      onChange={e => setResourceForm(f => ({ ...f, url: e.target.value }))}
+                      className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                    <textarea
+                      placeholder="Description"
+                      value={resourceForm.description}
+                      onChange={e => setResourceForm(f => ({ ...f, description: e.target.value }))}
+                      className="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                      rows={3}
+                    />
+                    <div className="flex gap-2 justify-end">
+                      <Button size="sm" variant="outline" onClick={() => { setEditingResource(null); setResourceForm({ title: '', category: '', url: '', provider: '', description: '' }); }}>
+                        Cancel
+                      </Button>
+                      <Button size="sm" onClick={handleSaveResource} className="bg-primary text-white hover:bg-green-dark">
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-3">
+                  {resources.map(r => (
+                    <div key={r.id} className="bg-white rounded-lg border border-border p-4 flex items-center gap-3">
+                      <div className="flex-1">
+                        <div className="font-semibold text-sm text-foreground">{r.title}</div>
+                        <div className="text-xs text-muted-foreground">{r.category} · {r.provider}</div>
+                      </div>
+                      <Button size="sm" variant="outline" onClick={() => { setEditingResource(r); setResourceForm({ title: r.title, category: r.category, url: r.url, provider: r.provider, description: r.description }); }} className="gap-1">
+                        <Edit2 size={12} /> Edit
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </>

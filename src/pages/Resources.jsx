@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Search, ExternalLink, BookOpen, DollarSign, Users, Briefcase, Globe, GraduationCap, Building, Grid3X3, List, Table2 } from 'lucide-react';
+import { Search, ExternalLink, BookOpen, DollarSign, Users, Briefcase, Globe, GraduationCap, Building, Grid3X3, List, Table2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 
 const UTAH_RESOURCES = [
   {
@@ -164,6 +165,8 @@ export default function Resources() {
   const [category, setCategory] = useState('All');
   const [audience, setAudience] = useState('All Stages');
   const [view, setView] = useState('grid');
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState(null);
   const [dbResources, setDbResources] = useState([]);
 
   useEffect(() => {
@@ -172,7 +175,23 @@ export default function Resources() {
 
   const allResources = [...UTAH_RESOURCES, ...dbResources];
 
-  const filtered = allResources.filter(r => {
+  const applyQuizFilters = (resources) => {
+    if (!quizAnswers) return resources;
+    return resources.filter(r => {
+      const categoryMap = {
+        'Finding capital': ['Funding'],
+        'Building a team': ['Workforce Development', 'Networking'],
+        'Mentorship & guidance': ['Mentorship', 'Education'],
+        'Networking & partnerships': ['Networking', 'Entrepreneurship Communities'],
+        'Legal & compliance': ['Legal', 'Government'],
+      };
+      const relevantCategories = categoryMap[quizAnswers.challenge] || [];
+      const matchChallenge = relevantCategories.length === 0 || relevantCategories.includes(r.category);
+      return matchChallenge;
+    });
+  };
+
+  const filtered = applyQuizFilters(allResources).filter(r => {
     const matchSearch = !search || r.title.toLowerCase().includes(search.toLowerCase()) || r.description?.toLowerCase().includes(search.toLowerCase());
     const matchCat = category === 'All' || r.category === category;
     const matchAud = audience === 'All Stages' || r.audience?.includes(audience) || r.audience?.includes('All Stages');
@@ -189,6 +208,32 @@ export default function Resources() {
             Resource Navigator
           </h1>
         </div>
+
+        {/* Quiz */}
+        {showQuiz ? (
+          <div className="mb-10">
+            <ResourcesQuiz
+              onComplete={(answers) => { setQuizAnswers(answers); setShowQuiz(false); }}
+              onSkip={() => setShowQuiz(false)}
+            />
+          </div>
+        ) : quizAnswers ? (
+          <div className="bg-green-pale border border-primary/30 rounded-2xl p-4 mb-6 flex items-center justify-between">
+            <div className="text-sm">
+              <p className="font-semibold text-green-dark">Resources filtered by your answers</p>
+              <p className="text-xs text-muted-foreground">Showing resources relevant to your {quizAnswers.stage} stage {quizAnswers.sector} company</p>
+            </div>
+            <button onClick={() => setQuizAnswers(null)} className="p-1.5 hover:bg-white/50 rounded-lg transition-colors">
+              <X size={16} className="text-primary" />
+            </button>
+          </div>
+        ) : (
+          <div className="text-center mb-6">
+            <button onClick={() => setShowQuiz(true)} className="text-sm text-primary font-semibold hover:underline">
+              Take a quick 3-question quiz to personalize your results →
+            </button>
+          </div>
+        )}
 
         {/* Search + Audience + View row */}
         <div className="flex gap-3 mb-6 items-center">

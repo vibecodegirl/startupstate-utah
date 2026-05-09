@@ -124,6 +124,20 @@ export default function StartupProfile() {
           </div>
         )}
 
+        {/* Logo Gallery */}
+        {startup.logo_urls && startup.logo_urls.length > 0 && (
+          <div className="bg-white rounded-2xl border border-border shadow-sm p-6 mb-6">
+            <h2 className="font-manrope font-bold text-lg text-foreground mb-4">Gallery</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {startup.logo_urls.map((url, i) => (
+                <div key={i} className="aspect-square rounded-xl overflow-hidden border border-border bg-muted">
+                  <img src={url} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Details */}
         <div className="bg-white rounded-2xl border border-border shadow-sm p-6 mb-6">
           <h2 className="font-manrope font-bold text-lg text-foreground mb-4">Details</h2>
