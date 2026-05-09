@@ -3,12 +3,23 @@ import { base44 } from '@/api/base44Client';
 import { Search, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import MiniClusterMap from './MiniClusterMap';
-import EmbeddedStartupMap from './EmbeddedStartupMap';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import StartupPreviewPanel from '@/components/map/StartupPreviewPanel';
 
 const SECTORS = ['AI', 'Life Sciences', 'Fintech', 'B2B Software', 'Aerospace & Defense', 'Energy', 'Consumer'];
 const STAGES = ['Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C'];
 const SIZES = ['2-10', '11-50', '51-200', '201-500'];
+
+const defaultIcon = L.icon({
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 export default function DiscoverStartups({ onHubSelect }) {
   const [sector, setSector] = useState('');
@@ -16,6 +27,10 @@ export default function DiscoverStartups({ onHubSelect }) {
   const [size, setSize] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [mapStartups, setMapStartups] = useState([]);
+  const [mapCenter, setMapCenter] = useState([39.3210, -111.0937]);
+  const [selectedStartup, setSelectedStartup] = useState(null);
+  const [mapLoading, setMapLoading] = useState(true);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -29,6 +44,28 @@ export default function DiscoverStartups({ onHubSelect }) {
     setResults(startups);
     setLoading(false);
   };
+
+  useEffect(() => {
+    // Load map startups
+    setMapLoading(true);
+    const filters = {};
+    if (sector) filters.sector = sector;
+    if (stage) filters.funding_stage = stage;
+    if (size) filters.employees = size;
+
+    const query = Object.keys(filters).length > 0 ? filters : {};
+    base44.entities.Startup.filter(query, '-created_date', 100).then(startups => {
+      const validStartups = startups.filter(s => s.latitude && s.longitude);
+      setMapStartups(validStartups);
+      
+      if (validStartups.length > 0) {
+        const avgLat = validStartups.reduce((sum, s) => sum + s.latitude, 0) / validStartups.length;
+        const avgLon = validStartups.reduce((sum, s) => sum + s.longitude, 0) / validStartups.length;
+        setMapCenter([avgLat, avgLon]);
+      }
+      setMapLoading(false);
+    }).catch(() => setMapLoading(false));
+  }, [sector, stage, size]);
 
   useEffect(() => {
     if (sector || stage || size) handleSearch();
@@ -85,11 +122,39 @@ export default function DiscoverStartups({ onHubSelect }) {
         </div>
       )}
 
+      {!mapLoading && mapStartups.length > 0 && (
+        <div className="bg-white rounded-xl border border-border overflow-hidden shadow-sm h-80 mb-6">
+          <MapContainer center={mapCenter} zoom={7} style={{ height: '100%', width: '100%' }}>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; OpenStreetMap contributors'
+            />
+            {mapStartups.map(startup => (
+              <Marker
+                key={startup.id}
+                position={[startup.latitude, startup.longitude]}
+                icon={defaultIcon}
+                eventHandlers={{
+                  click: () => setSelectedStartup(startup)
+                }}
+              />
+            ))}
+          </MapContainer>
+        </div>
+      )}
+
       <Link to="/map">
         <Button variant="outline" className="w-full border-primary/30 text-primary hover:bg-green-pale font-semibold">
           Explore Full Map <ArrowRight size={14} />
         </Button>
       </Link>
+
+      {selectedStartup && (
+        <StartupPreviewPanel 
+          startup={selectedStartup} 
+          onClose={() => setSelectedStartup(null)} 
+        />
+      )}
     </div>
   );
 }
