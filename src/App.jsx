@@ -22,6 +22,7 @@ import Funding from '@/pages/Funding';
 import AdminDashboard from '@/pages/AdminDashboard';
 import InvestorResources from '@/pages/InvestorResources';
 import StartupProfile from '@/pages/StartupProfile';
+import Auth from '@/pages/Auth';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -65,6 +66,7 @@ const AuthenticatedApp = () => {
       <Navbar role={role} setRole={setRole} />
       <Routes>
         <Route path="/" element={<Home role={role} />} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="/advisor" element={<Advisor />} />
         <Route path="/map" element={<StartupMap />} />
         <Route path="/resources" element={<Resources />} />

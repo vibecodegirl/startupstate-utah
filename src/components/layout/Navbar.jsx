@@ -70,12 +70,16 @@ export default function Navbar({ role, setRole }) {
               </>
             ) : (
               <>
-                <Button size="sm" variant="outline" onClick={() => base44.auth.redirectToLogin()}>
-                  Sign In
-                </Button>
-                <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold" onClick={() => base44.auth.redirectToLogin()}>
-                  Create Account
-                </Button>
+                <Link to="/auth">
+                  <Button size="sm" variant="outline">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/auth">
+                  <Button size="sm" className="bg-primary text-primary-foreground hover:bg-green-dark font-semibold">
+                    Create Account
+                  </Button>
+                </Link>
               </>
             )}
           </div>
@@ -118,12 +122,16 @@ export default function Navbar({ role, setRole }) {
                </>
              ) : (
                <>
-                 <Button size="sm" variant="outline" className="w-full" onClick={() => { base44.auth.redirectToLogin(); setMobileOpen(false); }}>
-                   Sign In
-                 </Button>
-                 <Button size="sm" className="w-full bg-primary text-primary-foreground font-semibold" onClick={() => { base44.auth.redirectToLogin(); setMobileOpen(false); }}>
-                   Create Account
-                 </Button>
+                 <Link to="/auth" onClick={() => setMobileOpen(false)}>
+                   <Button size="sm" variant="outline" className="w-full">
+                     Sign In
+                   </Button>
+                 </Link>
+                 <Link to="/auth" onClick={() => setMobileOpen(false)}>
+                   <Button size="sm" className="w-full bg-primary text-primary-foreground font-semibold">
+                     Create Account
+                   </Button>
+                 </Link>
                </>
              )}
            </div>
