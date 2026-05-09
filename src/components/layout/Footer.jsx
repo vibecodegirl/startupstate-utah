@@ -9,17 +9,17 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <img
-              src="https://media.base44.com/images/public/user_67cc86b158aeb10359268a7e/44ea76f88_StartupState_Logo_Web_Color_Horiz.webp"
+              src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/e8fef4a72_StartupState_Logo_Web_Color_Horiz.webp"
               alt="Startup State"
-              className="h-8 w-auto brightness-0 invert mb-4"
+              className="h-8 w-auto mb-4"
             />
             <p className="text-white/60 text-sm leading-relaxed">
               The global standard for innovation and entrepreneurship. Powered by the Governor's Office of Economic Opportunity.
             </p>
             <img
-              src="https://media.base44.com/images/public/user_67cc86b158aeb10359268a7e/25e11e655_GOEO_BLACK_Standard_Web.webp"
+              src="https://media.base44.com/images/public/69fe5c22e01d3ef38f7bf78f/50f598190_GOEO_BLACK_Standard.webp"
               alt="GOEO"
-              className="h-8 w-auto brightness-0 invert mt-4 opacity-70"
+              className="h-8 w-auto mt-4"
             />
           </div>
 
