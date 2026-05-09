@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { X, ExternalLink, Bookmark, CheckCircle, Clock, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import BusinessPlanPanel from './BusinessPlanPanel';
 
 export default function QuickWinActionPanel({ win, onClose }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
+  const [showBusinessPlan, setShowBusinessPlan] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(u => {
@@ -31,6 +33,11 @@ export default function QuickWinActionPanel({ win, onClose }) {
       base44.auth.redirectToLogin();
       return;
     }
+    // Special handling for business plan
+    if (win.title === 'Draft Your Business Plan') {
+      setShowBusinessPlan(true);
+      return;
+    }
     if (win.link.startsWith('http')) {
       window.open(win.link, '_blank', 'noopener noreferrer');
     } else {
@@ -39,6 +46,10 @@ export default function QuickWinActionPanel({ win, onClose }) {
   };
 
   if (!win) return null;
+
+  if (showBusinessPlan) {
+    return <BusinessPlanPanel onClose={() => setShowBusinessPlan(false)} />;
+  }
 
   const Icon = win.icon;
 
