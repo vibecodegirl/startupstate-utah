@@ -79,10 +79,82 @@ export default function HeroCarousel() {
         <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl mb-6 leading-tight">
           {slide.title}
         </h1>
-        <p className="text-xl text-white/85 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xl text-white/85 max-w-2xl mx-auto leading-relaxed mb-10">
           {slide.description}
         </p>
+
+        {/* Action Buttons - Global Innovation Leadership */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <Link to={slide.cta_link || '/'}>
+            <Button size="lg" className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8 py-3 text-base rounded-xl transition-all shadow-lg">
+              {slide.cta_text || 'Get Started'}
+            </Button>
+          </Link>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))}
+            className="px-8 py-3 rounded-xl font-manrope font-bold text-base border-2 border-white text-white hover:bg-white/10 transition-all"
+          >
+            Talk to AI Advisor
+          </button>
+        </div>
+
+        {/* Innovation Stats Callout */}
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 inline-block">
+          <p className="text-sm font-semibold text-white/90 mb-3">The Global Standard for Innovation</p>
+          <div className="flex gap-6 text-center">
+            <div>
+              <div className="text-2xl font-extrabold text-white mb-1">#1</div>
+              <p className="text-xs text-white/70">Economic Outlook</p>
+            </div>
+            <div className="w-px bg-white/20" />
+            <div>
+              <div className="text-2xl font-extrabold text-white mb-1">3,500+</div>
+              <p className="text-xs text-white/70">Active Startups</p>
+            </div>
+            <div className="w-px bg-white/20" />
+            <div>
+              <div className="text-2xl font-extrabold text-white mb-1">$4.2B+</div>
+              <p className="text-xs text-white/70">VC Investment</p>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Carousel Navigation */}
+      {slides.length > 1 && (
+        <>
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 text-white transition-all backdrop-blur-sm"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 text-white transition-all backdrop-blur-sm"
+            aria-label="Next slide"
+          >
+            <ChevronRight size={24} />
+          </button>
+
+          {/* Slide Indicators */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => goToSlide(idx)}
+                className={`transition-all ${
+                  idx === currentIndex
+                    ? 'bg-white w-8 h-2 rounded-full'
+                    : 'bg-white/40 w-2 h-2 rounded-full hover:bg-white/60'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 }
