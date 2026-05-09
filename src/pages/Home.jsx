@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import HeroSection from '@/components/home/HeroSection';
+import NewsletterBanner from '@/components/home/NewsletterBanner';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -118,6 +119,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Newsletter Banner */}
+      <NewsletterBanner />
 
       {/* GOEO Attribution */}
       
