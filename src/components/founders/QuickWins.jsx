@@ -102,18 +102,18 @@ export default function QuickWins({ onWinClick }) {
             );
           })}
         </div>
+      </div>
 
-        {/* CTA */}
-        <div className="mt-6 -mx-3 sm:-mx-4 lg:-mx-6 bg-gradient-to-r from-primary via-green-mid to-primary px-6 sm:px-8 py-4 text-center">
-          <h3 className="font-manrope font-extrabold text-lg text-white mb-2">Not sure which to start with?</h3>
-          <p className="text-white/80 text-sm mb-3 inline-block">Our AI Advisor can help you prioritize.</p>
-          <button
-            onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))}
-            className="ml-3 px-6 py-1.5 rounded-lg font-manrope font-bold text-sm bg-white text-primary hover:bg-green-pale transition-colors"
-          >
-            Talk to AI Advisor
-          </button>
-        </div>
+      {/* CTA - Full width */}
+      <div className="mt-6 bg-gradient-to-r from-primary via-green-mid to-primary px-6 sm:px-8 py-4 text-center">
+        <h3 className="font-manrope font-extrabold text-lg text-white mb-2">Not sure which to start with?</h3>
+        <p className="text-white/80 text-sm mb-3 inline-block">Our AI Advisor can help you prioritize.</p>
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))}
+          className="ml-3 px-6 py-1.5 rounded-lg font-manrope font-bold text-sm bg-white text-primary hover:bg-green-pale transition-colors"
+        >
+          Talk to AI Advisor
+        </button>
       </div>
     </section>
   );
