@@ -7,12 +7,34 @@ import { ArrowRight, MapPin, Sparkles, Zap, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
 
+const stats = [
+  { value: '#1', label: 'Best State to Start a Business', source: 'WalletHub 2023' },
+  { value: '3,500+', label: 'Active Startups', source: 'Silicon Slopes' },
+  { value: '$4.2B+', label: 'Annual VC Investment', source: 'NVCA' },
+  { value: '45+', label: 'Active Accelerators & Incubators', source: 'GOEO' },
+  { value: '15%', label: 'Annual Tech Job Growth', source: 'BLS' },
+  { value: 'Top 5', label: 'Most Educated Workforce', source: 'US Census' },
+];
+
 export default function Home() {
   const [showQuiz, setShowQuiz] = useState(false);
 
   return (
     <div className="min-h-screen">
       <HeroSection />
+
+      {/* Stats Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {stats.map(s => (
+            <div key={s.label} className="bg-white rounded-2xl border border-border p-4 text-center shadow-lg hover:shadow-xl transition-shadow">
+              <div className="font-manrope font-extrabold text-2xl text-primary mb-1">{s.value}</div>
+              <div className="text-xs text-foreground font-semibold leading-snug mb-1">{s.label}</div>
+              <div className="text-xs text-muted-foreground">{s.source}</div>
+            </div>
+          ))}
+        </div>
+      </section>
       <JourneyCards />
 
       {/* Quiz Modal */}
