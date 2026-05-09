@@ -50,10 +50,24 @@ export default function HeroCarousel() {
 
   const slide = slides[currentIndex];
 
+  const getSlideColors = () => {
+    if (!slide || slides.length === 0) return { bg: 'bg-white', accent: 'bg-primary', label: 'text-primary', stat: 'text-primary' };
+    const index = slides.findIndex(s => s.id === slide.id);
+    const colors = [
+      { bg: 'bg-gradient-to-b from-green-pale to-white', accent: 'bg-primary', label: 'text-primary', stat: 'text-primary', border: 'border-primary/20' },
+      { bg: 'bg-gradient-to-b from-blue-50 to-white', accent: 'bg-blue-600', label: 'text-blue-600', stat: 'text-blue-600', border: 'border-blue-200' },
+      { bg: 'bg-gradient-to-b from-purple-50 to-white', accent: 'bg-purple-600', label: 'text-purple-600', stat: 'text-purple-600', border: 'border-purple-200' },
+      { bg: 'bg-gradient-to-b from-orange-50 to-white', accent: 'bg-orange-600', label: 'text-orange-600', stat: 'text-orange-600', border: 'border-orange-200' },
+    ];
+    return colors[index % colors.length];
+  };
+
+  const colors = getSlideColors();
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-green-pale/30 to-white" />
+    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden ${colors.bg}`}>
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/80 to-transparent" />
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-20">
@@ -61,8 +75,8 @@ export default function HeroCarousel() {
           {/* Left: Text Content */}
           <div className="space-y-8">
             {slide.subtitle && (
-              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 w-fit">
-                <span className="text-xs font-semibold text-primary uppercase tracking-wider">{slide.subtitle}</span>
+              <div className={`inline-flex items-center gap-2 ${colors.accent}/10 border ${colors.border} rounded-full px-4 py-1.5 w-fit`}>
+                <span className={`text-xs font-semibold ${colors.label} uppercase tracking-wider`}>{slide.subtitle}</span>
               </div>
             )}
 
@@ -79,7 +93,7 @@ export default function HeroCarousel() {
             {/* CTA Button */}
             <div>
               <Link to={slide.cta_link || '/'}>
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-green-dark font-manrope font-bold px-8 py-3 text-base rounded-xl transition-all">
+                <Button size="lg" className={`${colors.accent} text-white hover:opacity-90 font-manrope font-bold px-8 py-3 text-base rounded-xl transition-all`}>
                   {slide.cta_text || 'Learn More'}
                 </Button>
               </Link>
@@ -94,8 +108,8 @@ export default function HeroCarousel() {
               { value: '#1', label: 'Best State' },
               { value: '45+', label: 'Accelerators' },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white border border-border rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="font-manrope font-extrabold text-3xl text-primary">{stat.value}</div>
+              <div key={stat.label} className={`bg-white border ${colors.border} rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow`}>
+                <div className={`font-manrope font-extrabold text-3xl ${colors.stat}`}>{stat.value}</div>
                 <div className="text-sm text-muted-foreground font-medium mt-2">{stat.label}</div>
               </div>
             ))}
@@ -108,14 +122,14 @@ export default function HeroCarousel() {
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full border border-border bg-white hover:bg-muted text-foreground transition-all"
+            className={`absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full border ${colors.border} bg-white hover:${colors.accent}/10 text-foreground transition-all`}
             aria-label="Previous slide"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full border border-border bg-white hover:bg-muted text-foreground transition-all"
+            className={`absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full border ${colors.border} bg-white hover:${colors.accent}/10 text-foreground transition-all`}
             aria-label="Next slide"
           >
             <ChevronRight size={24} />
@@ -129,7 +143,7 @@ export default function HeroCarousel() {
                 onClick={() => goToSlide(idx)}
                 className={`h-2 rounded-full transition-all ${
                   idx === currentIndex
-                    ? 'bg-primary w-8'
+                    ? `${colors.accent} w-8`
                     : 'bg-border w-2 hover:bg-muted-foreground'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
@@ -141,8 +155,8 @@ export default function HeroCarousel() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-        <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex items-start justify-center pt-2">
-          <div className="w-1.5 h-3 bg-primary/30 rounded-full animate-pulse-gentle" />
+        <div className={`w-6 h-10 border-2 rounded-full flex items-start justify-center pt-2`} style={{ borderColor: colors.accent.replace('bg-', '') + '/30' }}>
+          <div className={`w-1.5 h-3 rounded-full animate-pulse-gentle`} style={{ backgroundColor: colors.accent.replace('bg-', '') + '/30' }} />
         </div>
       </div>
     </section>
