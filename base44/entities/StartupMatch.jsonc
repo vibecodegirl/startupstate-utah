@@ -1,0 +1,51 @@
+{
+  "name": "StartupMatch",
+  "type": "object",
+  "properties": {
+    "founder_email": {
+      "type": "string",
+      "description": "Founder email who initiated the match"
+    },
+    "investor_email": {
+      "type": "string",
+      "description": "Investor email for the match"
+    },
+    "match_score": {
+      "type": "number",
+      "description": "Overall match score (0-100)"
+    },
+    "sector_match": {
+      "type": "number",
+      "description": "Sector alignment score"
+    },
+    "stage_match": {
+      "type": "number",
+      "description": "Funding stage alignment score"
+    },
+    "recommendation_summary": {
+      "type": "string",
+      "description": "LLM-generated match explanation and recommendations"
+    },
+    "match_type": {
+      "type": "string",
+      "enum": [
+        "founder_to_investor",
+        "investor_to_startup"
+      ],
+      "description": "Direction of the match"
+    },
+    "match_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Key reasons for the match"
+    }
+  },
+  "required": [
+    "founder_email",
+    "investor_email",
+    "match_score",
+    "recommendation_summary"
+  ]
+}

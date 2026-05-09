@@ -1,0 +1,99 @@
+{
+  "name": "InvestorProfile",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the investor (linked to User entity)"
+    },
+    "investor_name": {
+      "type": "string",
+      "description": "Name of investor or fund"
+    },
+    "investor_type": {
+      "type": "string",
+      "enum": [
+        "Angel",
+        "Venture Capital",
+        "Corporate",
+        "Accelerator",
+        "Family Office",
+        "Individual"
+      ],
+      "description": "Type of investor"
+    },
+    "focus_sectors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "AI",
+          "Aerospace & Defense",
+          "Life Sciences",
+          "Fintech",
+          "B2B Software",
+          "Marketplaces",
+          "Energy",
+          "Consumer",
+          "Security",
+          "All"
+        ]
+      },
+      "description": "Sectors of interest"
+    },
+    "focus_stages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Pre-Seed",
+          "Seed",
+          "Series A",
+          "Series B",
+          "Series C",
+          "Series D+",
+          "All"
+        ]
+      },
+      "description": "Funding stages of interest"
+    },
+    "check_size_min": {
+      "type": "number",
+      "description": "Minimum check size (in thousands)"
+    },
+    "check_size_max": {
+      "type": "number",
+      "description": "Maximum check size (in thousands)"
+    },
+    "investment_thesis": {
+      "type": "string",
+      "description": "Investment philosophy and criteria"
+    },
+    "portfolio_focus": {
+      "type": "string",
+      "description": "Geographic focus, team values, or other criteria"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Background and experience"
+    },
+    "linkedin_url": {
+      "type": "string",
+      "description": "LinkedIn profile URL"
+    },
+    "website": {
+      "type": "string",
+      "description": "Fund or company website"
+    },
+    "profile_complete": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether profile is complete"
+    }
+  },
+  "required": [
+    "user_email",
+    "investor_name",
+    "investor_type"
+  ]
+}

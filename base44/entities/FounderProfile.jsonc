@@ -1,0 +1,100 @@
+{
+  "name": "FounderProfile",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the founder (linked to User entity)"
+    },
+    "company_name": {
+      "type": "string",
+      "description": "Name of the startup"
+    },
+    "sector": {
+      "type": "string",
+      "enum": [
+        "AI",
+        "Aerospace & Defense",
+        "Life Sciences",
+        "Fintech",
+        "B2B Software",
+        "Marketplaces",
+        "Energy",
+        "Consumer",
+        "Security",
+        "Other"
+      ],
+      "description": "Primary sector"
+    },
+    "funding_stage": {
+      "type": "string",
+      "enum": [
+        "Pre-Seed",
+        "Seed",
+        "Series A",
+        "Series B",
+        "Series C",
+        "Series D+",
+        "Bootstrapped"
+      ],
+      "description": "Current funding stage"
+    },
+    "funding_goal": {
+      "type": "number",
+      "description": "Amount seeking to raise (in thousands)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the startup and vision"
+    },
+    "team_size": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2-5",
+        "6-10",
+        "11-20",
+        "20+"
+      ],
+      "description": "Current team size"
+    },
+    "growth_goals": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Market expansion",
+          "Product development",
+          "Team building",
+          "International growth",
+          "Strategic partnership",
+          "Profitability"
+        ]
+      },
+      "description": "Key growth objectives"
+    },
+    "ideal_investor_profile": {
+      "type": "string",
+      "description": "Description of ideal investor (focus areas, ticket size, etc.)"
+    },
+    "website": {
+      "type": "string",
+      "description": "Company website URL"
+    },
+    "linkedin_url": {
+      "type": "string",
+      "description": "LinkedIn profile URL"
+    },
+    "profile_complete": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether profile is complete"
+    }
+  },
+  "required": [
+    "user_email",
+    "company_name",
+    "sector",
+    "funding_stage"
+  ]
+}

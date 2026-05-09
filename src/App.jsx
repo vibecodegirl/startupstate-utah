@@ -23,6 +23,9 @@ import AdminDashboard from '@/pages/AdminDashboard';
 import InvestorResources from '@/pages/InvestorResources';
 import StartupProfile from '@/pages/StartupProfile';
 import Auth from '@/pages/Auth';
+import FounderProfile from '@/pages/FounderProfile';
+import InvestorProfile from '@/pages/InvestorProfile';
+import StartupMatch from '@/pages/StartupMatch';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -78,6 +81,9 @@ const AuthenticatedApp = () => {
         <Route path="/admin" element={<AdminDashboard role={role} />} />
         <Route path="/investors" element={<InvestorResources />} />
         <Route path="/startups/:id" element={<StartupProfile />} />
+        <Route path="/founder-profile" element={<FounderProfile />} />
+        <Route path="/investor-profile" element={<InvestorProfile />} />
+        <Route path="/matches" element={<StartupMatch />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />
