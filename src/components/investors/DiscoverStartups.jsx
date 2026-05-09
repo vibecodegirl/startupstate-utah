@@ -85,9 +85,6 @@ export default function DiscoverStartups({ onHubSelect }) {
         </div>
       )}
 
-      {/* Show hubs for county selection */}
-      <MiniClusterMap sector={sector} stage={stage} size={size} onHubSelect={onHubSelect} />
-
       {/* Show map by default, updated when filters change */}
       <EmbeddedStartupMap sector={sector} stage={stage} size={size} />
       
