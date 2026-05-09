@@ -190,7 +190,15 @@ export default function StartupMap() {
                 <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" />
               </div>
             ) : (
-              <table className="w-full text-sm">
+              <table className="w-full text-sm table-fixed">
+                <colgroup>
+                  <col className="w-[35%]" />
+                  <col className="w-[18%]" />
+                  <col className="w-[15%]" />
+                  <col className="w-[12%]" />
+                  <col className="w-[18%]" />
+                  <col className="w-[2%]" />
+                </colgroup>
                 <thead className="sticky top-0 bg-white border-b border-border z-10 shadow-sm">
                   <tr>
                     <th className="text-left px-5 py-3 font-semibold text-muted-foreground text-xs uppercase tracking-wider">Company</th>
@@ -202,46 +210,38 @@ export default function StartupMap() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {filtered.map(s => {
-                    const verificationIcon = {
-                      'Verified': <CheckCircle size={13} className="text-primary" />,
-                      'Pending': <Clock size={13} className="text-yellow-500" />,
-                      'Community Sourced': <AlertCircle size={13} className="text-blue-500" />,
-                      'Flagged': <AlertCircle size={13} className="text-red-500" />,
-                    }[s.verification_status];
-                    return (
-                      <tr key={s.id} className="hover:bg-muted/30 transition-colors group">
-                        <td className="px-5 py-3">
-                          <div className="flex items-center gap-2">
-                            {s.photo_url && <img src={s.photo_url} alt={s.company_name} className="w-7 h-7 rounded-md object-cover border border-border shrink-0" />}
-                            <div>
-                              <div className="font-semibold text-foreground">{s.company_name}</div>
-                              {s.description && <div className="text-xs text-muted-foreground line-clamp-1 max-w-xs">{s.description}</div>}
-                            </div>
+                  {filtered.map(s => (
+                    <tr key={s.id} className="hover:bg-muted/30 transition-colors group">
+                      <td className="px-5 py-3">
+                        <div className="flex items-center gap-2">
+                          {s.photo_url && <img src={s.photo_url} alt={s.company_name} className="w-7 h-7 rounded-md object-cover border border-border shrink-0" />}
+                          <div className="min-w-0">
+                            <div className="font-semibold text-foreground truncate">{s.company_name}</div>
+                            {s.description && <div className="text-xs text-muted-foreground truncate">{s.description}</div>}
                           </div>
-                        </td>
-                        <td className="px-4 py-3">
-                          {s.sector && (
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{s.sector}</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3">
-                          {s.funding_stage && (
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{s.funding_stage}</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-xs text-muted-foreground">{s.employees || '—'}</td>
-                        <td className="px-4 py-3 text-xs text-muted-foreground">
-                          {s.city ? `${s.city}${s.county ? `, ${s.county}` : ''}` : '—'}
-                        </td>
-                        <td className="px-4 py-3">
-                          <Link to={`/startups/${s.id}`} className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-primary">
-                            <ExternalLink size={14} />
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        {s.sector && (
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground whitespace-nowrap">{s.sector}</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        {s.funding_stage && (
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground whitespace-nowrap">{s.funding_stage}</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-muted-foreground">{s.employees || '—'}</td>
+                      <td className="px-4 py-3 text-xs text-muted-foreground truncate">
+                        {s.city ? `${s.city}${s.county ? `, ${s.county}` : ''}` : '—'}
+                      </td>
+                      <td className="px-4 py-3">
+                        <Link to={`/startups/${s.id}`} className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-primary">
+                          <ExternalLink size={14} />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             )}
