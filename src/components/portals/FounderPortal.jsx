@@ -14,20 +14,19 @@ export default function FounderPortal({ user }) {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [activeTab, setActiveTab] = useState('overview');
-  const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
-    if (!user?.email) {
+    // Check if we're viewing a demo profile
+    const currentRole = sessionStorage.getItem('currentRole');
+    const isDemoMode = currentRole === 'founder';
+    
+    // Use demo email for founder demo role
+    const emailToUse = isDemoMode ? DEMO_FOUNDER_EMAILS[0] : user?.email;
+
+    if (!emailToUse) {
       setLoading(false);
       return;
     }
-
-    // Check if we're in demo mode (role was manually switched)
-    const demoMode = sessionStorage.getItem('demoMode') === 'true';
-    setIsDemo(demoMode);
-
-    // Use demo email or current user email
-    const emailToUse = demoMode ? DEMO_FOUNDER_EMAILS[0] : user.email;
 
     base44.entities.FounderProfile.filter({ user_email: emailToUse }, '', 1)
       .then(profiles => {

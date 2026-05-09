@@ -11,20 +11,19 @@ export default function InvestorPortal({ user }) {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
-  const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
-    if (!user?.email) {
+    // Check if we're viewing a demo profile
+    const currentRole = sessionStorage.getItem('currentRole');
+    const isDemoMode = currentRole === 'investor';
+
+    // Use demo email for investor demo role
+    const emailToUse = isDemoMode ? DEMO_INVESTOR_EMAILS[0] : user?.email;
+
+    if (!emailToUse) {
       setLoading(false);
       return;
     }
-
-    // Check if we're in demo mode (role was manually switched)
-    const demoMode = sessionStorage.getItem('demoMode') === 'true';
-    setIsDemo(demoMode);
-
-    // Use demo email or current user email
-    const emailToUse = demoMode ? DEMO_INVESTOR_EMAILS[0] : user.email;
 
     Promise.all([
       base44.entities.InvestorProfile.filter({ user_email: emailToUse }, '', 1),

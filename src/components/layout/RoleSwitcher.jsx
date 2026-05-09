@@ -14,12 +14,9 @@ export default function RoleSwitcher({ role, setRole }) {
   const Icon = current.icon;
 
   const handleRoleChange = (newRole) => {
-    // Set demo mode flag if switching to a non-visitor role
-    sessionStorage.setItem('demoMode', newRole !== 'visitor' ? 'true' : 'false');
+    sessionStorage.setItem('currentRole', newRole);
     setRole(newRole);
     setOpen(false);
-    // Refresh to pick up new role
-    window.location.reload();
   };
 
   return (

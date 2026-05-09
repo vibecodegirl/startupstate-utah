@@ -31,8 +31,13 @@ import UserProfileDashboard from '@/pages/UserProfileDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
-  const [role, setRole] = useState('visitor');
+  const [role, setRole] = useState(() => sessionStorage.getItem('currentRole') || 'visitor');
   const [advisorContext, setAdvisorContext] = useState(null);
+
+  // Persist role to sessionStorage whenever it changes
+  useEffect(() => {
+    sessionStorage.setItem('currentRole', role);
+  }, [role]);
 
   useEffect(() => {
     const handler = (e) => {
