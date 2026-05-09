@@ -12,29 +12,18 @@ export default function UserProfileDashboard({ role }) {
   const [editData, setEditData] = useState({});
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [founderProfile, setFounderProfile] = useState(null);
-  const [investorProfile, setInvestorProfile] = useState(null);
 
   useEffect(() => {
     base44.auth.me()
-      .then(async (u) => {
-        setUser(u);
-        setEditData({ full_name: u?.full_name || '', role: u?.role || 'user' });
-
-        // Fetch founder and investor profiles to detect actual user type
-        if (u?.email) {
-          const [founders, investors] = await Promise.all([
-            base44.entities.FounderProfile.filter({ user_email: u.email }, '', 1).catch(() => []),
-            base44.entities.InvestorProfile.filter({ user_email: u.email }, '', 1).catch(() => [])
-          ]);
-          if (founders.length > 0) setFounderProfile(founders[0]);
-          if (investors.length > 0) setInvestorProfile(investors[0]);
-        }
-
+      .then(u => {
+        // Use passed role prop if available, otherwise use user role
+        const userRole = role || u?.role || 'visitor';
+        setUser({ ...u, role: userRole });
+        setEditData({ full_name: u?.full_name || '', role: userRole });
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [role]);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -78,36 +67,26 @@ export default function UserProfileDashboard({ role }) {
     );
   }
 
-  // Determine which portal to show based on actual profiles
-  const showFounderPortal = founderProfile || (user?.role === 'founder');
-  const showInvestorPortal = investorProfile && !founderProfile;
-  const showAdminPortal = user?.role === 'admin';
+  // Render role-specific portal if user has a role
+  const showPortal = user?.role && user.role !== 'visitor';
 
-  if (showAdminPortal) {
+  if (showPortal) {
     return (
       <div className="min-h-screen pt-24 bg-gradient-to-b from-white to-green-pale/10">
         <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6 pb-12">
-          <AdminPortal user={user} />
-        </div>
-      </div>
-    );
-  }
+          {user.role === 'founder' && <FounderPortal user={user} />}
+          {user.role === 'investor' && <InvestorPortal user={user} />}
+          {user.role === 'admin' && <AdminPortal user={user} />}
 
-  if (showFounderPortal) {
-    return (
-      <div className="min-h-screen pt-24 bg-gradient-to-b from-white to-green-pale/10">
-        <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6 pb-12">
-          <FounderPortal user={user} />
-        </div>
-      </div>
-    );
-  }
-
-  if (showInvestorPortal) {
-    return (
-      <div className="min-h-screen pt-24 bg-gradient-to-b from-white to-green-pale/10">
-        <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6 pb-12">
-          <InvestorPortal user={user} />
+          {/* Profile Settings Link */}
+          <div className="mt-12 pt-8 border-t border-border">
+            <button
+              onClick={() => window.location.hash = '#settings'}
+              className="text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
+            >
+              ← Back to Settings
+            </button>
+          </div>
         </div>
       </div>
     );
