@@ -41,6 +41,7 @@ The app requires a `.env.local` at the repo root with:
 ### Gotchas
 
 - **No backend proxy without `VITE_BASE44_APP_BASE_URL`**: The Base44 Vite plugin logs `[base44] Proxy not enabled (VITE_BASE44_APP_BASE_URL not set)` when this env var is missing. Pages that rely on static content (Home, Why Utah, Resources, Events) still render; pages requiring live data (Map, Admin) show loading spinners.
+- **`VITE_BASE44_APP_BASE_URL` must be a full URL**: The value must include the protocol, e.g. `https://your-app-slug.base44.app`. A bare hash or token will crash the Vite proxy with `TypeError: Cannot read properties of null (reading 'split')` because Vite's HTTP proxy expects a parseable URL with a protocol.
 - **No test suite**: The project has no automated test framework configured — there is no `test` script in `package.json`.
 - **Unused imports cause lint failures**: The repo has ~23 pre-existing unused-import lint errors. These cause `npm run lint` to exit non-zero but are not regressions.
 - **Path aliases**: `@/` maps to `./src/` (configured in `jsconfig.json` and resolved by Vite).
