@@ -53,6 +53,15 @@ const recommendedStepsByProfile = {
   ],
 };
 
+const headlinesByStage = {
+  'Idea / Pre-Seed': 'Just starting — let\'s validate your idea',
+  'Seed': 'You have traction — time to scale',
+  'Series A': 'Ready to raise — let\'s build momentum',
+  'Series B': 'Growing fast — scale with confidence',
+  'Series B+': 'Market leader — plan your next move',
+  'Bootstrapped': 'Self-funded — sustainable growth is key',
+};
+
 export default function QuizResults() {
   const [searchParams] = useSearchParams();
   const stage = searchParams.get('stage');
@@ -61,6 +70,7 @@ export default function QuizResults() {
   const location = searchParams.get('location');
   const community = searchParams.get('community');
   const [showAllResources, setShowAllResources] = useState(false);
+  const headline = headlinesByStage[stage] || 'Your Founder Path';
 
   const { data: allResources = [] } = useQuery({
     queryKey: ['resources'],
@@ -100,7 +110,7 @@ export default function QuizResults() {
             <div className="text-4xl">🚀</div>
             <div className="flex-1">
               <h1 className="font-manrope font-extrabold text-3xl sm:text-4xl text-foreground mb-2">
-                I have traction — ready to raise
+                {headline}
               </h1>
               <p className="text-muted-foreground text-base leading-relaxed">
                 {sector} founder, based in {location}. {stage} stage. {challenge && <>Focused on {challenge.toLowerCase()}.</>}
