@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { base44 } from '@/api/base44Client';
 import { Search, Filter, X, SlidersHorizontal, ExternalLink, CheckCircle, Clock, AlertCircle, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -21,6 +21,16 @@ L.Icon.Default.mergeOptions({
 const sectors = ['All Sectors', 'AI', 'Aerospace & Defense', 'Life Sciences', 'Fintech', 'B2B Software', 'Other'];
 const stages = ['All Stages', 'Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C', 'Series D+', 'Bootstrapped'];
 const sizes = ['All Sizes', '2-10', '11-50', '51-200', '201-500', '500+'];
+
+function MapFlyTo({ selected }) {
+  const map = useMap();
+  useEffect(() => {
+    if (selected?.latitude && selected?.longitude) {
+      map.flyTo([selected.latitude, selected.longitude], 13, { duration: 1 });
+    }
+  }, [selected, map]);
+  return null;
+}
 
 function ColumnFilterDropdown({ label, value, options, onChange }) {
   const [open, setOpen] = useState(false);
@@ -202,6 +212,7 @@ export default function StartupMap() {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
+                  <MapFlyTo selected={selected} />
                   {mappable.map(s => (
                     <Marker
                       key={s.id}
