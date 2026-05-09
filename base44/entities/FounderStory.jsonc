@@ -1,0 +1,82 @@
+{
+  "name": "FounderStory",
+  "type": "object",
+  "properties": {
+    "founder_name": {
+      "type": "string",
+      "description": "Name of the founder"
+    },
+    "company_name": {
+      "type": "string",
+      "description": "Name of the startup"
+    },
+    "sector": {
+      "type": "string",
+      "enum": [
+        "AI",
+        "Aerospace & Defense",
+        "Life Sciences",
+        "Fintech",
+        "B2B Software",
+        "Marketplaces",
+        "Energy",
+        "Consumer",
+        "Security",
+        "Other"
+      ],
+      "description": "Business sector"
+    },
+    "story_title": {
+      "type": "string",
+      "description": "Headline for the story (e.g., 'From Idea to Seed in 6 Months')"
+    },
+    "story_excerpt": {
+      "type": "string",
+      "description": "Short summary of the founder's journey"
+    },
+    "full_story": {
+      "type": "string",
+      "description": "Complete founder story and lessons learned"
+    },
+    "founding_stage_when_featured": {
+      "type": "string",
+      "enum": [
+        "Pre-Seed",
+        "Seed",
+        "Series A",
+        "Series B",
+        "Series C+",
+        "Acquired",
+        "IPO"
+      ],
+      "description": "Company stage when this story was featured"
+    },
+    "key_achievement": {
+      "type": "string",
+      "description": "Main win or milestone (e.g., '$2.5M seed round raised')"
+    },
+    "photo_url": {
+      "type": "string",
+      "description": "Founder photo URL"
+    },
+    "company_logo_url": {
+      "type": "string",
+      "description": "Company logo URL"
+    },
+    "display_order": {
+      "type": "number",
+      "description": "Order to display stories"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to show this story"
+    }
+  },
+  "required": [
+    "founder_name",
+    "company_name",
+    "story_title",
+    "story_excerpt"
+  ]
+}

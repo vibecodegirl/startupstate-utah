@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, FileText, DollarSign, Users, Building, Globe, Lightbulb, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ResourcesQuiz from '@/components/quiz/ResourcesQuiz';
+import QuickWins from '@/components/founders/QuickWins';
+import FounderStories from '@/components/founders/FounderStories';
 
 const steps = [
   {
@@ -230,6 +232,12 @@ export default function StartPage() {
           </div>
         </>
         )}
+
+        {/* Quick Wins Section */}
+        <QuickWins />
+
+        {/* Founder Stories Section */}
+        <FounderStories />
       </div>
 
       {/* Right Side Panel */}
