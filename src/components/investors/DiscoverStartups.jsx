@@ -74,12 +74,12 @@ const DiscoverStartups = forwardRef(function DiscoverStartups({ onHubSelect, sel
 
   useEffect(() => {
     if (selectedHub && mapStartups.length > 0) {
-      const hubStartups = mapStartups.filter(s => s.city === selectedHub.city);
+      const hubStartups = mapStartups.filter(s => s.county === selectedHub.city);
       if (hubStartups.length > 0) {
         const avgLat = hubStartups.reduce((sum, s) => sum + s.latitude, 0) / hubStartups.length;
         const avgLon = hubStartups.reduce((sum, s) => sum + s.longitude, 0) / hubStartups.length;
         setMapCenter([avgLat, avgLon]);
-        setMapZoom(10);
+        setMapZoom(9);
       }
     }
   }, [selectedHub, mapStartups]);
