@@ -87,7 +87,6 @@ const steps = [
 export default function StartPage() {
   const [panel, setPanel] = useState(null); // { title, link }
   const [quizAnswers, setQuizAnswers] = useState(null); // { stage, sector, challenge }
-  const [showQuiz, setShowQuiz] = useState(false);
 
   // Filter steps based on quiz answers
   const personalizedSteps = useMemo(() => {
@@ -110,7 +109,6 @@ export default function StartPage() {
 
   const handleQuizComplete = (answers) => {
     setQuizAnswers(answers);
-    setShowQuiz(false);
   };
 
   const handleLearnMore = (step) => {
@@ -122,121 +120,116 @@ export default function StartPage() {
   };
 
   return (
-    <div className="min-h-screen pt-24 bg-muted/20">
+    <div className="min-h-screen pt-20 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Quiz or Pathway Content */}
-        {showQuiz ? (
-          <div className="mb-16">
-            <ResourcesQuiz onComplete={handleQuizComplete} onSkip={() => { setShowQuiz(false); setQuizAnswers('skipped'); }} />
+        {/* Hero Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 mb-4">
+            <Lightbulb size={14} />
+            <span className="text-xs font-semibold uppercase tracking-wider">Launch Your Journey</span>
           </div>
-        ) : (
-          <>
-            {/* Header */}
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 mb-4">
-                <CheckCircle size={14} />
-                <span className="text-xs font-semibold uppercase tracking-wider">{quizAnswers ? 'Your Personalized Pathway' : 'Step-by-Step Guide'}</span>
-              </div>
-              <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-4">
-                Starting a Business in Utah
-              </h1>
-              <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
-                {quizAnswers ? (
-                  <>Your customized roadmap based on your stage and needs.</>
-                ) : (
-                  <>Your comprehensive roadmap — from idea to launch — with Utah-specific resources at every step.</>
-                )}
-              </p>
-              {!quizAnswers && (
+          <h1 className="font-manrope font-extrabold text-4xl sm:text-5xl text-foreground mb-3">
+            Starting a Business in Utah
+          </h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+            Answer a quick quiz to unlock your personalized pathway. Or skip and explore the full roadmap below.
+          </p>
+        </div>
+
+        {/* Quiz Section - Always Visible */}
+        <div className="mb-16">
+          <ResourcesQuiz
+            onComplete={handleQuizComplete}
+            onSkip={() => setQuizAnswers('skipped')}
+          />
+        </div>
+
+        {/* Quick Wins - "Momentum Starts Now" directly below quiz */}
+        <QuickWins />
+
+        {/* Personalized Steps - Only show if quiz completed */}
+        {quizAnswers && quizAnswers !== 'skipped' && (
+          <section className="py-20 bg-muted/20">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-12">
+                <h2 className="font-manrope font-extrabold text-3xl text-foreground mb-2">Your Personalized Roadmap</h2>
+                <p className="text-muted-foreground">Follow these steps tailored to your {quizAnswers.stage} stage startup.</p>
                 <Button
-                  onClick={() => setShowQuiz(true)}
-                  className="mt-6 bg-primary text-white hover:bg-green-dark font-semibold gap-2"
-                >
-                  <Lightbulb size={16} />
-                  Get Your Personalized Pathway
-                </Button>
-              )}
-              {quizAnswers && quizAnswers !== 'skipped' && (
-                <Button
-                  onClick={() => { setQuizAnswers(null); setShowQuiz(true); }}
+                  onClick={() => setQuizAnswers(null)}
                   variant="outline"
                   className="mt-4 border-primary/30 text-primary hover:bg-green-pale"
                 >
                   Retake Quiz
                 </Button>
-              )}
-            </div>
+              </div>
 
-            {/* Steps */}
-            <div className="relative">
-          <div className="absolute left-8 top-8 bottom-8 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent hidden md:block" />
+              <div className="relative">
+                <div className="absolute left-8 top-8 bottom-8 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent hidden md:block" />
 
-          <div className="space-y-6">
-            {personalizedSteps.map((step) => {
-              const Icon = step.icon;
-              return (
-                <div key={step.number} className="relative flex gap-6">
-                  <div className="hidden md:flex shrink-0 w-16 h-16 rounded-2xl bg-primary text-white font-manrope font-black text-xl items-center justify-center z-10 shadow-lg shadow-primary/20">
-                    {step.number}
-                  </div>
+                <div className="space-y-6">
+                  {personalizedSteps.map((step) => {
+                    const Icon = step.icon;
+                    return (
+                      <div key={step.number} className="relative flex gap-6">
+                        <div className="hidden md:flex shrink-0 w-16 h-16 rounded-2xl bg-primary text-white font-manrope font-black text-xl items-center justify-center z-10 shadow-lg shadow-primary/20">
+                          {step.number}
+                        </div>
 
-                  <div className="flex-1 bg-white rounded-2xl border border-border p-6 shadow-sm hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className="md:hidden w-8 h-8 rounded-lg bg-primary text-white font-manrope font-black text-sm flex items-center justify-center shrink-0">
-                        {step.number}
+                        <div className="flex-1 bg-white rounded-2xl border border-border p-6 shadow-sm hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+                          <div className="flex items-start gap-3 mb-4">
+                            <div className="md:hidden w-8 h-8 rounded-lg bg-primary text-white font-manrope font-black text-sm flex items-center justify-center shrink-0">
+                              {step.number}
+                            </div>
+                            <div className="w-10 h-10 rounded-xl bg-green-pale flex items-center justify-center shrink-0">
+                              <Icon size={20} className="text-primary" />
+                            </div>
+                            <div>
+                              <h2 className="font-manrope font-bold text-xl text-foreground">{step.title}</h2>
+                            </div>
+                          </div>
+
+                          <p className="text-muted-foreground leading-relaxed mb-4">{step.description}</p>
+
+                          <div className="mb-4">
+                            <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Key Resources</p>
+                            <div className="flex flex-wrap gap-2">
+                              {step.resources.map(r => (
+                                <span key={r} className="text-xs bg-green-pale text-green-dark px-3 py-1 rounded-full font-medium border border-primary/20">
+                                  {r}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleLearnMore(step)}
+                            className="gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold"
+                          >
+                            Learn More
+                            {step.isExternal ? <ExternalLink size={13} /> : <ArrowRight size={14} />}
+                          </Button>
+                        </div>
                       </div>
-                      <div className="w-10 h-10 rounded-xl bg-green-pale flex items-center justify-center shrink-0">
-                        <Icon size={20} className="text-primary" />
-                      </div>
-                      <div>
-                        <h2 className="font-manrope font-bold text-xl text-foreground">{step.title}</h2>
-                      </div>
-                    </div>
-
-                    <p className="text-muted-foreground leading-relaxed mb-4">{step.description}</p>
-
-                    <div className="mb-4">
-                      <p className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Key Resources</p>
-                      <div className="flex flex-wrap gap-2">
-                        {step.resources.map(r => (
-                          <span key={r} className="text-xs bg-green-pale text-green-dark px-3 py-1 rounded-full font-medium border border-primary/20">
-                            {r}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleLearnMore(step)}
-                      className="gap-2 border-primary/30 text-primary hover:bg-green-pale font-semibold"
-                    >
-                      Learn More
-                      {step.isExternal ? <ExternalLink size={13} /> : <ArrowRight size={14} />}
-                    </Button>
-                  </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
-            </div>
-          </div>
+              </div>
 
-          {/* AI CTA */}
-          <div className="mt-16 bg-primary rounded-3xl p-8 text-center mb-12">
-            <h2 className="font-manrope font-extrabold text-2xl text-white mb-2">Have questions about your specific situation?</h2>
-            <p className="text-white/80 mb-6">Our AI Advisor can give you personalized guidance based on your stage, sector, and location.</p>
-            <Button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
-              Talk to AI Advisor <ArrowRight size={16} className="ml-2" />
-            </Button>
-          </div>
-        </>
+              {/* AI CTA */}
+              <div className="mt-16 bg-primary rounded-3xl p-8 text-center">
+                <h2 className="font-manrope font-extrabold text-2xl text-white mb-2">Have questions about your specific situation?</h2>
+                <p className="text-white/80 mb-6">Our AI Advisor can give you personalized guidance based on your stage, sector, and location.</p>
+                <Button onClick={() => window.dispatchEvent(new CustomEvent('openAdvisor'))} className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-8">
+                  Talk to AI Advisor <ArrowRight size={16} className="ml-2" />
+                </Button>
+              </div>
+            </div>
+          </section>
         )}
 
-        {/* Quick Wins Section */}
-        <QuickWins />
-
-        {/* Founder Stories Section */}
+        {/* Founder Stories Testimonial Carousel */}
         <FounderStories />
       </div>
 
