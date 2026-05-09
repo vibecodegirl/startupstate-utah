@@ -1,0 +1,52 @@
+{
+  "name": "NewsArticle",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Article title"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short summary of the article"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "News",
+        "Press Release",
+        "Industry Update"
+      ],
+      "default": "News",
+      "description": "Article category"
+    },
+    "publish_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the article was published"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Featured image URL"
+    },
+    "source": {
+      "type": "string",
+      "description": "Original source of the article"
+    },
+    "url": {
+      "type": "string",
+      "description": "Original source URL"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to display this article"
+    }
+  },
+  "required": [
+    "title",
+    "publish_date",
+    "url",
+    "source"
+  ]
+}

@@ -83,20 +83,40 @@ const types = ['All Types', 'Conference', 'Pitch Competition', 'Workshop', 'Netw
 
 export default function Events() {
   const [dbEvents, setDbEvents] = useState([]);
+  const [dbNews, setDbNews] = useState([]);
   const [typeFilter, setTypeFilter] = useState('All Types');
   const [virtualOnly, setVirtualOnly] = useState(false);
   const [activeTab, setActiveTab] = useState('events'); // 'news' or 'events'
+  const [eventTab, setEventTab] = useState('upcoming'); // 'upcoming' or 'past'
 
   useEffect(() => {
-    base44.entities.Event.list('-event_date', 50).then(setDbEvents).catch(() => {});
+    Promise.all([
+      base44.entities.Event.list('-event_date', 50).catch(() => []),
+      base44.entities.NewsArticle.list('-publish_date', 50).catch(() => [])
+    ]).then(([events, news]) => {
+      setDbEvents(events);
+      setDbNews(news.filter(n => n.is_active));
+    });
   }, []);
 
+  const now = new Date();
   const allEvents = [...SAMPLE_EVENTS, ...dbEvents];
+  const upcomingEvents = allEvents.filter(e => new Date(e.event_date) >= now);
+  const pastEvents = allEvents.filter(e => new Date(e.event_date) < now);
 
-  const filtered = allEvents.filter(e => {
-    const matchType = typeFilter === 'All Types' || e.event_type === typeFilter;
-    const matchVirtual = !virtualOnly || e.is_virtual;
-    return matchType && matchVirtual;
+  const getFilteredEvents = (events) => {
+    return events.filter(e => {
+      const matchType = typeFilter === 'All Types' || e.event_type === typeFilter;
+      const matchVirtual = !virtualOnly || e.is_virtual;
+      return matchType && matchVirtual;
+    });
+  };
+
+  const filtered = getFilteredEvents(eventTab === 'upcoming' ? upcomingEvents : pastEvents);
+  const newsArticles = [...SAMPLE_NEWS, ...dbNews].sort((a, b) => {
+    const dateA = new Date(a.publish_date || a.date);
+    const dateB = new Date(b.publish_date || b.date);
+    return dateB - dateA;
   });
 
   return (
@@ -142,14 +162,14 @@ export default function Events() {
         {activeTab === 'news' && (
           <div className="mb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {SAMPLE_NEWS.map(article => {
-                const articleDate = new Date(article.date);
+              {newsArticles.map(article => {
+                const articleDate = new Date(article.publish_date || article.date);
                 return (
                   <a key={article.id} href={article.url} target="_blank" rel="noopener noreferrer">
                     <div className="bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col h-full">
                       {/* Image */}
                       <div className="h-40 bg-muted overflow-hidden">
-                        <img src={article.image} alt={article.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                        <img src={article.image_url || article.image} alt={article.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                       </div>
 
                       {/* Content */}
@@ -178,6 +198,30 @@ export default function Events() {
         {/* Events Tab */}
         {activeTab === 'events' && (
           <div className="mb-16">
+            {/* Upcoming/Past Toggle */}
+            <div className="flex gap-2 mb-6 border-b border-border pb-4">
+              <button
+                onClick={() => setEventTab('upcoming')}
+                className={`px-4 py-2 font-semibold text-sm transition-all border-b-2 ${
+                  eventTab === 'upcoming'
+                    ? 'text-primary border-primary'
+                    : 'text-muted-foreground border-transparent hover:text-foreground'
+                }`}
+              >
+                Upcoming Events
+              </button>
+              <button
+                onClick={() => setEventTab('past')}
+                className={`px-4 py-2 font-semibold text-sm transition-all border-b-2 ${
+                  eventTab === 'past'
+                    ? 'text-primary border-primary'
+                    : 'text-muted-foreground border-transparent hover:text-foreground'
+                }`}
+              >
+                Past Events
+              </button>
+            </div>
+
             {/* Filters */}
             <div className="flex flex-wrap gap-3 items-center mb-8 pb-6 border-b border-border">
               <div className="flex gap-2 flex-wrap">

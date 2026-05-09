@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Shield, CheckCircle, Clock, AlertCircle, Flag, Users, Building2, Eye, Trash2, Check, X, Plus, Edit2, Image as ImageIcon } from 'lucide-react';
+import { Shield, CheckCircle, Clock, AlertCircle, Flag, Users, Building2, Eye, Trash2, Check, X, Plus, Edit2, Image as ImageIcon, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ContentManagementPanel from '@/components/admin/ContentManagementPanel';
 
 export default function AdminDashboard({ role }) {
   const [requests, setRequests] = useState([]);
@@ -116,6 +117,7 @@ export default function AdminDashboard({ role }) {
     { id: 'startups', label: 'All Startups', count: startups.length, icon: Building2 },
     { id: 'flags', label: 'Active Flags', count: flagged.length, icon: Flag },
     { id: 'resources', label: 'Resources', count: resources.length, icon: Building2 },
+    { id: 'content', label: 'Content Management', count: 0, icon: FileText },
     { id: 'carousel', label: 'Hero Carousel', count: carouselItems.length, icon: ImageIcon },
   ];
 
@@ -286,6 +288,11 @@ export default function AdminDashboard({ role }) {
                   ))
                 )}
               </div>
+            )}
+
+            {/* Content Management */}
+            {activeTab === 'content' && (
+              <ContentManagementPanel />
             )}
 
             {/* Carousel */}
