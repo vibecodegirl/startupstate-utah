@@ -4,6 +4,7 @@ import { Search, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import MiniClusterMap from './MiniClusterMap';
+import EmbeddedStartupMap from './EmbeddedStartupMap';
 
 const SECTORS = ['AI', 'Life Sciences', 'Fintech', 'B2B Software', 'Aerospace & Defense', 'Energy', 'Consumer'];
 const STAGES = ['Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C'];
@@ -88,13 +89,16 @@ export default function DiscoverStartups() {
         <div className="text-center py-4 text-muted-foreground text-sm">No startups match your criteria.</div>
       )}
 
-      {(sector || stage || size) && <MiniClusterMap sector={sector} stage={stage} size={size} />}
-
-      <Link to="/map">
-        <Button className="w-full bg-primary text-white hover:bg-green-dark font-semibold gap-2">
-          Explore Full Map <ArrowRight size={14} />
-        </Button>
-      </Link>
+      {(sector || stage || size) && (
+        <>
+          <EmbeddedStartupMap sector={sector} stage={stage} size={size} />
+          <Link to="/map">
+            <Button variant="outline" className="w-full border-primary/30 text-primary hover:bg-green-pale font-semibold">
+              Explore Full Map <ArrowRight size={14} />
+            </Button>
+          </Link>
+        </>
+      )}
     </div>
   );
 }
