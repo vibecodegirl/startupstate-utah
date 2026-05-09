@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, TrendingUp, DollarSign, Users, Globe, Zap, Award, Building2, ExternalLink } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend } from 'recharts';
@@ -5,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import TrendingSectors from '@/components/investors/TrendingSectors';
 import DiscoverStartups from '@/components/investors/DiscoverStartups';
 import EcosystemMap from '@/components/investors/EcosystemMap';
+import InvestorMatchPanel from '@/components/investors/InvestorMatchPanel';
 
 const vcData = [
   { year: '2019', amount: 0.8 },
@@ -85,6 +87,8 @@ const notableExits = [
 ];
 
 export default function InvestorResources() {
+  const [showMatchPanel, setShowMatchPanel] = useState(false);
+
   return (
     <div className="min-h-screen bg-white pt-24">
       {/* Hero */}
@@ -123,11 +127,12 @@ export default function InvestorResources() {
                 2026 Innovation Report <ExternalLink size={14} />
               </Button>
             </a>
-            <Link to="/investor-profile">
-              <Button className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-7 py-2.5 text-sm shadow-lg hover:shadow-xl transition-all">
-                Get Matched to a Startup <ArrowRight size={16} />
-              </Button>
-            </Link>
+            <Button 
+              onClick={() => setShowMatchPanel(true)}
+              className="bg-white text-primary hover:bg-green-pale font-manrope font-bold px-7 py-2.5 text-sm shadow-lg hover:shadow-xl transition-all"
+            >
+              Get Matched to a Startup <ArrowRight size={16} />
+            </Button>
           </div>
         </div>
       </div>
@@ -229,6 +234,8 @@ export default function InvestorResources() {
         </section>
 
       </div>
+
+      {showMatchPanel && <InvestorMatchPanel onClose={() => setShowMatchPanel(false)} />}
     </div>
   );
 }
