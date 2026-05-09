@@ -166,7 +166,8 @@ export default function Resources() {
   const [audience, setAudience] = useState('All Stages');
   const [view, setView] = useState('grid');
   const [dbResources, setDbResources] = useState([]);
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [sortBy, setSortBy] = useState('title');
+  const [sortDir, setSortDir] = useState('asc');
 
   useEffect(() => {
     base44.entities.Resource.list('-created_date', 100).then(setDbResources).catch(() => {});
@@ -181,7 +182,27 @@ export default function Resources() {
     return matchSearch && matchCat && matchAud;
   });
 
+  const sorted = [...filtered].sort((a, b) => {
+    let aVal = a[sortBy] || '';
+    let bVal = b[sortBy] || '';
+    if (typeof aVal === 'string') {
+      aVal = aVal.toLowerCase();
+      bVal = bVal.toLowerCase();
+    }
+    const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+    return sortDir === 'asc' ? cmp : -cmp;
+  });
+
   const hasActiveFilters = category !== 'All' || audience !== 'All Stages';
+
+  const handleSort = (field) => {
+    if (sortBy === field) {
+      setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(field);
+      setSortDir('asc');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white pt-24">
@@ -195,9 +216,9 @@ export default function Resources() {
           <p className="text-muted-foreground text-lg">Find the right resources for your startup journey</p>
         </div>
 
-        {/* Search Bar + View Toggle */}
-        <div className="flex gap-3 mb-6 items-center">
-          <div className="relative flex-1">
+        {/* Search Bar + Inline Filters + View Toggle */}
+        <div className="flex gap-3 mb-8 items-center flex-wrap">
+          <div className="relative flex-1 min-w-64">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
@@ -207,7 +228,31 @@ export default function Resources() {
               className="w-full pl-10 pr-4 py-3 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white placeholder-muted-foreground"
             />
           </div>
-          <div className="flex rounded-lg border border-border overflow-hidden bg-white">
+
+          {/* Category Filter Inline */}
+          <select
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            className="px-3 py-2.5 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white text-foreground font-medium"
+          >
+            {categories.map(c => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+
+          {/* Audience Filter Inline */}
+          <select
+            value={audience}
+            onChange={e => setAudience(e.target.value)}
+            className="px-3 py-2.5 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 bg-white text-foreground font-medium"
+          >
+            {audienceFilters.map(a => (
+              <option key={a} value={a}>{a}</option>
+            ))}
+          </select>
+
+          {/* View Toggle */}
+          <div className="flex rounded-lg border border-border overflow-hidden bg-white ml-auto">
             {[
               { id: 'grid', icon: Grid3X3, label: 'Grid' },
               { id: 'list', icon: List, label: 'List' },
@@ -226,83 +271,18 @@ export default function Resources() {
               );
             })}
           </div>
-        </div>
 
-        {/* Collapsible Filters */}
-        <div className="mb-6">
-          <button
-            onClick={() => setFiltersOpen(!filtersOpen)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border transition-all ${
-              filtersOpen || hasActiveFilters
-                ? 'bg-green-pale border-primary/30'
-                : 'bg-white border-border hover:border-primary/30'
-            }`}
-          >
-            <span className="text-sm font-semibold text-foreground">Filters</span>
-            {hasActiveFilters && (
-              <span className="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-primary rounded-full">
-                {(category !== 'All' ? 1 : 0) + (audience !== 'All Stages' ? 1 : 0)}
-              </span>
-            )}
-            <ChevronDown size={16} className={`text-muted-foreground transition-transform ${filtersOpen ? 'rotate-180' : ''}`} />
-          </button>
-
-          {/* Filter Panel */}
-          {filtersOpen && (
-            <div className="mt-3 p-5 bg-white border border-border rounded-lg shadow-sm">
-              {/* Category Filter */}
-              <div className="mb-5">
-                <label className="block text-sm font-semibold text-foreground mb-3">Category</label>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map(c => (
-                    <button
-                      key={c}
-                      onClick={() => setCategory(c)}
-                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
-                        category === c
-                          ? 'bg-primary text-white border-primary'
-                          : 'bg-white border-border text-foreground hover:border-primary/30'
-                      }`}
-                    >
-                      {c}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Audience Filter */}
-              <div>
-                <label className="block text-sm font-semibold text-foreground mb-3">Funding Stage</label>
-                <div className="flex flex-wrap gap-2">
-                  {audienceFilters.map(a => (
-                    <button
-                      key={a}
-                      onClick={() => setAudience(a)}
-                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
-                        audience === a
-                          ? 'bg-primary text-white border-primary'
-                          : 'bg-white border-border text-foreground hover:border-primary/30'
-                      }`}
-                    >
-                      {a}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Clear Filters */}
-              {hasActiveFilters && (
-                <button
-                  onClick={() => {
-                    setCategory('All');
-                    setAudience('All Stages');
-                  }}
-                  className="mt-4 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
-                >
-                  Clear all filters
-                </button>
-              )}
-            </div>
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <button
+              onClick={() => {
+                setCategory('All');
+                setAudience('All Stages');
+              }}
+              className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors px-2 py-2"
+            >
+              Clear filters
+            </button>
           )}
         </div>
 
@@ -314,7 +294,7 @@ export default function Resources() {
         {/* Grid View */}
         {view === 'grid' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
-            {filtered.map((r, i) => {
+            {sorted.map((r, i) => {
               const Icon = categoryIcons[r.category] || BookOpen;
               const colors = categoryColors[r.category] || { badge: 'bg-gray-50 text-gray-500', icon: 'bg-gray-50 text-gray-400', dot: 'bg-gray-300' };
               return (
@@ -357,7 +337,7 @@ export default function Resources() {
         {/* List View */}
         {view === 'list' && (
           <div className="space-y-3 mb-16">
-            {filtered.map((r, i) => {
+            {sorted.map((r, i) => {
               const Icon = categoryIcons[r.category] || BookOpen;
               const colors = categoryColors[r.category] || { badge: 'bg-gray-50 text-gray-500', icon: 'bg-gray-50 text-gray-400' };
               return (
@@ -408,15 +388,30 @@ export default function Resources() {
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-y border-gray-200">
                 <tr>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Resource</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Category</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-700">Provider</th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                    <button onClick={() => handleSort('title')} className="flex items-center gap-1 hover:text-primary transition-colors group">
+                      Resource
+                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">{sortBy === 'title' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+                    </button>
+                  </th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                    <button onClick={() => handleSort('category')} className="flex items-center gap-1 hover:text-primary transition-colors group">
+                      Category
+                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">{sortBy === 'category' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+                    </button>
+                  </th>
+                  <th className="text-left px-4 py-3 font-semibold text-gray-700">
+                    <button onClick={() => handleSort('provider')} className="flex items-center gap-1 hover:text-primary transition-colors group">
+                      Provider
+                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">{sortBy === 'provider' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+                    </button>
+                  </th>
                   <th className="text-left px-4 py-3 font-semibold text-gray-700">Description</th>
                   <th className="text-center px-4 py-3 font-semibold text-gray-700">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {filtered.map((r, i) => (
+                {sorted.map((r, i) => (
                   <tr key={r.id || i} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3 font-medium text-gray-900">{r.title}</td>
                     <td className="px-4 py-3 text-gray-600">{r.category}</td>
