@@ -21,7 +21,7 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41]
 });
 
-export default function DiscoverStartups({ onHubSelect }) {
+export default function DiscoverStartups({ onHubSelect, selectedHub }) {
   const [sector, setSector] = useState('');
   const [stage, setStage] = useState('');
   const [size, setSize] = useState('');
@@ -31,6 +31,7 @@ export default function DiscoverStartups({ onHubSelect }) {
   const [mapCenter, setMapCenter] = useState([39.3210, -111.0937]);
   const [selectedStartup, setSelectedStartup] = useState(null);
   const [mapLoading, setMapLoading] = useState(true);
+  const [mapZoom, setMapZoom] = useState(7);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -70,6 +71,18 @@ export default function DiscoverStartups({ onHubSelect }) {
   useEffect(() => {
     if (sector || stage || size) handleSearch();
   }, [sector, stage, size]);
+
+  useEffect(() => {
+    if (selectedHub && mapStartups.length > 0) {
+      const hubStartups = mapStartups.filter(s => s.city === selectedHub.city);
+      if (hubStartups.length > 0) {
+        const avgLat = hubStartups.reduce((sum, s) => sum + s.latitude, 0) / hubStartups.length;
+        const avgLon = hubStartups.reduce((sum, s) => sum + s.longitude, 0) / hubStartups.length;
+        setMapCenter([avgLat, avgLon]);
+        setMapZoom(10);
+      }
+    }
+  }, [selectedHub, mapStartups]);
 
   return (
     <div className="bg-white rounded-2xl border border-border p-6 shadow-sm">
@@ -124,7 +137,7 @@ export default function DiscoverStartups({ onHubSelect }) {
 
       {!mapLoading && mapStartups.length > 0 && (
         <div className="bg-white rounded-xl border border-border overflow-hidden shadow-sm h-80 mb-6">
-          <MapContainer center={mapCenter} zoom={7} style={{ height: '100%', width: '100%' }}>
+          <MapContainer center={mapCenter} zoom={mapZoom} style={{ height: '100%', width: '100%' }}>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; OpenStreetMap contributors'

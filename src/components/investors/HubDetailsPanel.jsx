@@ -56,7 +56,7 @@ export default function HubDetailsPanel({ hub, onClose }) {
                 {[1, 2, 3].map(i => <div key={i} className="h-12 bg-muted rounded-lg" />)}
               </div>
             ) : startups.length > 0 ? (
-              <div className="space-y-2 max-h-96 overflow-y-auto">
+              <div className="space-y-2">
                 {startups.map(s => (
                   <div key={s.id} className="bg-muted/50 rounded-lg p-3 border border-border hover:border-primary/30 transition-colors">
                     <div className="font-semibold text-sm text-foreground">{s.company_name}</div>
