@@ -173,10 +173,8 @@ export default function StartPage() {
           </div>
         )}
 
-      <div className="py-12">
-        {/* Quick Wins - "Momentum Starts Now" directly below quiz */}
-        <QuickWins onWinClick={setSelectedWin} />
-      </div>
+      {/* Quick Wins - "Momentum Starts Now" directly below quiz */}
+      <QuickWins onWinClick={setSelectedWin} />
 
         {/* Personalized Steps - Only show if quiz completed */}
         {quizAnswers && quizAnswers !== 'skipped' && (
